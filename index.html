@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IPDAAM • Alunos Locais</title>
+  <meta name="description" content="Página simples e direta para informações dos alunos locais: cursos, calendário, inscrições e contato.">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f172a; /* slate-900 */
+      --card:#0b1220; /* slightly lighter */
+      --text:#e5e7eb; /* gray-200 */
+      --muted:#9ca3af; /* gray-400 */
+      --brand:#2563eb; /* blue-600 */
+      --ok:#16a34a; /* green-600 */
+      --warn:#ca8a04; /* amber-600 */
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text);}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb,#60a5fa);box-shadow:0 8px 30px rgba(37,99,235,.35)}
+    nav a{margin-left:16px;font-weight:600;opacity:.9}
+    nav a:hover{opacity:1}
+    .hero{margin:32px 0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+    .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .hero .left{padding:28px}
+    .hero h1{margin:0 0 10px;font-size:40px;line-height:1.1}
+    .hero p{margin:0 0 18px;color:var(--muted)}
+    .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid transparent}
+    .btn.primary{background:var(--brand);color:white}
+    .btn.primary:hover{filter:brightness(1.05)}
+    .btn.secondary{background:transparent;color:var(--text);border-color:rgba(255,255,255,.18)}
+    .badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:700}
+    .notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}
+
+    .grid{display:grid;gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    .section{margin:26px 0}
+    .section h2{margin:0 0 10px;font-size:26px}
+    .section p{margin:0 0 10px;color:var(--muted)}
+
+    .item{padding:18px}
+    .item h3{margin:0 0 6px;font-size:18px}
+    .item p{margin:0;color:var(--muted)}
+    .item footer{margin-top:10px}
+
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:12px 10px;text-align:left}
+    thead{background:rgba(255,255,255,.06)}
+    tbody tr{border-top:1px solid rgba(255,255,255,.06)}
+
+    .footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}
+
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <strong>IPDAAM</strong><br>
+          <small style="color:var(--muted)">Alunos Locais</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#cursos">Cursos</a>
+        <a href="#calendario">Calendário</a>
+        <a href="#inscricao">Inscrição</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="left card">
+        <span class="badge">Inscrições abertas</span>
+        <h1>Formação simples, séria e próxima de você.</h1>
+        <p>Informações para quem estuda conosco presencialmente em <strong>Manaus/AM</strong>. Tudo em um lugar só: cursos, agenda, documentos e contato.</p>
+        <div class="cta">
+          <a class="btn primary" href="#inscricao">Quero me inscrever</a>
+          <a class="btn secondary" href="#calendario">Ver calendário</a>
+        </div>
+      </div>
+      <aside class="card" style="padding:20px">
+        <h3 style="margin:0 0 12px">Avisos</h3>
+        <div class="notice">
+          <strong>Tragam documento com foto</strong> para a primeira aula. Chegue com 15 min de antecedência. Disciplina e pontualidade fazem parte do aprendizado.
+        </div>
+      </aside>
+    </section>
+
+    <section id="cursos" class="section">
+      <h2>Cursos disponíveis</h2>
+      <p>Conteúdo claro, material impresso quando necessário e acompanhamento dos professores.</p>
+      <div class="grid cols-3">
+        <div class="card item">
+          <h3>Introdução — Fundamentos</h3>
+          <p>Carga: 8 semanas • 2x por semana</p>
+          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
+        </div>
+        <div class="card item">
+          <h3>Intermediário — Prática</h3>
+          <p>Carga: 10 semanas • 2x por semana</p>
+          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
+        </div>
+        <div class="card item">
+          <h3>Avançado — Projeto</h3>
+          <p>Carga: 12 semanas • 1x por semana + projeto final</p>
+          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendario" class="section">
+      <h2>Calendário 2025</h2>
+      <p>Horários fixos. Feriados locais respeitados.</p>
+      <div class="card" style="padding:14px">
+        <table aria-describedby="cal-nota">
+          <thead>
+            <tr>
+              <th>Turma</th>
+              <th>Dia</th>
+              <th>Horário</th>
+              <th>Início</th>
+              <th>Sala</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Fundamentos A</td>
+              <td>Ter/Qui</td>
+              <td>19:00–20:40</td>
+              <td>10/09/2025</td>
+              <td>Sala 01</td>
+            </tr>
+            <tr>
+              <td>Intermediário B</td>
+              <td>Seg/Qua</td>
+              <td>19:00–20:40</td>
+              <td>16/09/2025</td>
+              <td>Sala 02</td>
+            </tr>
+            <tr>
+              <td>Avançado</td>
+              <td>Sábados</td>
+              <td>14:00–17:00</td>
+              <td>20/09/2025</td>
+              <td>Lab 01</td>
+            </tr>
+          </tbody>
+        </table>
+        <p id="cal-nota" style="margin-top:8px;color:var(--muted)">* Sujeito a ajustes de turma. Avisaremos pelo WhatsApp oficial.</p>
+      </div>
+    </section>
+
+    <section id="inscricao" class="section">
+      <h2>Inscrição</h2>
+      <p>Simples e direto. Preencha e aguarde a confirmação por WhatsApp.</p>
+      <div class="grid cols-2">
+        <form class="card item" method="GET" action="https://formsubmit.co/" onsubmit="return formInfo()">
+          <label>Nome completo<br>
+            <input required name="nome" class="input" placeholder="Seu nome">
+          </label>
+          <label>Telefone (WhatsApp)<br>
+            <input required name="telefone" class="input" placeholder="(92) 9....">
+          </label>
+          <label>E‑mail<br>
+            <input type="email" name="email" class="input" placeholder="voce@email.com">
+          </label>
+          <label>Turma desejada<br>
+            <select name="turma" class="input">
+              <option>Fundamentos A</option>
+              <option>Intermediário B</option>
+              <option>Avançado</option>
+            </select>
+          </label>
+          <button class="btn primary" type="submit">Enviar inscrição</button>
+          <p style="color:var(--muted);font-size:14px;margin-top:6px">Ao enviar, você concorda com contato para confirmação e orientações.</p>
+        </form>
+        <div class="card item">
+          <h3>Documentos necessários</h3>
+          <ul>
+            <li>Documento com foto</li>
+            <li>Comprovante de residência</li>
+            <li>Se menor, autorização do responsável</li>
+          </ul>
+          <h3 style="margin-top:16px">Bolsas</h3>
+          <p>Há bolsas parciais para famílias com necessidade. Fale conosco no WhatsApp.</p>
+        </div>
+      </div>
+      <style>
+        .input{width:100%;margin:6px 0 12px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.02);color:var(--text)}
+        .input:focus{outline:2px solid rgba(37,99,235,.55)}
+        ul{margin:6px 0 0 18px}
+      </style>
+    </section>
+
+    <section id="contato" class="section">
+      <h2>Contato</h2>
+      <div class="card item">
+        <p><strong>Local:</strong> Sede – Manaus/AM</p>
+        <p><strong>WhatsApp:</strong> <a href="https://wa.me/5592XXXXXXXX?text=Olá! Quero informações sobre os cursos.">Falar agora</a></p>
+        <p><strong>E‑mail:</strong> <a href="mailto:contato@ipdaam.com.br">contato@ipdaam.com.br</a></p>
+        <p><strong>Mapa:</strong> <a href="https://maps.google.com" target="_blank" rel="noopener">Ver no Google Maps</a></p>
+      </div>
+    </section>
+
+    <p class="footer">© <span id="year"></span> IPDAAM • Simples e direto, como sempre foi.</p>
+  </div>
+
+  <script>
+    // Atualiza ano do rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Alerta simples antes de enviar (pode remover se quiser)
+    function formInfo(){
+      alert('Obrigado! Se não abrir uma nova aba, seu cadastro foi enviado.');
+      return true;
+    }
+  </script>
+</body>
+</html>
