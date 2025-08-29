@@ -11,7 +11,7 @@
   <style>
     :root{
       --bg:#0f172a; /* slate-900 */
-      --card:#0b1220; /* slightly lighter */
+      --card:#0b1220;
       --text:#e5e7eb; /* gray-200 */
       --muted:#9ca3af; /* gray-400 */
       --brand:#2563eb; /* blue-600 */
@@ -29,7 +29,21 @@
     .logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb,#60a5fa);box-shadow:0 8px 30px rgba(37,99,235,.35)}
     nav a{margin-left:16px;font-weight:600;opacity:.9}
     nav a:hover{opacity:1}
-    .hero{margin:32px 0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+
+    /* CARROSSEL */
+    .carousel{position:relative;max-width:1100px;margin:18px auto 8px;aspect-ratio:16/9;overflow:hidden;border-radius:16px;background:#000;border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .carousel__track{display:flex;width:100%;height:100%;transform:translateX(0);transition:transform .6s ease}
+    .carousel__track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover}
+    .carousel__btn{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(0,0,0,.45);color:#fff;
+      width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:28px;line-height:44px;text-align:center}
+    .carousel__btn:hover{background:rgba(0,0,0,.7)}
+    .carousel__btn.prev{left:10px}
+    .carousel__btn.next{right:10px}
+    .carousel__dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:8px;justify-content:center}
+    .carousel__dots button{width:10px;height:10px;border-radius:50%;border:0;background:#bbb;opacity:.7;cursor:pointer}
+    .carousel__dots button.active{background:#fff;opacity:1}
+
+    .hero{margin:22px 0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
     .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.35)}
     .hero .left{padding:28px}
     .hero h1{margin:0 0 10px;font-size:40px;line-height:1.1}
@@ -59,6 +73,9 @@
     thead{background:rgba(255,255,255,.06)}
     tbody tr{border-top:1px solid rgba(255,255,255,.06)}
 
+    .input{width:100%;margin:6px 0 12px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.02);color:var(--text)}
+    .input:focus{outline:2px solid rgba(37,99,235,.55)}
+
     .footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}
 
     @media (max-width:900px){
@@ -83,6 +100,18 @@
         <a href="#contato">Contato</a>
       </nav>
     </header>
+
+    <!-- CARROSSEL / BANNER GIRATÓRIO -->
+    <section class="carousel" aria-label="Banner dos cultos">
+      <div class="carousel__track">
+        <img src="assets/banners/culto1.jpg" alt="Culto 1" loading="lazy">
+        <img src="assets/banners/culto2.jpg" alt="Culto 2" loading="lazy">
+        <img src="assets/banners/culto3.jpg" alt="Culto 3" loading="lazy">
+      </div>
+      <button class="carousel__btn prev" aria-label="Anterior">‹</button>
+      <button class="carousel__btn next" aria-label="Próximo">›</button>
+      <div class="carousel__dots" aria-hidden="true"></div>
+    </section>
 
     <section class="hero">
       <div class="left card">
@@ -117,7 +146,7 @@
           <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
         </div>
         <div class="card item">
-          <h3>Curso Biblico Deus é Amor — CBDA</h3>
+          <h3>Curso Bíblico Deus é Amor — CBDA</h3>
           <p>Carga: 12 semanas • 1x por semana + projeto final</p>
           <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
         </div>
@@ -143,21 +172,21 @@
               <td>INC</td>
               <td>Quarta</td>
               <td>19:00–21:00</td>
-              <td>em andamento</td>
+              <td>Em andamento</td>
               <td>Sala Expansão</td>
             </tr>
             <tr>
               <td>CFO</td>
-              <td>Sabados</td>
+              <td>Sábados</td>
               <td>14:00–17:00</td>
               <td>Em andamento</td>
               <td>Sala CFO</td>
             </tr>
             <tr>
               <td>CBDA</td>
-              <td>sexta</td>
+              <td>Sexta</td>
               <td>19:00–21:00</td>
-              <td>sem vagas</td>
+              <td>Sem vagas</td>
               <td>Lab 01</td>
             </tr>
           </tbody>
@@ -170,14 +199,15 @@
       <h2>Inscrição</h2>
       <p>Simples e direto. Preencha e aguarde a confirmação por WhatsApp.</p>
       <div class="grid cols-2">
-        <form class="card item" method="GET" action="https://formsubmit.co/" onsubmit="return formInfo()">
+        <!-- ATENÇÃO: defina o action do formsubmit com seu e-mail para funcionar de verdade -->
+        <form class="card item" method="POST" action="https://formsubmit.co/SEU-EMAIL-AQUI" onsubmit="return formInfo()">
           <label>Nome completo<br>
             <input required name="nome" class="input" placeholder="Seu nome">
           </label>
           <label>Telefone (WhatsApp)<br>
             <input required name="telefone" class="input" placeholder="(92) 9....">
           </label>
-          <label>E‑mail<br>
+          <label>E-mail<br>
             <input type="email" name="email" class="input" placeholder="voce@email.com">
           </label>
           <label>Turma desejada<br>
@@ -189,24 +219,25 @@
           </label>
           <button class="btn primary" type="submit">Enviar inscrição</button>
           <p style="color:var(--muted);font-size:14px;margin-top:6px">Ao enviar, você concorda com contato para confirmação e orientações.</p>
+          <!-- Proteções básicas do formsubmit -->
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_subject" value="Nova inscrição - IPDAAM">
         </form>
+
         <div class="card item">
           <h3>Documentos necessários</h3>
           <ul>
-            <li>Documento com foto RG ou CNH</li>
+            <li>Documento com foto (RG ou CNH)</li>
             <li>CPF</li>
             <li>Comprovante de residência</li>
             <li>Carta de Recomendação</li>
             <li>Certificado de Batismo</li>
-            <li>1xFoto</li>
-            <li>Certidão Nascimento ou Casamento</li>
+            <li>1× Foto</li>
+            <li>Certidão de Nascimento ou Casamento</li>
           </ul>
-          </div>
-      <style>
-        .input{width:100%;margin:6px 0 12px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.02);color:var(--text)}
-        .input:focus{outline:2px solid rgba(37,99,235,.55)}
-        ul{margin:6px 0 0 18px}
-      </style>
+        </div>
+      </div> <!-- FECHA .grid -->
     </section>
 
     <section id="contato" class="section">
@@ -214,7 +245,11 @@
       <div class="card item">
         <p><strong>Local:</strong> Sede Manaus/AM</p>
         <p><strong>WhatsApp:</strong> <a href="https://wa.me/+559294753703?text=Olá! Quero informações sobre os cursos.">Falar agora</a></p>
-                <p><strong>Mapa:</strong> <a href="https://share.google/iCoymKETAnlh5hFkF" target="_blank" rel="noopener">Ver no Google Maps</a></p>
+        <!-- Ajuste o link abaixo com o endereço certo.
+             Exemplo usando query de busca: substitua pelo nome/endereço oficial -->
+        <p><strong>Mapa:</strong>
+          <a href="https://www.google.com/maps?q=Sede+IPDA+Manaus" target="_blank" rel="noopener">Ver no Google Maps</a>
+        </p>
       </div>
     </section>
 
@@ -225,11 +260,69 @@
     // Atualiza ano do rodapé
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Alerta simples antes de enviar (pode remover se quiser)
+    // Alerta simples antes de enviar
     function formInfo(){
-      alert('Paz do Senhor Jesus,Obrigado! Se não abrir uma nova aba, seu cadastro foi enviado.');
+      alert('Paz do Senhor Jesus! Obrigado. Se não abrir uma nova aba, seu cadastro foi enviado.');
       return true;
     }
+
+    // JS do CARROSSEL
+    (function(){
+      const carousel = document.querySelector('.carousel');
+      if(!carousel) return;
+      const track = carousel.querySelector('.carousel__track');
+      const slides = Array.from(track.children);
+      const prevBtn = carousel.querySelector('.prev');
+      const nextBtn = carousel.querySelector('.next');
+      const dotsWrap = carousel.querySelector('.carousel__dots');
+
+      slides.forEach((_,i)=>{
+        const b=document.createElement('button');
+        if(i===0) b.classList.add('active');
+        b.addEventListener('click', ()=>goTo(i,true));
+        dotsWrap.appendChild(b);
+      });
+      const dots = Array.from(dotsWrap.children);
+
+      let i = 0, timer = null, interval = 5000; // 5s
+      function update(){
+        track.style.transform = `translateX(-${i*100}%)`;
+        dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
+      }
+      function goTo(n,manual=false){
+        i = (n + slides.length) % slides.length;
+        update();
+        if(manual) restart();
+      }
+      function next(){ goTo(i+1); }
+      function prev(){ goTo(i-1); }
+
+      function start(){ timer = setInterval(next, interval); }
+      function stop(){ clearInterval(timer); timer=null; }
+      function restart(){ stop(); start(); }
+
+      nextBtn.addEventListener('click', ()=>goTo(i+1,true));
+      prevBtn.addEventListener('click', ()=>goTo(i-1,true));
+
+      // pausa no hover/foco
+      carousel.addEventListener('mouseenter', stop);
+      carousel.addEventListener('mouseleave', start);
+      carousel.addEventListener('focusin', stop);
+      carousel.addEventListener('focusout', start);
+
+      // swipe mobile
+      let x0=null;
+      track.addEventListener('pointerdown', e=>{ x0=e.clientX; stop(); track.setPointerCapture(e.pointerId);});
+      track.addEventListener('pointerup', e=>{
+        if(x0!=null){
+          const dx=e.clientX-x0;
+          if(Math.abs(dx)>40) (dx<0?next:prev)();
+          x0=null; start();
+        }
+      });
+
+      start();
+    })();
   </script>
 </body>
 </html>
