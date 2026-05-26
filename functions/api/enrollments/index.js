@@ -13,9 +13,16 @@ function json(data, init = {}) {
   });
 }
 
+function errorJson(error, status = 500) {
+  return json({
+    ok: false,
+    error: error && error.message ? error.message : String(error),
+  }, { status });
+}
+
 function getDatabase(env) {
   if (!env.DB) {
-    throw new Error("D1 binding DB nao configurado.");
+    throw new Error("D1 binding DB nao configurado. Verifique se o binding chama exatamente DB em Producao.");
   }
 
   return env.DB;
@@ -32,46 +39,54 @@ function normalizePayload(payload) {
 }
 
 export async function onRequestGet({ env }) {
-  const db = getDatabase(env);
-  const result = await db.prepare(
-    "SELECT payload FROM enrollments ORDER BY updated_at DESC"
-  ).all();
+  try {
+    const db = getDatabase(env);
+    const result = await db.prepare(
+      "SELECT payload FROM enrollments ORDER BY updated_at DESC"
+    ).all();
 
-  const enrollments = result.results.map((row) => JSON.parse(row.payload));
-  return json({ enrollments });
+    const enrollments = result.results.map((row) => JSON.parse(row.payload));
+    return json({ enrollments });
+  } catch (error) {
+    return errorJson(error);
+  }
 }
 
 export async function onRequestPost({ request, env }) {
-  const db = getDatabase(env);
-  const body = await request.json();
-  const enrollment = normalizePayload(body);
-  const payload = JSON.stringify(enrollment);
+  try {
+    const db = getDatabase(env);
+    const body = await request.json();
+    const enrollment = normalizePayload(body);
+    const payload = JSON.stringify(enrollment);
 
-  await db.prepare(
-    `INSERT INTO enrollments (
-      id, full_name, cpf, course, email, status, enrollment_date, payload, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-    ON CONFLICT(id) DO UPDATE SET
-      full_name = excluded.full_name,
-      cpf = excluded.cpf,
-      course = excluded.course,
-      email = excluded.email,
-      status = excluded.status,
-      enrollment_date = excluded.enrollment_date,
-      payload = excluded.payload,
-      updated_at = datetime('now')`
-  )
-    .bind(
-      enrollment.id,
-      enrollment.fullName || enrollment.studentName || "",
-      enrollment.cpf || "",
-      enrollment.grade || "",
-      enrollment.email || "",
-      enrollment.status || "",
-      enrollment.enrollmentDate || "",
-      payload
+    await db.prepare(
+      `INSERT INTO enrollments (
+        id, full_name, cpf, course, email, status, enrollment_date, payload, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+      ON CONFLICT(id) DO UPDATE SET
+        full_name = excluded.full_name,
+        cpf = excluded.cpf,
+        course = excluded.course,
+        email = excluded.email,
+        status = excluded.status,
+        enrollment_date = excluded.enrollment_date,
+        payload = excluded.payload,
+        updated_at = datetime('now')`
     )
-    .run();
+      .bind(
+        enrollment.id,
+        enrollment.fullName || enrollment.studentName || "",
+        enrollment.cpf || "",
+        enrollment.grade || "",
+        enrollment.email || "",
+        enrollment.status || "",
+        enrollment.enrollmentDate || "",
+        payload
+      )
+      .run();
 
-  return json({ enrollment }, { status: 201 });
+    return json({ enrollment }, { status: 201 });
+  } catch (error) {
+    return errorJson(error);
+  }
 }
