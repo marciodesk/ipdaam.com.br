@@ -4,90 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IPDAAM</title>
-  <meta name="description" content="Página simples e direta para informações dos alunos locais: cursos, calendário, inscrições e contato.">
+  <meta name="description" content="Informacoes dos cursos ETDA Manaus: cursos, calendario, inscricoes e contato.">
   <meta name="theme-color" content="#0f172a">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0f172a; /* slate-900 */
-      --card:#0b1220;
-      --text:#e5e7eb; /* gray-200 */
-      --muted:#9ca3af; /* gray-400 */
-      --brand:#2563eb; /* blue-600 */
-      --ok:#16a34a; /* green-600 */
-      --warn:#ca8a04; /* amber-600 */
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text);}
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .container{max-width:1100px;margin:auto;padding:24px}
-    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo {
-  width: 60px;      /* pode aumentar/diminuir como preferir */
-  height: auto;     /* mantém a proporção da imagem */
-  object-fit: contain;
-  box-shadow: none; /* tira o efeito de sombra se não quiser */
-  border-radius: 0; /* sem borda arredondada */
-}
-}
-    nav a{margin-left:16px;font-weight:600;opacity:.9}
-    nav a:hover{opacity:1}
-
-    /* CARROSSEL */
-    .carousel{position:relative;max-width:1100px;margin:18px auto 8px;aspect-ratio:16/9;overflow:hidden;border-radius:16px;background:#000;border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .carousel__track{display:flex;width:100%;height:100%;transform:translateX(0);transition:transform .6s ease}
-    .carousel__track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover}
-    .carousel__btn{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(0,0,0,.45);color:#fff;
-      width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:28px;line-height:44px;text-align:center}
-    .carousel__btn:hover{background:rgba(0,0,0,.7)}
-    .carousel__btn.prev{left:10px}
-    .carousel__btn.next{right:10px}
-    .carousel__dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:8px;justify-content:center}
-    .carousel__dots button{width:10px;height:10px;border-radius:50%;border:0;background:#bbb;opacity:.7;cursor:pointer}
-    .carousel__dots button.active{background:#fff;opacity:1}
-
-    .hero{margin:22px 0 22px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
-    .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .hero .left{padding:28px}
-    .hero h1{margin:0 0 10px;font-size:40px;line-height:1.1}
-    .hero p{margin:0 0 18px;color:var(--muted)}
-    .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid transparent}
-    .btn.primary{background:var(--brand);color:white}
-    .btn.primary:hover{filter:brightness(1.05)}
-    .btn.secondary{background:transparent;color:var(--text);border-color:rgba(255,255,255,.18)}
-    .badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:700}
-    .notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}
-
-    .grid{display:grid;gap:18px}
-    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
-    .section{margin:26px 0}
-    .section h2{margin:0 0 10px;font-size:26px}
-    .section p{margin:0 0 10px;color:var(--muted)}
-
-    .item{padding:18px}
-    .item h3{margin:0 0 6px;font-size:18px}
-    .item p{margin:0;color:var(--muted)}
-    .item footer{margin-top:10px}
-
-    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
-    th,td{padding:12px 10px;text-align:left}
-    thead{background:rgba(255,255,255,.06)}
-    tbody tr{border-top:1px solid rgba(255,255,255,.06)}
-
-    .input{width:100%;margin:6px 0 12px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.02);color:var(--text)}
-    .input:focus{outline:2px solid rgba(37,99,235,.55)}
-
-    .footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}
-
-    @media (max-width:900px){
-      .hero{grid-template-columns:1fr}
-    }
+    :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#9ca3af;--brand:#2563eb;--line:rgba(255,255,255,.12);--warn:#ca8a04;--ok:#16a34a;--radius:18px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text)}a{color:#93c5fd;text-decoration:none}a:hover{text-decoration:underline}.container{max-width:1100px;margin:auto;padding:24px}header{display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center}.logo{width:60px;height:auto;object-fit:contain}nav a{margin-left:16px;font-weight:700}.carousel{max-width:1100px;margin:18px auto 24px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.35)}.carousel img{display:block;width:100%;max-height:470px;object-fit:cover}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.28)}.left{padding:28px}.hero h1{margin:0 0 10px;font-size:42px;line-height:1.08}.hero p,.section p{color:var(--muted)}.cta{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:800;border:1px solid transparent}.primary{background:var(--brand);color:white}.secondary{border-color:var(--line);color:var(--text)}.badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:800}.notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}.section{margin:28px 0}.section h2{margin:0 0 10px;font-size:26px}.grid{display:grid;gap:18px}.cols-3{grid-template-columns:repeat(3,1fr)}.item{padding:18px}.item h3{margin:0 0 6px}table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}th,td{padding:12px 10px;text-align:left}thead{background:rgba(255,255,255,.06)}tbody tr{border-top:1px solid var(--line)}.footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}@media(max-width:900px){header,.hero{display:block}nav{margin-top:16px}.cols-3{grid-template-columns:1fr}.hero h1{font-size:34px}}
   </style>
 </head>
 <body>
@@ -95,242 +17,67 @@
     <header>
       <div class="brand">
         <img src="assets/logo/etda.png" alt="Logo ETDA" class="logo">
-
-        <div>
-          <strong>ETDA</strong><br>
-          <small style="color:var(--muted)">Procure apresentar-se a Deus aprovado, como obreiro que não tem do que se envergonhar e que maneja corretamente a palavra da verdade 2Tim 2.15.</small>
-        </div>
+        <div><strong>ETDA</strong><br><small style="color:var(--muted)">Procure apresentar-se a Deus aprovado, como obreiro que nao tem do que se envergonhar e que maneja corretamente a palavra da verdade 2Tim 2.15.</small></div>
       </div>
       <nav>
         <a href="#cursos">Cursos</a>
-        <a href="#calendario">Calendário</a>
-        <a href="#inscricao">Inscrição</a>
+        <a href="#calendario">Calendario</a>
+        <a href="inscricao.html">Inscricao</a>
         <a href="#contato">Contato</a>
       </nav>
     </header>
 
-    <!-- CARROSSEL / BANNER GIRATÓRIO -->
-    <section class="carousel" aria-label="Banner dos cultos">
-      <div class="carousel__track">
-        <img src="assets/banners/foto1.jpg" alt="foto1" loading="lazy">
-        <img src="assets/banners/foto2.jpg" alt="foto2" loading="lazy">
-        <img src="assets/banners/foto3.jpg" alt="foto3" loading="lazy">
-      </div>
-      <button class="carousel__btn prev" aria-label="Anterior">‹</button>
-      <button class="carousel__btn next" aria-label="Próximo">›</button>
-      <div class="carousel__dots" aria-hidden="true"></div>
+    <section class="carousel" aria-label="Banner dos cursos">
+      <img src="assets/banners/foto1.jpg" alt="Turma ETDA" loading="lazy">
     </section>
 
     <section class="hero">
       <div class="left card">
-        <span class="badge">Inscrições Fechadas</span>
-        <h1>Formação simples, séria e próxima de você.</h1>
-        <p>Informações para quem estuda conosco presencialmente em <strong>Manaus/AM</strong>. Tudo em um lugar só: cursos, agenda, documentos e contato.</p>
+        <span class="badge">Inscricoes abertas</span>
+        <h1>Formacao simples, seria e proxima de voce.</h1>
+        <p>Informacoes para quem estuda conosco presencialmente em <strong>Manaus/AM</strong>. Tudo em um lugar so: cursos, agenda, documentos e contato.</p>
         <div class="cta">
-          <a class="btn primary" href="#inscricao">Quero me inscrever</a>
-          <a class="btn secondary" href="#calendario">Ver calendário</a>
+          <a class="btn primary" href="inscricao.html">Quero me inscrever</a>
+          <a class="btn secondary" href="#calendario">Ver calendario</a>
         </div>
       </div>
-      <aside class="card" style="padding:20px">
-        <h3 style="margin:0 0 12px">Avisos</h3>
-        <div class="notice">
-          <strong>Tragam documento com foto</strong> para a primeira aula. Chegue com 15 min de antecedência. Disciplina e pontualidade fazem parte do aprendizado.
-        </div>
+      <aside class="card item">
+        <h3>Avisos</h3>
+        <div class="notice"><strong>Tragam documento com foto</strong> para a primeira aula. Chegue com 15 min de antecedencia.</div>
       </aside>
     </section>
 
     <section id="cursos" class="section">
-      <h2>Cursos disponíveis</h2>
-      <p>Conteúdo claro, material impresso quando necessário e acompanhamento dos professores.</p>
+      <h2>Cursos disponiveis</h2>
+      <p>Escolha o curso desejado na ficha de inscricao.</p>
       <div class="grid cols-3">
-        <div class="card item">
-          <h3>Novos Convertidos — INC</h3>
-          <p>Carga: 8 semanas • 1x por semana</p>
-          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
-        </div>
-        <div class="card item">
-          <h3>Formação de Obreiros — CFO</h3>
-          <p>Carga: 24 semanas • 1x por semana</p>
-          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
-        </div>
-        <div class="card item">
-          <h3>Curso Bíblico Deus é Amor — CBDA</h3>
-          <p>Carga: 12 semanas • 1x por semana + projeto final</p>
-          <footer><a class="btn secondary" href="#inscricao">Inscrever</a></footer>
-        </div>
+        <div class="card item"><h3>ALFA / INC</h3><p>Base biblica e integracao.</p><p><a class="btn secondary" href="inscricao.html">Inscrever</a></p></div>
+        <div class="card item"><h3>CFO / CFO2</h3><p>Formacao ministerial e de obreiros.</p><p><a class="btn secondary" href="inscricao.html">Inscrever</a></p></div>
+        <div class="card item"><h3>CAPELANIA / CDBA / Idiomas</h3><p>Capacitacao complementar.</p><p><a class="btn secondary" href="inscricao.html">Inscrever</a></p></div>
       </div>
     </section>
 
     <section id="calendario" class="section">
-      <h2>Calendário 2025</h2>
-      <p>Horários fixos. Feriados locais respeitados.</p>
-      <div class="card" style="padding:14px">
-        <table aria-describedby="cal-nota">
-          <thead>
-            <tr>
-              <th>Turma</th>
-              <th>Dia</th>
-              <th>Horário</th>
-              <th>Início</th>
-              <th>Sala</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>INC</td>
-              <td>Quarta</td>
-              <td>19:00–21:00</td>
-              <td>Em andamento</td>
-              <td>Sala Expansão</td>
-            </tr>
-            <tr>
-              <td>CFO</td>
-              <td>Sábados</td>
-              <td>14:00–17:00</td>
-              <td>Em andamento</td>
-              <td>Sala CFO</td>
-            </tr>
-            <tr>
-              <td>CBDA</td>
-              <td>Sexta</td>
-              <td>19:00–21:00</td>
-              <td>Sem vagas</td>
-              <td>Lab 01</td>
-            </tr>
-          </tbody>
+      <h2>Calendario</h2>
+      <div class="card item">
+        <table>
+          <thead><tr><th>Curso</th><th>Status</th><th>Secretaria</th></tr></thead>
+          <tbody><tr><td>Turmas ETDA Manaus</td><td>Inscricoes abertas</td><td>Confirmacao por WhatsApp</td></tr></tbody>
         </table>
-        <p id="cal-nota" style="margin-top:8px;color:var(--muted)">* Sujeito a ajustes de turma. Avisaremos pelo WhatsApp oficial.</p>
       </div>
-    </section>
-
-    <section id="inscricao" class="section">
-      <h2>Inscrição</h2>
-      <p>Simples e direto. Preencha e aguarde a confirmação por WhatsApp.</p>
-      <div class="grid cols-2">
-        <!-- ATENÇÃO: defina o action do formsubmit com seu e-mail para funcionar de verdade -->
-        <form class="card item" method="POST" action="https://formsubmit.co/SEU-EMAIL-AQUI" onsubmit="return formInfo()">
-          <label>Nome completo<br>
-            <input required name="nome" class="input" placeholder="Seu nome">
-          </label>
-          <label>Telefone (WhatsApp)<br>
-            <input required name="telefone" class="input" placeholder="(92) 9....">
-          </label>
-          <label>E-mail<br>
-            <input type="email" name="email" class="input" placeholder="voce@email.com">
-          </label>
-          <label>Turma desejada<br>
-            <select name="turma" class="input">
-              <option>INC</option>
-              <option>CFO</option>
-              <option>CBDA</option>
-            </select>
-          </label>
-          <button class="btn primary" type="submit">Enviar inscrição</button>
-          <p style="color:var(--muted);font-size:14px;margin-top:6px">Ao enviar, você concorda com contato para confirmação e orientações.</p>
-          <!-- Proteções básicas do formsubmit -->
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_subject" value="Nova inscrição - IPDAAM">
-        </form>
-
-        <div class="card item">
-          <h3>Documentos necessários</h3>
-          <ul>
-            <li>Documento com foto (RG ou CNH)</li>
-            <li>CPF</li>
-            <li>Comprovante de residência</li>
-            <li>Carta de Recomendação</li>
-            <li>Certificado de Batismo</li>
-            <li>1× Foto</li>
-            <li>Certidão de Nascimento ou Casamento</li>
-          </ul>
-        </div>
-      </div> <!-- FECHA .grid -->
     </section>
 
     <section id="contato" class="section">
       <h2>Contato</h2>
       <div class="card item">
         <p><strong>Local:</strong> Sede Manaus/AM</p>
-        <p><strong>WhatsApp:</strong> <a href="https://wa.me/+559294753703?text=Olá! Quero informações sobre os cursos.">Falar agora</a></p>
-        <!-- Ajuste o link abaixo com o endereço certo.
-             Exemplo usando query de busca: substitua pelo nome/endereço oficial -->
-        <p><strong>Mapa:</strong>
-          <a href="https://www.google.com/maps?q=Sede+IPDA+Manaus" target="_blank" rel="noopener">Ver no Google Maps</a>
-        </p>
+        <p><strong>WhatsApp:</strong> <a href="https://wa.me/+559294753703?text=Ola! Quero informacoes sobre os cursos.">Falar agora</a></p>
+        <p><strong>Inscricao:</strong> <a href="inscricao.html">Abrir formulario de matricula</a></p>
       </div>
     </section>
 
-    <p class="footer">© <span id="year"></span> IPDAAM • Simples e direto, como sempre foi.</p>
+    <p class="footer">© <span id="year"></span> IPDAAM • Secretaria ETDA Manaus.</p>
   </div>
-
-  <script>
-    // Atualiza ano do rodapé
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Alerta simples antes de enviar
-    function formInfo(){
-      alert('Paz do Senhor Jesus! Obrigado. Se não abrir uma nova aba, seu cadastro foi enviado.');
-      return true;
-    }
-
-    // JS do CARROSSEL
-    (function(){
-      const carousel = document.querySelector('.carousel');
-      if(!carousel) return;
-      const track = carousel.querySelector('.carousel__track');
-      const slides = Array.from(track.children);
-      const prevBtn = carousel.querySelector('.prev');
-      const nextBtn = carousel.querySelector('.next');
-      const dotsWrap = carousel.querySelector('.carousel__dots');
-
-      slides.forEach((_,i)=>{
-        const b=document.createElement('button');
-        if(i===0) b.classList.add('active');
-        b.addEventListener('click', ()=>goTo(i,true));
-        dotsWrap.appendChild(b);
-      });
-      const dots = Array.from(dotsWrap.children);
-
-      let i = 0, timer = null, interval = 5000; // 5s
-      function update(){
-        track.style.transform = `translateX(-${i*100}%)`;
-        dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
-      }
-      function goTo(n,manual=false){
-        i = (n + slides.length) % slides.length;
-        update();
-        if(manual) restart();
-      }
-      function next(){ goTo(i+1); }
-      function prev(){ goTo(i-1); }
-
-      function start(){ timer = setInterval(next, interval); }
-      function stop(){ clearInterval(timer); timer=null; }
-      function restart(){ stop(); start(); }
-
-      nextBtn.addEventListener('click', ()=>goTo(i+1,true));
-      prevBtn.addEventListener('click', ()=>goTo(i-1,true));
-
-      // pausa no hover/foco
-      carousel.addEventListener('mouseenter', stop);
-      carousel.addEventListener('mouseleave', start);
-      carousel.addEventListener('focusin', stop);
-      carousel.addEventListener('focusout', start);
-
-      // swipe mobile
-      let x0=null;
-      track.addEventListener('pointerdown', e=>{ x0=e.clientX; stop(); track.setPointerCapture(e.pointerId);});
-      track.addEventListener('pointerup', e=>{
-        if(x0!=null){
-          const dx=e.clientX-x0;
-          if(Math.abs(dx)>40) (dx<0?next:prev)();
-          x0=null; start();
-        }
-      });
-
-      start();
-    })();
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
