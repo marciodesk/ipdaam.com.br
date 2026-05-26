@@ -1,0 +1,77 @@
+const jsonHeaders = {
+  "content-type": "application/json; charset=utf-8",
+  "cache-control": "no-store",
+};
+
+function json(data, init = {}) {
+  return new Response(JSON.stringify(data), {
+    ...init,
+    headers: {
+      ...jsonHeaders,
+      ...(init.headers || {}),
+    },
+  });
+}
+
+function getDatabase(env) {
+  if (!env.DB) {
+    throw new Error("D1 binding DB nao configurado.");
+  }
+
+  return env.DB;
+}
+
+function normalizePayload(payload) {
+  const now = new Date().toISOString();
+  return {
+    ...payload,
+    id: payload.id || crypto.randomUUID(),
+    updatedAt: now,
+    createdAt: payload.createdAt || now,
+  };
+}
+
+export async function onRequestGet({ env }) {
+  const db = getDatabase(env);
+  const result = await db.prepare(
+    "SELECT payload FROM enrollments ORDER BY updated_at DESC"
+  ).all();
+
+  const enrollments = result.results.map((row) => JSON.parse(row.payload));
+  return json({ enrollments });
+}
+
+export async function onRequestPost({ request, env }) {
+  const db = getDatabase(env);
+  const body = await request.json();
+  const enrollment = normalizePayload(body);
+  const payload = JSON.stringify(enrollment);
+
+  await db.prepare(
+    `INSERT INTO enrollments (
+      id, full_name, cpf, course, email, status, enrollment_date, payload, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+    ON CONFLICT(id) DO UPDATE SET
+      full_name = excluded.full_name,
+      cpf = excluded.cpf,
+      course = excluded.course,
+      email = excluded.email,
+      status = excluded.status,
+      enrollment_date = excluded.enrollment_date,
+      payload = excluded.payload,
+      updated_at = datetime('now')`
+  )
+    .bind(
+      enrollment.id,
+      enrollment.fullName || enrollment.studentName || "",
+      enrollment.cpf || "",
+      enrollment.grade || "",
+      enrollment.email || "",
+      enrollment.status || "",
+      enrollment.enrollmentDate || "",
+      payload
+    )
+    .run();
+
+  return json({ enrollment }, { status: 201 });
+}
