@@ -50,12 +50,14 @@ function getDatabase(env) {
 
 function normalizePayload(payload) {
   const now = new Date().toISOString();
-  return {
+  const normalized = {
     ...payload,
     id: payload.id || crypto.randomUUID(),
     updatedAt: now,
     createdAt: payload.createdAt || now,
   };
+  delete normalized.candidatePhoto;
+  return normalized;
 }
 
 export async function onRequestGet({ request, env }) {
