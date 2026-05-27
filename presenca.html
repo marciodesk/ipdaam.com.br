@@ -210,6 +210,16 @@ function getTodayDate() {
   return `${date.year}-${date.month}-${date.day}`;
 }
 
+function formatDateBr(value) {
+  if (!value) return "";
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
+  if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    const [year, month, day] = value.slice(0, 10).split("-");
+    return `${day}/${month}/${year}`;
+  }
+  return value;
+}
+
 function parseQrCode(value) {
   const text = String(value || "").trim();
   if (text.startsWith("ETDA:")) {
@@ -281,7 +291,7 @@ function renderSelectedStudent(student) {
 
 function renderReports() {
   const records = filteredRecords();
-  reportTable.innerHTML = records.map((item) => `<tr><td>${escapeHtml(item.classDate)}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td></tr>`).join("");
+  reportTable.innerHTML = records.map((item) => `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td></tr>`).join("");
   recentList.innerHTML = records.slice(0, 8).map((item) => `<article class="recent-item"><div><span class="recent-name">${escapeHtml(item.fullName)}</span><br><small>CPF: ${escapeHtml(item.cpf)} | ${escapeHtml(item.course)}</small></div><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></article>`).join("") || '<p class="small-note">Nenhum registro nesta data.</p>';
   renderCounters();
 }
@@ -428,7 +438,7 @@ function exportCsv() {
   }
   const columns = ["classDate", "fullName", "cpf", "course", "status", "justification", "method", "createdAt"];
   const csvValue = (value) => `"${String(value || "").replace(/"/g, '""')}"`;
-  const csv = "\uFEFF" + [columns.join(";"), ...records.map((item) => columns.map((column) => csvValue(item[column])).join(";"))].join("\r\n");
+  const csv = "\uFEFF" + [columns.join(";"), ...records.map((item) => columns.map((column) => csvValue(column === "classDate" ? formatDateBr(item[column]) : item[column])).join(";"))].join("\r\n");
   const link = document.createElement("a");
   link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
   link.download = `presencas-etda-${classDate.value || getTodayDate()}.csv`;
