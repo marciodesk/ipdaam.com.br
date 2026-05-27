@@ -86,6 +86,7 @@
         <label>Bairro da IPDA<input id="ipdaNeighborhood" type="text" placeholder="Bairro da IPDA"></label>
         <label>Numero da IPDA<input id="ipdaNumber" type="text" placeholder="Numero"></label>
       </div>
+      <label>Codigo TOTVS da igreja<input id="totvsCode" type="text" placeholder="Codigo TOTVS"></label>
 
       <div class="section-title">Informacao sobre saude</div>
       <div class="grid-2">
@@ -152,7 +153,7 @@ const form = document.querySelector("#candidateForm");
 const submitButton = document.querySelector("#submitButton");
 const formMessage = document.querySelector("#formMessage");
 const documentsPanel = document.querySelector("#documentsPanel");
-const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
+const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
 fields.declarationAccepted = document.querySelector("#declarationAccepted");
 
