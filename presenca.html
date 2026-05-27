@@ -100,7 +100,7 @@
       <section class="panel" style="margin-top:18px">
         <p class="eyebrow">QR Code dos alunos</p>
         <h2>Gerar QR para leitura</h2>
-        <p class="small-note">Imprima ou salve estes codigos para leitura no celular. Cada QR identifica o aluno cadastrado.</p>
+          <p class="small-note">Imprima ou salve estes codigos. A camera nativa do celular abre a pagina de presenca com o aluno identificado.</p>
         <div id="qrGrid" class="qr-grid"></div>
       </section>
     </section>
@@ -222,6 +222,12 @@ function formatDateBr(value) {
 
 function parseQrCode(value) {
   const text = String(value || "").trim();
+  try {
+    const url = new URL(text);
+    const qr = url.searchParams.get("qr");
+    if (qr) return parseQrCode(qr);
+  } catch {
+  }
   if (text.startsWith("ETDA:")) {
     const [, id, cpf] = text.split(":");
     return { id, cpf: cleanCpf(cpf) };
@@ -231,6 +237,11 @@ function parseQrCode(value) {
 
 function makeQrCode(item) {
   return `ETDA:${item.id}:${cleanCpf(item.cpf)}`;
+}
+
+function makeNativeQrUrl(item) {
+  const baseUrl = `${location.origin}${location.pathname}`;
+  return `${baseUrl}?qr=${encodeURIComponent(makeQrCode(item))}`;
 }
 
 function findStudent(value) {
@@ -300,13 +311,14 @@ function renderQrCodes() {
   const students = filteredEnrollments();
   qrGrid.innerHTML = "";
   students.forEach((item) => {
+    const qrUrl = makeNativeQrUrl(item);
     const card = document.createElement("article");
     card.className = "qr-card";
-    card.innerHTML = `<div class="qr-code"></div><div><span class="student-name">${escapeHtml(item.fullName)}</span><span class="student-meta">${escapeHtml(item.cpf || "-")} | ${escapeHtml(item.grade || "-")}</span><span class="student-meta">${escapeHtml(makeQrCode(item))}</span><button class="download-qr" type="button" data-id="${escapeHtml(item.id)}">Baixar JPG</button></div>`;
+    card.innerHTML = `<div class="qr-code"></div><div><span class="student-name">${escapeHtml(item.fullName)}</span><span class="student-meta">${escapeHtml(item.cpf || "-")} | ${escapeHtml(item.grade || "-")}</span><span class="student-meta">Camera do celular</span><button class="download-qr" type="button" data-id="${escapeHtml(item.id)}">Baixar JPG</button></div>`;
     qrGrid.appendChild(card);
     if (window.QRCode) {
       new window.QRCode(card.querySelector(".qr-code"), {
-        text: makeQrCode(item),
+        text: qrUrl,
         width: 96,
         height: 96,
         correctLevel: window.QRCode.CorrectLevel.M,
@@ -343,7 +355,8 @@ function downloadQrJpg(studentId) {
   context.drawImage(source, 170, 220, 380, 380);
   context.font = "18px Arial";
   context.fillStyle = "#687385";
-  wrapCanvasText(context, makeQrCode(student), canvas.width / 2, 660, 560, 24);
+  context.fillText("Use a camera do celular para abrir a presenca", canvas.width / 2, 654);
+  wrapCanvasText(context, makeNativeQrUrl(student), canvas.width / 2, 690, 560, 24);
 
   const link = document.createElement("a");
   link.href = canvas.toDataURL("image/jpeg", 0.92);
@@ -399,6 +412,7 @@ async function refreshData() {
   await loadEnrollments();
   await loadAttendance();
   render();
+  applyQrFromUrl();
 }
 
 async function saveAttendance(method = "Manual") {
@@ -495,6 +509,19 @@ function exportCsv() {
   link.download = `presencas-etda-${classDate.value || getTodayDate()}.csv`;
   link.click();
   URL.revokeObjectURL(link.href);
+}
+
+function applyQrFromUrl() {
+  const qr = new URLSearchParams(location.search).get("qr");
+  if (!qr) return;
+  const student = findStudent(qr);
+  if (!student) {
+    showToast("QR Code nao encontrado no cadastro.");
+    return;
+  }
+  renderSelectedStudent(student);
+  manualCode.value = qr;
+  showToast(`Aluno identificado: ${student.fullName}. Confira e registre a presenca.`);
 }
 
 authForm.addEventListener("submit", async (event) => {
