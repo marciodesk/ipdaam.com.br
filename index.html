@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#9ca3af;--brand:#2563eb;--line:rgba(255,255,255,.12);--warn:#ca8a04;--ok:#16a34a;--radius:18px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text)}a{color:#93c5fd;text-decoration:none}a:hover{text-decoration:underline}.container{max-width:1100px;margin:auto;padding:24px}header{display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center}.logo{width:60px;height:auto;object-fit:contain}nav a{margin-left:16px;font-weight:700}.carousel{max-width:1100px;margin:18px auto 24px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.35)}.carousel img{display:block;width:100%;max-height:470px;object-fit:cover}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.28)}.left{padding:28px}.hero h1{margin:0 0 10px;font-size:42px;line-height:1.08}.hero p,.section p{color:var(--muted)}.cta{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:800;border:1px solid transparent}.primary{background:var(--brand);color:white}.secondary{border-color:var(--line);color:var(--text)}.badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:800}.notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}.section{margin:28px 0}.section h2{margin:0 0 10px;font-size:26px}.grid{display:grid;gap:18px}.cols-3{grid-template-columns:repeat(3,1fr)}.item{padding:18px}.item h3{margin:0 0 6px}table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}th,td{padding:12px 10px;text-align:left}thead{background:rgba(255,255,255,.06)}tbody tr{border-top:1px solid var(--line)}.footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}@media(max-width:900px){header,.hero{display:block}nav{margin-top:16px}.cols-3{grid-template-columns:1fr}.hero h1{font-size:34px}}
+    :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#9ca3af;--brand:#2563eb;--line:rgba(255,255,255,.12);--warn:#ca8a04;--ok:#16a34a;--radius:18px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text)}a{color:#93c5fd;text-decoration:none}a:hover{text-decoration:underline}.container{max-width:1100px;margin:auto;padding:24px}header{display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center}.logo{width:60px;height:auto;object-fit:contain}nav a{margin-left:16px;font-weight:700}.carousel{max-width:1100px;margin:18px auto 24px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.35)}.carousel img{display:block;width:100%;max-height:470px;object-fit:cover}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.hero-single{grid-template-columns:1fr}.card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.28)}.left{padding:28px}.hero h1{margin:0 0 10px;font-size:42px;line-height:1.08}.hero p,.section p{color:var(--muted)}.cta{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:800;border:1px solid transparent}.primary{background:var(--brand);color:white}.secondary{border-color:var(--line);color:var(--text)}.badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:800}.notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}.section{margin:28px 0}.section h2{margin:0 0 10px;font-size:26px}.grid{display:grid;gap:18px}.cols-3{grid-template-columns:repeat(3,1fr)}.item{padding:18px}.item h3{margin:0 0 6px}table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}th,td{padding:12px 10px;text-align:left}thead{background:rgba(255,255,255,.06)}tbody tr{border-top:1px solid var(--line)}.footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}@media(max-width:900px){header,.hero{display:block}nav{margin-top:16px}.cols-3{grid-template-columns:1fr}.hero h1{font-size:34px}}
   </style>
 </head>
 <body>
@@ -25,7 +25,7 @@
       <img src="assets/banners/foto1.jpg" alt="Turma ETDA" loading="lazy">
     </section>
 
-    <section class="hero">
+    <section class="hero hero-single">
       <div class="left card">
         <span class="badge">Inscricoes abertas</span>
         <h1>Formacao simples, seria e proxima de voce.</h1>
@@ -35,10 +35,6 @@
           <a class="btn secondary" href="secretaria.html">Area da secretaria</a>
         </div>
       </div>
-      <aside class="card item">
-        <h3>Avisos</h3>
-        <div class="notice"><strong>Tragam documento com foto</strong> para a primeira aula. Chegue com 15 min de antecedencia.</div>
-      </aside>
     </section>
 
     <section id="cursos" class="section">
