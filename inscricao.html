@@ -5,257 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inscricao ETDA Manaus</title>
   <style>
-    :root{--bg:#f4f7f6;--surface:#fff;--surface-strong:#edf4f1;--text:#1c2a28;--muted:#64736f;--line:#d8e2de;--brand:#126b5b;--brand-dark:#0b4d42;--danger:#b43f4c;--shadow:0 18px 48px rgba(22,44,39,.12)}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input,select,textarea{font:inherit}.app-shell{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0}.topbar{display:grid;grid-template-columns:minmax(220px,1fr) minmax(320px,620px);gap:20px;align-items:end;margin-bottom:20px}.eyebrow{margin:0 0 6px;color:var(--brand);font-size:.78rem;font-weight:700;text-transform:uppercase}h1,h2{margin:0}h1{font-size:clamp(2rem,5vw,3.75rem);line-height:1}.verse{max-width:620px;margin:12px 0 0;color:var(--muted);font-size:.96rem;font-weight:700;line-height:1.4}.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.summary-card{min-height:86px;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}.summary-card span{display:block;color:var(--muted);font-size:.82rem}.summary-card strong{display:block;margin-top:8px;font-size:2rem}.workspace{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:start}.workspace.is-locked,.topbar.is-locked{display:none}.form-panel,.list-panel,.auth-panel{border:1px solid var(--line);border-radius:8px;background:var(--surface);box-shadow:var(--shadow)}.form-panel,.auth-panel{display:grid;gap:14px;padding:18px}.auth-panel{max-width:440px;margin:34px auto}.auth-error{display:none;margin:0;color:var(--danger);font-size:.88rem;font-weight:700}.auth-error.is-visible{display:block}.panel-heading,.toolbar{display:flex;gap:12px;align-items:end;justify-content:space-between}label{display:grid;gap:7px;color:var(--muted);font-size:.86rem;font-weight:700}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);min-height:42px;padding:10px 11px;outline:none}textarea{resize:vertical;min-height:92px}input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(18,107,91,.13)}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three-columns{grid-template-columns:1.2fr 70px 1fr}.section-title{margin-top:4px;padding-top:14px;border-top:1px solid var(--line);color:var(--brand);font-size:.82rem;font-weight:800;text-transform:uppercase}.declaration-box{display:grid;gap:10px;padding:13px;border:1px solid var(--line);border-radius:6px;background:var(--surface-strong);font-size:.88rem;line-height:1.45}.declaration-box p{margin:0}.check-field{display:flex;gap:9px;align-items:center;color:var(--text)}.check-field input{width:18px;min-height:18px;padding:0}.declaration-print-info{display:none;padding:10px 0 0;color:var(--text);font-size:.9rem;font-weight:700}.declaration-print-info.is-visible{display:block}.primary-button,.ghost-button,.table-button,.export-button,.print-button{min-height:40px;border:0;border-radius:6px;cursor:pointer;font-weight:700}.primary-button{background:var(--brand);color:#fff}.primary-button:hover{background:var(--brand-dark)}.ghost-button,.table-button,.export-button,.print-button{border:1px solid var(--line);background:var(--surface-strong);color:var(--text)}.ghost-button,.export-button,.print-button{padding:0 14px}.list-panel{overflow:hidden}.toolbar{padding:16px;border-bottom:1px solid var(--line);background:var(--surface-strong)}.search-field{flex:1}.table-wrap{position:relative;overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:14px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:.78rem;text-transform:uppercase}td{font-size:.92rem}.student-name{display:block;font-weight:800}.student-meta{display:block;margin-top:4px;color:var(--muted);font-size:.8rem}.status-pill{display:inline-flex;align-items:center;min-height:28px;padding:5px 10px;border-radius:999px;color:#fff;font-size:.82rem;font-weight:800}.status-pill.Ativa{background:#1f8a5b}.status-pill.Em-espera{background:#b26a00}.status-pill.Cancelada{background:#b43f4c}.action-row{display:flex;gap:8px}.table-button{padding:0 10px}.empty-state{display:none;margin:0;padding:28px;color:var(--muted);text-align:center}.empty-state.is-visible{display:block}.signature-area{display:none;gap:28px;grid-template-columns:1fr 1fr;padding-top:28px}.signature-line{border-top:1px solid var(--text);padding-top:8px;text-align:center;font-size:.86rem;font-weight:700}.back-link{display:inline-block;margin-bottom:16px;color:var(--brand);font-weight:800;text-decoration:none}@media(max-width:920px){.topbar,.workspace{grid-template-columns:1fr}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.app-shell{width:min(100% - 20px,1180px);padding:16px 0}.field-row,.three-columns,.summary-grid{grid-template-columns:1fr}.toolbar{display:grid}}@media print{body{background:#fff}.auth-panel,.topbar,.list-panel,.ghost-button,.primary-button,.export-button,.print-button,.back-link{display:none}.app-shell{width:100%;padding:0}.workspace{display:block}.form-panel{border:0;box-shadow:none}.declaration-print-info.is-visible{display:block;margin-top:16px;padding-top:12px;border-top:1px solid #111}.signature-area{display:grid;break-inside:avoid}}
+    :root{--bg:#f4f7f6;--surface:#fff;--surface-strong:#edf4f1;--text:#1c2a28;--muted:#64736f;--line:#d8e2de;--brand:#126b5b;--brand-dark:#0b4d42;--danger:#b43f4c;--ok:#16784f;--shadow:0 18px 48px rgba(22,44,39,.12)}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input,select,textarea{font:inherit}.page{width:min(980px,calc(100% - 32px));margin:0 auto;padding:26px 0 42px}.back-link{display:inline-block;margin-bottom:18px;color:var(--brand);font-weight:800;text-decoration:none}.hero{display:grid;gap:10px;margin-bottom:18px}.eyebrow{margin:0;color:var(--brand);font-size:.78rem;font-weight:800;text-transform:uppercase}h1,h2{margin:0}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1}.lead{max-width:720px;margin:0;color:var(--muted);font-size:1rem;line-height:1.5}.form-card{display:grid;gap:14px;padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--surface);box-shadow:var(--shadow)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid-3{display:grid;grid-template-columns:1fr 90px 1fr;gap:12px}.section-title{margin-top:8px;padding-top:16px;border-top:1px solid var(--line);color:var(--brand);font-size:.82rem;font-weight:800;text-transform:uppercase}label{display:grid;gap:7px;color:var(--muted);font-size:.86rem;font-weight:700}input,select,textarea{width:100%;min-height:42px;padding:10px 11px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--text);outline:none}textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(18,107,91,.13)}.declaration-box{display:grid;gap:10px;padding:13px;border:1px solid var(--line);border-radius:6px;background:var(--surface-strong);font-size:.9rem;line-height:1.45}.declaration-box p{margin:0}.check-field{display:flex;gap:9px;align-items:center;color:var(--text)}.check-field input{width:18px;min-height:18px;padding:0}.hp-field{position:absolute;left:-9999px;opacity:0}.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.primary-button{min-height:44px;padding:0 18px;border:0;border-radius:6px;background:var(--brand);color:#fff;cursor:pointer;font-weight:800}.primary-button:hover{background:var(--brand-dark)}.primary-button:disabled{cursor:not-allowed;opacity:.72}.message{display:none;margin:0;padding:12px 14px;border-radius:6px;font-weight:700}.message.is-visible{display:block}.message.ok{border:1px solid rgba(22,120,79,.25);background:rgba(22,120,79,.1);color:var(--ok)}.message.error{border:1px solid rgba(180,63,76,.25);background:rgba(180,63,76,.1);color:var(--danger)}@media(max-width:680px){.page{width:min(100% - 20px,980px);padding:16px 0 32px}.grid-2,.grid-3{grid-template-columns:1fr}.actions{display:grid}.primary-button{width:100%}}
   </style>
 </head>
 <body>
-  <main class="app-shell">
+  <main class="page">
     <a class="back-link" href="index.html">Voltar ao site</a>
-    <form id="authForm" class="auth-panel" autocomplete="off">
-      <h2>Acesso da secretaria</h2>
-      <label>Senha administrativa<input id="adminPassword" type="password" required></label>
-      <p id="authError" class="auth-error" aria-live="polite"></p>
-      <button class="primary-button" type="submit">Entrar</button>
-    </form>
-    <section id="dashboardHeader" class="topbar is-locked" aria-label="Resumo de matriculas">
-      <div><p class="eyebrow">Secretaria ETDA Manaus</p><h1>Controle de Matriculas</h1><p class="verse">"Ensina-me, Senhor, o teu caminho, e andarei na tua verdade." Salmos 86:11</p></div>
-      <div class="summary-grid"><article class="summary-card"><span>Total</span><strong id="totalCount">0</strong></article><article class="summary-card"><span>Ativas</span><strong id="activeCount">0</strong></article><article class="summary-card"><span>Em espera</span><strong id="waitingCount">0</strong></article><article class="summary-card"><span>Canceladas</span><strong id="cancelledCount">0</strong></article></div>
+    <section class="hero">
+      <p class="eyebrow">ETDA Manaus</p>
+      <h1>Ficha de inscricao</h1>
+      <p class="lead">Preencha seus dados para candidatura aos cursos. As informacoes serao enviadas com seguranca para a secretaria e nao ficam visiveis no site.</p>
     </section>
-    <section id="workspace" class="workspace is-locked">
-      <form id="enrollmentForm" class="form-panel" autocomplete="off">
-        <div class="panel-heading"><h2 id="formTitle">Nova matricula</h2><button class="ghost-button" id="clearFormButton" type="button">Limpar</button></div><input type="hidden" id="studentId">
+
+    <form id="candidateForm" class="form-card" autocomplete="on">
+      <input id="website" class="hp-field" type="text" tabindex="-1" autocomplete="off">
+
+      <div class="grid-2">
         <label>Nome completo<input id="fullName" type="text" placeholder="Ex.: Ana Souza" required></label>
-        <div class="field-row"><label>CPF<input id="cpf" type="text" placeholder="000.000.000-00" required></label><label>RG<input id="rg" type="text" placeholder="Documento de identidade"></label></div>
-        <div class="field-row"><label>Data de nascimento<input id="birthDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" required></label><label>Estado civil<select id="maritalStatus" required><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viuvo(a)</option><option>Uniao estavel</option></select></label></div>
-        <div class="field-row"><label>Cursos<select id="grade" required><option value="">Selecione</option><option>ALFA</option><option>CFO</option><option>INC</option><option>CAPELANIA</option><option>CFO2</option><option>CDBA</option><option>INGLES</option><option>ESPANHOL</option></select></label></div>
-        <div class="field-row"><label>DDD celular<input id="mobileDdd" type="text" placeholder="00" maxlength="2"></label><label>Telefone celular<input id="mobilePhone" type="tel" placeholder="00000-0000"></label></div>
-        <div class="field-row"><label>DDD WhatsApp<input id="whatsappDdd" type="text" placeholder="00" maxlength="2"></label><label>Telefone WhatsApp<input id="whatsappPhone" type="tel" placeholder="00000-0000"></label></div>
-        <label>Email<input id="email" type="email" placeholder="nome@email.com"></label>
-        <div class="field-row"><label>Endereco<input id="address" type="text" placeholder="Rua, avenida, comunidade"></label><label>Numero<input id="addressNumber" type="text" placeholder="123"></label></div>
-        <div class="field-row"><label>CEP<input id="zipCode" type="text" placeholder="00000-000"></label><label>Bairro<input id="neighborhood" type="text" placeholder="Bairro"></label></div>
-        <div class="field-row three-columns"><label>Cidade<input id="city" type="text" placeholder="Cidade"></label><label>UF<input id="state" type="text" placeholder="UF" maxlength="2"></label><label>Codigo TOTVS<input id="totvsCode" type="text" placeholder="Codigo TOTVS"></label></div>
-        <label>Qual pastor<input id="pastor" type="text" placeholder="Nome do pastor"></label>
-        <div class="section-title">Dados familiares</div>
-        <div class="field-row"><label>Possui filhos<select id="hasChildren" required><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Quantidade de filhos<input id="childrenCount" type="number" min="0" step="1" placeholder="0"></label></div>
-        <div class="field-row"><label>Nome do conjuge<input id="spouseName" type="text" placeholder="Nome completo"></label><label>Conjuge convertido<select id="spouseConverted"><option value="">Selecione</option><option>Sim</option><option>Nao</option><option>Nao se aplica</option></select></label></div>
-        <div class="field-row"><label>Esta solteiro/casado<select id="singleOrMarried"><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Outro</option></select></label><label>Da qual relacionamento<input id="relationshipType" type="text" placeholder="Ex.: casamento civil, uniao estavel"></label></div>
-        <div class="section-title">Informacao ministerial</div>
-        <label>Qual ocupacao atual<input id="currentOccupation" type="text" placeholder="Ex.: estudante, autonomo, professor"></label><label>Funcao ministerial que desempenha atualmente<input id="currentMinistryRole" type="text" placeholder="Ex.: louvor, ensino, recepcao, intercessao"></label>
-        <div class="field-row"><label>Data de batismo<input id="baptismDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa"></label><label>IPDA<select id="participatesInGroup"><option value="">Selecione</option><option>LOCAL</option><option>ESTADUAL</option><option>REGIONAL</option><option>CENTRAL</option><option>CASA DE ORACAO</option><option>SETORIAL</option></select></label></div>
-        <div class="field-row"><label>Bairro da IPDA<input id="ipdaNeighborhood" type="text" placeholder="Bairro da IPDA"></label><label>Numero da IPDA<input id="ipdaNumber" type="text" placeholder="Numero"></label></div>
-        <div class="section-title">Informacao sobre sua saude</div>
-        <div class="field-row"><label>Tem impedimento de saude<select id="hasHealthRestriction"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Qual impedimento de saude<input id="healthRestriction" type="text" placeholder="Descreva o impedimento"></label></div>
-        <div class="field-row"><label>Faz uso de medicamento continuo<select id="usesContinuousMedication"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Qual medicamento<input id="medicationName" type="text" placeholder="Nome do medicamento"></label></div>
-        <div class="field-row"><label>Tem alergia a medicamento/alimento<select id="hasMedicationFoodAllergy"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Qual alergia<input id="allergyName" type="text" placeholder="Medicamento ou alimento"></label></div>
-        <div class="field-row"><label>Possui algum tipo de alergia<select id="hasAnyAllergy"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Qual tipo de alergia<input id="allergyType" type="text" placeholder="Ex.: respiratoria, pele"></label></div>
-        <div class="field-row"><label>Possui necessidade especial<select id="hasSpecialNeed"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label><label>Qual necessidade especial<input id="specialNeed" type="text" placeholder="Descreva a necessidade"></label></div>
-        <div class="field-row"><label>Grau de parentesco<input id="emergencyKinship" type="text" placeholder="Ex.: mae, pai, conjuge"></label><label>Contato de emergencia<input id="emergencyContact" type="tel" placeholder="(00) 00000-0000"></label></div>
-        <div class="field-row"><label>Data da matricula<input id="enrollmentDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" required></label><label>Status<select id="status" required><option value="Ativa">Ativa</option><option value="Em espera">Em espera</option><option value="Cancelada">Cancelada</option></select></label></div>
-        <label>Observacoes<textarea id="notes" rows="4" placeholder="Documentos pendentes, turno desejado, necessidades especificas..."></textarea></label>
-        <div class="section-title">Declaracao</div><div class="declaration-box"><p>E por ser esta minha livre e espontanea decisao, confirmo que vou participar do curso com assiduidade, respeitar o regimento escolar da instituicao, os professores, colaboradores e companheiros de classe.</p><p>Caso queira continuar o modulo seguinte, comprometo-me a realizar minha rematricula junto a secretaria em tempo habil.</p><p>Havendo a necessidade de desistir do curso, comprometo-me a comunicar a direcao e assinar o termo de desistencia do curso, bem como quitar minhas mensalidades faltantes.</p></div>
-        <label class="check-field"><input id="declarationAccepted" type="checkbox" required>Li e aceito a declaracao acima</label><div id="declarationPrintInfo" class="declaration-print-info" aria-live="polite"></div><div class="signature-area"><div class="signature-line"><span>Assinatura do aluno</span></div><div class="signature-line"><span>Secretaria ETDA Manaus</span></div></div>
-        <button class="print-button" id="printFormButton" type="button">Imprimir para assinatura</button><button class="primary-button" type="submit">Salvar matricula</button>
-      </form>
-      <section class="list-panel" aria-label="Lista de matriculas"><div class="toolbar"><label class="search-field">Buscar<input id="searchInput" type="search" placeholder="Nome, CPF, email, cidade, igreja ou curso"></label><label>Status<select id="statusFilter"><option value="Todos">Todos</option><option value="Ativa">Ativa</option><option value="Em espera">Em espera</option><option value="Cancelada">Cancelada</option></select></label><button class="export-button" id="exportCsvButton" type="button">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Aluno</th><th>Curso</th><th>Contato</th><th>Endereco</th><th>Matricula</th><th>Status</th><th>Acoes</th></tr></thead><tbody id="enrollmentTable"></tbody></table><p id="emptyState" class="empty-state">Nenhuma matricula encontrada.</p></div></section>
-    </section>
+        <label>CPF<input id="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" required></label>
+      </div>
+
+      <div class="grid-2">
+        <label>RG<input id="rg" type="text" placeholder="Documento de identidade"></label>
+        <label>Data de nascimento<input id="birthDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" required></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Estado civil<select id="maritalStatus" required><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viuvo(a)</option><option>Uniao estavel</option></select></label>
+        <label>Curso desejado<select id="grade" required><option value="">Selecione</option><option>ALFA</option><option>CFO</option><option>INC</option><option>CAPELANIA</option><option>CFO2</option><option>CDBA</option><option>INGLES</option><option>ESPANHOL</option></select></label>
+      </div>
+
+      <div class="grid-2">
+        <label>DDD celular<input id="mobileDdd" type="text" inputmode="numeric" placeholder="00" maxlength="2"></label>
+        <label>Telefone celular<input id="mobilePhone" type="tel" placeholder="00000-0000"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>DDD WhatsApp<input id="whatsappDdd" type="text" inputmode="numeric" placeholder="00" maxlength="2"></label>
+        <label>Telefone WhatsApp<input id="whatsappPhone" type="tel" placeholder="00000-0000"></label>
+      </div>
+
+      <label>Email<input id="email" type="email" placeholder="nome@email.com"></label>
+
+      <div class="grid-2">
+        <label>Endereco<input id="address" type="text" placeholder="Rua, avenida, comunidade"></label>
+        <label>Numero<input id="addressNumber" type="text" placeholder="123"></label>
+      </div>
+
+      <div class="grid-3">
+        <label>Bairro<input id="neighborhood" type="text" placeholder="Bairro"></label>
+        <label>UF<input id="state" type="text" placeholder="AM" maxlength="2"></label>
+        <label>Cidade<input id="city" type="text" placeholder="Cidade"></label>
+      </div>
+
+      <label>Qual pastor<input id="pastor" type="text" placeholder="Nome do pastor"></label>
+
+      <div class="section-title">Dados familiares</div>
+      <div class="grid-2">
+        <label>Possui filhos<select id="hasChildren" required><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label>
+        <label>Quantidade de filhos<input id="childrenCount" type="number" min="0" step="1" placeholder="0"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Nome do conjuge<input id="spouseName" type="text" placeholder="Nome completo"></label>
+        <label>Conjuge convertido<select id="spouseConverted"><option value="">Selecione</option><option>Sim</option><option>Nao</option><option>Nao se aplica</option></select></label>
+      </div>
+
+      <div class="section-title">Informacao ministerial</div>
+      <div class="grid-2">
+        <label>Ocupacao atual<input id="currentOccupation" type="text" placeholder="Ex.: estudante, autonomo"></label>
+        <label>Funcao ministerial atual<input id="currentMinistryRole" type="text" placeholder="Ex.: louvor, ensino"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Data de batismo<input id="baptismDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa"></label>
+        <label>IPDA<select id="participatesInGroup"><option value="">Selecione</option><option>LOCAL</option><option>ESTADUAL</option><option>REGIONAL</option><option>CENTRAL</option><option>CASA DE ORACAO</option><option>SETORIAL</option></select></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Bairro da IPDA<input id="ipdaNeighborhood" type="text" placeholder="Bairro da IPDA"></label>
+        <label>Numero da IPDA<input id="ipdaNumber" type="text" placeholder="Numero"></label>
+      </div>
+
+      <div class="section-title">Informacao sobre saude</div>
+      <div class="grid-2">
+        <label>Tem impedimento de saude<select id="hasHealthRestriction"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label>
+        <label>Qual impedimento<input id="healthRestriction" type="text" placeholder="Descreva se houver"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Faz uso de medicamento continuo<select id="usesContinuousMedication"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label>
+        <label>Qual medicamento<input id="medicationName" type="text" placeholder="Nome do medicamento"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Possui alergia<select id="hasAnyAllergy"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label>
+        <label>Qual alergia<input id="allergyType" type="text" placeholder="Medicamento, alimento ou outro"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Possui necessidade especial<select id="hasSpecialNeed"><option value="">Selecione</option><option>Sim</option><option>Nao</option></select></label>
+        <label>Qual necessidade especial<input id="specialNeed" type="text" placeholder="Descreva se houver"></label>
+      </div>
+
+      <div class="grid-2">
+        <label>Grau de parentesco<input id="emergencyKinship" type="text" placeholder="Ex.: mae, pai, conjuge"></label>
+        <label>Contato de emergencia<input id="emergencyContact" type="tel" placeholder="(00) 00000-0000"></label>
+      </div>
+
+      <label>Observacoes<textarea id="notes" rows="4" placeholder="Documentos pendentes, turno desejado, necessidades especificas..."></textarea></label>
+
+      <div class="section-title">Declaracao</div>
+      <div class="declaration-box">
+        <p>E por ser esta minha livre e espontanea decisao, confirmo que vou participar do curso com assiduidade, respeitar o regimento escolar da instituicao, os professores, colaboradores e companheiros de classe.</p>
+        <p>Caso queira continuar o modulo seguinte, comprometo-me a realizar minha rematricula junto a secretaria em tempo habil.</p>
+        <p>Havendo a necessidade de desistir do curso, comprometo-me a comunicar a direcao e assinar o termo de desistencia do curso, bem como quitar minhas mensalidades faltantes.</p>
+      </div>
+      <label class="check-field"><input id="declarationAccepted" type="checkbox" required>Li e aceito a declaracao acima</label>
+
+      <p id="formMessage" class="message" aria-live="polite"></p>
+      <div class="actions">
+        <button id="submitButton" class="primary-button" type="submit">Enviar inscricao</button>
+      </div>
+    </form>
   </main>
+
   <script>
-const storageKey = "controleMatriculasAlunos";
-const passwordKey = "etdaAdminPassword";
 const timeZone = "America/Manaus";
+const form = document.querySelector("#candidateForm");
+const submitButton = document.querySelector("#submitButton");
+const formMessage = document.querySelector("#formMessage");
+const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
+const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
+fields.declarationAccepted = document.querySelector("#declarationAccepted");
 
-const authForm = document.querySelector("#authForm");
-const authError = document.querySelector("#authError");
-const adminPassword = document.querySelector("#adminPassword");
-const dashboardHeader = document.querySelector("#dashboardHeader");
-const workspace = document.querySelector("#workspace");
-const form = document.querySelector("#enrollmentForm");
-const tableBody = document.querySelector("#enrollmentTable");
-const emptyState = document.querySelector("#emptyState");
-const searchInput = document.querySelector("#searchInput");
-const statusFilter = document.querySelector("#statusFilter");
-const clearFormButton = document.querySelector("#clearFormButton");
-const formTitle = document.querySelector("#formTitle");
-const declarationPrintInfo = document.querySelector("#declarationPrintInfo");
-const exportCsvButton = document.querySelector("#exportCsvButton");
-const printFormButton = document.querySelector("#printFormButton");
-
-const fields = {
-  id: document.querySelector("#studentId"),
-  fullName: document.querySelector("#fullName"),
-  cpf: document.querySelector("#cpf"),
-  rg: document.querySelector("#rg"),
-  birthDate: document.querySelector("#birthDate"),
-  maritalStatus: document.querySelector("#maritalStatus"),
-  grade: document.querySelector("#grade"),
-  mobileDdd: document.querySelector("#mobileDdd"),
-  mobilePhone: document.querySelector("#mobilePhone"),
-  whatsappDdd: document.querySelector("#whatsappDdd"),
-  whatsappPhone: document.querySelector("#whatsappPhone"),
-  email: document.querySelector("#email"),
-  address: document.querySelector("#address"),
-  addressNumber: document.querySelector("#addressNumber"),
-  zipCode: document.querySelector("#zipCode"),
-  neighborhood: document.querySelector("#neighborhood"),
-  city: document.querySelector("#city"),
-  state: document.querySelector("#state"),
-  totvsCode: document.querySelector("#totvsCode"),
-  pastor: document.querySelector("#pastor"),
-  hasChildren: document.querySelector("#hasChildren"),
-  childrenCount: document.querySelector("#childrenCount"),
-  spouseName: document.querySelector("#spouseName"),
-  spouseConverted: document.querySelector("#spouseConverted"),
-  singleOrMarried: document.querySelector("#singleOrMarried"),
-  relationshipType: document.querySelector("#relationshipType"),
-  currentOccupation: document.querySelector("#currentOccupation"),
-  currentMinistryRole: document.querySelector("#currentMinistryRole"),
-  baptismDate: document.querySelector("#baptismDate"),
-  participatesInGroup: document.querySelector("#participatesInGroup"),
-  ipdaNeighborhood: document.querySelector("#ipdaNeighborhood"),
-  ipdaNumber: document.querySelector("#ipdaNumber"),
-  hasHealthRestriction: document.querySelector("#hasHealthRestriction"),
-  healthRestriction: document.querySelector("#healthRestriction"),
-  usesContinuousMedication: document.querySelector("#usesContinuousMedication"),
-  medicationName: document.querySelector("#medicationName"),
-  hasMedicationFoodAllergy: document.querySelector("#hasMedicationFoodAllergy"),
-  allergyName: document.querySelector("#allergyName"),
-  hasAnyAllergy: document.querySelector("#hasAnyAllergy"),
-  allergyType: document.querySelector("#allergyType"),
-  hasSpecialNeed: document.querySelector("#hasSpecialNeed"),
-  specialNeed: document.querySelector("#specialNeed"),
-  emergencyKinship: document.querySelector("#emergencyKinship"),
-  emergencyContact: document.querySelector("#emergencyContact"),
-  enrollmentDate: document.querySelector("#enrollmentDate"),
-  status: document.querySelector("#status"),
-  notes: document.querySelector("#notes"),
-  declarationAccepted: document.querySelector("#declarationAccepted"),
-};
-
-const counters = {
-  total: document.querySelector("#totalCount"),
-  active: document.querySelector("#activeCount"),
-  waiting: document.querySelector("#waitingCount"),
-  cancelled: document.querySelector("#cancelledCount"),
-};
-
-let apiMode = false;
-let enrollments = loadEnrollments();
-
-function getAdminPassword() {
-  return sessionStorage.getItem(passwordKey) || "";
-}
-
-function apiHeaders(extra = {}) {
-  return {
-    accept: "application/json",
-    "x-admin-password": getAdminPassword(),
-    ...extra,
-  };
-}
-
-function showAuthError(message) {
-  authError.textContent = message;
-  authError.classList.add("is-visible");
-}
-
-function unlockDashboard() {
-  authForm.style.display = "none";
-  dashboardHeader.classList.remove("is-locked");
-  workspace.classList.remove("is-locked");
-}
-
-function lockDashboard(message = "") {
-  apiMode = false;
-  authForm.style.display = "";
-  dashboardHeader.classList.add("is-locked");
-  workspace.classList.add("is-locked");
-  if (message) showAuthError(message);
-}
-
-function loadEnrollments() {
-  try {
-    return JSON.parse(localStorage.getItem(storageKey) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveEnrollments() {
-  localStorage.setItem(storageKey, JSON.stringify(enrollments));
-}
-
-async function loadRemoteEnrollments() {
-  const response = await fetch("/api/enrollments", {
-    headers: apiHeaders(),
-  });
-
-  if (response.status === 401) {
-    sessionStorage.removeItem(passwordKey);
-    throw new Error("Senha administrativa invalida.");
-  }
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || "Nao foi possivel carregar as matriculas.");
-  }
-
-  const data = await response.json();
-  apiMode = true;
-  enrollments = data.enrollments || [];
-  saveEnrollments();
-  render();
-}
-
-async function saveRemoteEnrollment(enrollment) {
-  if (!apiMode) return enrollment;
-
-  const response = await fetch("/api/enrollments", {
-    method: "POST",
-    headers: apiHeaders({
-      "content-type": "application/json",
-    }),
-    body: JSON.stringify(enrollment),
-  });
-
-  if (response.status === 401) {
-    lockDashboard("Sessao expirada. Entre novamente.");
-    throw new Error("Sessao expirada.");
-  }
-
-  if (!response.ok) {
-    throw new Error("Nao foi possivel salvar no banco online.");
-  }
-
-  return (await response.json()).enrollment;
-}
-
-async function deleteRemoteEnrollment(id) {
-  if (!apiMode) return;
-
-  const response = await fetch(`/api/enrollments/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-    headers: apiHeaders(),
-  });
-
-  if (response.status === 401) {
-    lockDashboard("Sessao expirada. Entre novamente.");
-    throw new Error("Sessao expirada.");
-  }
-
-  if (!response.ok) {
-    throw new Error("Nao foi possivel excluir no banco online.");
-  }
-}
-
-function formatDate(value) {
-  if (!value) return "";
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    const [year, month, day] = value.split("-");
-    return `${day}/${month}/${year}`;
-  }
-
-  return new Intl.DateTimeFormat("pt-BR", { timeZone }).format(new Date(value));
+function showMessage(type, text) {
+  formMessage.className = `message ${type} is-visible`;
+  formMessage.textContent = text;
 }
 
 function getTodayDate() {
@@ -269,10 +155,13 @@ function getTodayDate() {
   return `${date.year}-${date.month}-${date.day}`;
 }
 
-function normalizeDateInput(value) {
+function formatDate(value) {
   const clean = value.trim();
-  if (!clean) return "";
-  if (/^\d{4}-\d{2}-\d{2}$/.test(clean)) return formatDate(clean);
+  if (!clean || /^\d{2}\/\d{2}\/\d{4}$/.test(clean)) return clean;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
+    const [year, month, day] = clean.split("-");
+    return `${day}/${month}/${year}`;
+  }
   return clean;
 }
 
@@ -285,213 +174,71 @@ function maskDateInput(input) {
   input.value = parts.join("/");
 }
 
-function normalize(text) {
-  return String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
-
-function escapeHtml(value) {
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function getPrimaryPhone(item) {
-  return [item.whatsappDdd, item.whatsappPhone].filter(Boolean).join(" ") ||
-    [item.mobileDdd, item.mobilePhone].filter(Boolean).join(" ");
-}
-
-function getFilteredEnrollments() {
-  const query = normalize(searchInput.value);
-  const status = statusFilter.value;
-
-  return enrollments.filter((item) =>
-    (status === "Todos" || item.status === status) &&
-    normalize(`${item.fullName} ${item.cpf} ${item.grade} ${item.email} ${item.city} ${item.totvsCode}`).includes(query)
-  );
-}
-
-function renderCounters() {
-  counters.total.textContent = enrollments.length;
-  counters.active.textContent = enrollments.filter((item) => item.status === "Ativa").length;
-  counters.waiting.textContent = enrollments.filter((item) => item.status === "Em espera").length;
-  counters.cancelled.textContent = enrollments.filter((item) => item.status === "Cancelada").length;
-}
-
-function renderTable() {
-  const filtered = getFilteredEnrollments();
-  tableBody.innerHTML = "";
-  emptyState.classList.toggle("is-visible", filtered.length === 0);
-
-  filtered.forEach((item) => {
-    const row = document.createElement("tr");
-    const statusClass = item.status.replace(/\s+/g, "-");
-    row.innerHTML = `<td><span class="student-name">${escapeHtml(item.fullName)}</span><span class="student-meta">CPF: ${escapeHtml(item.cpf)}</span></td><td>${escapeHtml(item.grade)}<span class="student-meta">TOTVS: ${escapeHtml(item.totvsCode)}</span></td><td><span class="student-name">${escapeHtml(getPrimaryPhone(item)) || "-"}</span><span class="student-meta">${escapeHtml(item.email)}</span></td><td><span class="student-name">${escapeHtml([item.address, item.addressNumber].filter(Boolean).join(", ")) || "-"}</span><span class="student-meta">${escapeHtml([item.neighborhood, item.city, item.state].filter(Boolean).join(" - "))}</span></td><td>${escapeHtml(item.enrollmentDate)}</td><td><span class="status-pill ${statusClass}">${escapeHtml(item.status)}</span></td><td><div class="action-row"><button class="table-button" type="button" data-action="edit" data-id="${item.id}">Editar</button><button class="table-button" type="button" data-action="delete" data-id="${item.id}">Excluir</button></div></td>`;
-    tableBody.appendChild(row);
-  });
-}
-
-function render() {
-  renderCounters();
-  renderTable();
-}
-
-function resetForm() {
-  form.reset();
-  fields.id.value = "";
-  fields.enrollmentDate.value = formatDate(getTodayDate());
-  fields.status.value = "Ativa";
-  formTitle.textContent = "Nova matricula";
-  updateDeclarationPrintInfo();
-}
-
 function getFormData() {
   const data = {};
   Object.entries(fields).forEach(([key, field]) => {
-    if (key !== "declarationAccepted") {
-      data[key] = field.value?.trim ? field.value.trim() : field.value;
-    }
+    if (key === "declarationAccepted") return;
+    data[key] = field.value.trim();
   });
 
-  data.id = fields.id.value || crypto.randomUUID();
-  data.birthDate = normalizeDateInput(fields.birthDate.value);
-  data.baptismDate = normalizeDateInput(fields.baptismDate.value);
-  data.enrollmentDate = normalizeDateInput(fields.enrollmentDate.value);
+  data.id = crypto.randomUUID();
+  data.status = "Em espera";
+  data.enrollmentDate = formatDate(getTodayDate());
+  data.birthDate = formatDate(fields.birthDate.value);
+  data.baptismDate = formatDate(fields.baptismDate.value);
   data.state = fields.state.value.trim().toUpperCase();
   data.declarationAccepted = fields.declarationAccepted.checked;
-  data.declarationAcceptedDate = data.declarationAccepted ? fields.declarationAccepted.dataset.acceptedDate || getTodayDate() : "";
+  data.declarationAcceptedDate = getTodayDate();
+  data.source = "public_form";
   return data;
 }
 
-function fillForm(item) {
-  Object.entries(fields).forEach(([key, field]) => {
-    if (key === "declarationAccepted") field.checked = Boolean(item.declarationAccepted);
-    else field.value = item[key] || "";
+async function submitEnrollment(data) {
+  const response = await fetch("/api/public-enrollments", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
-  fields.declarationAccepted.dataset.acceptedDate = item.declarationAcceptedDate || getTodayDate();
-  formTitle.textContent = "Editar matricula";
-  updateDeclarationPrintInfo();
-  fields.fullName.focus();
-}
 
-function updateDeclarationPrintInfo() {
-  if (!fields.declarationAccepted.checked) {
-    declarationPrintInfo.textContent = "";
-    declarationPrintInfo.classList.remove("is-visible");
-    fields.declarationAccepted.dataset.acceptedDate = "";
-    return;
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(body.error || "Nao foi possivel enviar a inscricao.");
   }
 
-  if (!fields.declarationAccepted.dataset.acceptedDate) {
-    fields.declarationAccepted.dataset.acceptedDate = getTodayDate();
-  }
-
-  declarationPrintInfo.textContent = `Aluno: ${fields.fullName.value.trim() || "Nome completo do aluno"} | Data: ${formatDate(fields.declarationAccepted.dataset.acceptedDate)}`;
-  declarationPrintInfo.classList.add("is-visible");
+  return body;
 }
-
-function csvValue(value) {
-  return `"${String(value || "").replace(/"/g, '""')}"`;
-}
-
-function exportCsv() {
-  if (!enrollments.length) {
-    alert("Nao ha matriculas para exportar.");
-    return;
-  }
-
-  const columns = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","zipCode","neighborhood","city","state","totvsCode","pastor","hasChildren","childrenCount","spouseName","spouseConverted","singleOrMarried","relationshipType","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasMedicationFoodAllergy","allergyName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","enrollmentDate","status","notes","declarationAccepted","declarationAcceptedDate"];
-  const csv = "\uFEFF" + [columns.join(";"), ...enrollments.map((item) => columns.map((column) => csvValue(item[column])).join(";"))].join("\r\n");
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-  link.download = `matriculas-etda-manaus-${getTodayDate()}.csv`;
-  link.click();
-  URL.revokeObjectURL(link.href);
-}
-
-function printForm() {
-  updateDeclarationPrintInfo();
-  window.print();
-}
-
-authForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  authError.classList.remove("is-visible");
-  sessionStorage.setItem(passwordKey, adminPassword.value);
-
-  try {
-    await loadRemoteEnrollments();
-    unlockDashboard();
-    resetForm();
-  } catch (error) {
-    sessionStorage.removeItem(passwordKey);
-    lockDashboard(error.message);
-  }
-});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  let data = getFormData();
+  formMessage.className = "message";
 
-  try {
-    data = await saveRemoteEnrollment(data);
-  } catch (error) {
-    alert(error.message);
+  if (document.querySelector("#website").value) {
+    showMessage("ok", "Inscricao enviada com sucesso.");
+    form.reset();
     return;
   }
 
-  const index = enrollments.findIndex((item) => item.id === data.id);
-  if (index >= 0) enrollments[index] = data;
-  else enrollments.unshift(data);
-  saveEnrollments();
-  resetForm();
-  render();
-});
+  submitButton.disabled = true;
+  submitButton.textContent = "Enviando...";
 
-tableBody.addEventListener("click", async (event) => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const id = button.dataset.id;
-  const item = enrollments.find((entry) => entry.id === id);
-
-  if (button.dataset.action === "edit" && item) fillForm(item);
-
-  if (button.dataset.action === "delete" && confirm("Deseja excluir esta matricula?")) {
-    try {
-      await deleteRemoteEnrollment(id);
-    } catch (error) {
-      alert(error.message);
-      return;
-    }
-
-    enrollments = enrollments.filter((entry) => entry.id !== id);
-    saveEnrollments();
-    render();
-    resetForm();
+  try {
+    await submitEnrollment(getFormData());
+    showMessage("ok", "Inscricao enviada com sucesso. A secretaria entrara em contato pelo WhatsApp informado.");
+    form.reset();
+  } catch (error) {
+    showMessage("error", error.message);
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Enviar inscricao";
   }
 });
 
-searchInput.addEventListener("input", renderTable);
-statusFilter.addEventListener("change", renderTable);
-clearFormButton.addEventListener("click", resetForm);
-fields.fullName.addEventListener("input", updateDeclarationPrintInfo);
-fields.declarationAccepted.addEventListener("change", updateDeclarationPrintInfo);
-exportCsvButton.addEventListener("click", exportCsv);
-printFormButton.addEventListener("click", printForm);
-[fields.birthDate, fields.baptismDate, fields.enrollmentDate].forEach((field) => {
+[fields.birthDate, fields.baptismDate].forEach((field) => {
   field.addEventListener("input", () => maskDateInput(field));
 });
-
-resetForm();
-render();
-if (getAdminPassword()) {
-  loadRemoteEnrollments()
-    .then(() => unlockDashboard())
-    .catch((error) => lockDashboard(error.message));
-}
   </script>
 </body>
 </html>
