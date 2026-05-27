@@ -20,6 +20,23 @@ function errorJson(error, status = 500) {
   }, { status });
 }
 
+function unauthorized() {
+  return json({ ok: false, error: "Acesso nao autorizado." }, { status: 401 });
+}
+
+function requireAdmin(request, env) {
+  if (!env.ADMIN_PASSWORD) {
+    throw new Error("Variavel ADMIN_PASSWORD nao configurada.");
+  }
+
+  const password = request.headers.get("x-admin-password") || "";
+  if (password !== env.ADMIN_PASSWORD) {
+    return false;
+  }
+
+  return true;
+}
+
 function getDatabase(env) {
   if (!env.DB) {
     throw new Error("D1 binding DB nao configurado. Verifique se o binding chama exatamente DB em Producao.");
@@ -38,8 +55,12 @@ function normalizePayload(payload) {
   };
 }
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet({ request, env }) {
   try {
+    if (!requireAdmin(request, env)) {
+      return unauthorized();
+    }
+
     const db = getDatabase(env);
     const result = await db.prepare(
       "SELECT payload FROM enrollments ORDER BY updated_at DESC"
@@ -54,6 +75,10 @@ export async function onRequestGet({ env }) {
 
 export async function onRequestPost({ request, env }) {
   try {
+    if (!requireAdmin(request, env)) {
+      return unauthorized();
+    }
+
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);

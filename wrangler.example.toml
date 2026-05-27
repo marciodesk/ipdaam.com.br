@@ -1,0 +1,8 @@
+name = "ipdaam-com-br"
+compatibility_date = "2026-05-26"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ipdaam_enrollments"
+database_id = "SUBSTITUA_PELO_DATABASE_ID"
