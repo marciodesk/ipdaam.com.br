@@ -1,6 +1,9 @@
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "DELETE, OPTIONS",
+  "access-control-allow-headers": "content-type, accept, x-admin-password",
 };
 
 function json(data, init = {}) {
@@ -57,4 +60,11 @@ export async function onRequestDelete({ request, env, params }) {
   } catch (error) {
     return errorJson(error);
   }
+}
+
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: jsonHeaders,
+  });
 }

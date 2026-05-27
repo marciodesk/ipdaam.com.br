@@ -1,6 +1,9 @@
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, POST, OPTIONS",
+  "access-control-allow-headers": "content-type, accept, x-admin-password",
 };
 
 function json(data, init = {}) {
@@ -71,6 +74,13 @@ export async function onRequestGet({ request, env }) {
   } catch (error) {
     return errorJson(error);
   }
+}
+
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: jsonHeaders,
+  });
 }
 
 export async function onRequestPost({ request, env }) {
