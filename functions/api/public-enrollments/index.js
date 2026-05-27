@@ -80,6 +80,11 @@ function normalizePayload(payload) {
     throw new Error("Preencha nome, CPF, curso e aceite a declaracao.");
   }
 
+  const availableCourses = ["ALFA", "CFO", "INC"];
+  if (!availableCourses.includes(enrollment.grade)) {
+    throw new Error("Este curso esta sem previsao de inicio das aulas e nao esta disponivel para pre-inscricao.");
+  }
+
   return enrollment;
 }
 
