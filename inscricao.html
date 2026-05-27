@@ -246,6 +246,8 @@ form.addEventListener("submit", async (event) => {
     showMessage("ok", "Inscricao enviada com sucesso.");
     documentsPanel.classList.add("is-visible");
     form.reset();
+    submitButton.disabled = true;
+    submitButton.textContent = "Inscricao enviada";
     return;
   }
 
@@ -257,9 +259,9 @@ form.addEventListener("submit", async (event) => {
     showMessage("ok", "Inscricao enviada com sucesso. A secretaria entrara em contato pelo WhatsApp informado.");
     documentsPanel.classList.add("is-visible");
     form.reset();
+    submitButton.textContent = "Inscricao enviada";
   } catch (error) {
     showMessage("error", error.message);
-  } finally {
     submitButton.disabled = false;
     submitButton.textContent = "Enviar inscricao";
   }
