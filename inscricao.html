@@ -153,6 +153,9 @@ const form = document.querySelector("#candidateForm");
 const submitButton = document.querySelector("#submitButton");
 const formMessage = document.querySelector("#formMessage");
 const documentsPanel = document.querySelector("#documentsPanel");
+const publicApiUrl = location.protocol === "file:" || location.hostname === "ipdaam.com.br"
+  ? "https://matriculasetdaam.pages.dev/api/public-enrollments"
+  : "/api/public-enrollments";
 const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
 fields.declarationAccepted = document.querySelector("#declarationAccepted");
@@ -212,14 +215,19 @@ function getFormData() {
 }
 
 async function submitEnrollment(data) {
-  const response = await fetch("/api/public-enrollments", {
-    method: "POST",
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  let response;
+  try {
+    response = await fetch(publicApiUrl, {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  } catch {
+    throw new Error("Nao foi possivel conectar ao servidor. Abra a ficha pelo site publicado e tente novamente.");
+  }
 
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
