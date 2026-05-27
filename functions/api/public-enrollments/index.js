@@ -31,6 +31,32 @@ function getDatabase(env) {
   return env.DB;
 }
 
+const registrationWindow = {
+  start: "2026-06-01",
+  end: "2026-06-30",
+};
+
+function getManausDate() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Manaus",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const date = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${date.year}-${date.month}-${date.day}`;
+}
+
+function assertRegistrationOpen() {
+  const today = getManausDate();
+  if (today < registrationWindow.start) {
+    throw new Error("As inscricoes iniciam em 01/06/2026.");
+  }
+  if (today > registrationWindow.end) {
+    throw new Error("Inscricoes encerradas em 30/06/2026.");
+  }
+}
+
 function cleanText(value, maxLength = 500) {
   return String(value || "").trim().slice(0, maxLength);
 }
@@ -70,6 +96,7 @@ export async function onRequestOptions() {
 
 export async function onRequestPost({ request, env }) {
   try {
+    assertRegistrationOpen();
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);
