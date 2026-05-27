@@ -27,13 +27,15 @@ function unauthorized() {
   return json({ ok: false, error: "Acesso nao autorizado." }, { status: 401 });
 }
 
-function requireAdmin(request, env) {
+function getAccess(request, env) {
   if (!env.ADMIN_PASSWORD) {
     throw new Error("Variavel ADMIN_PASSWORD nao configurada.");
   }
 
   const password = request.headers.get("x-admin-password") || "";
-  return password === env.ADMIN_PASSWORD;
+  if (password === env.ADMIN_PASSWORD) return { role: "admin" };
+  if (env.USER_PASSWORD && password === env.USER_PASSWORD) return { role: "usuario" };
+  return null;
 }
 
 function getDatabase(env) {
@@ -93,7 +95,8 @@ function normalizeStatus(status) {
 
 export async function onRequestGet({ request, env }) {
   try {
-    if (!requireAdmin(request, env)) {
+    const access = getAccess(request, env);
+    if (!access) {
       return unauthorized();
     }
 
@@ -118,7 +121,7 @@ export async function onRequestGet({ request, env }) {
     const sql = `SELECT payload FROM attendance ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY created_at DESC LIMIT ?`;
     const result = await db.prepare(sql).bind(...binds, limit).all();
     const records = result.results.map((row) => JSON.parse(row.payload));
-    return json({ records });
+    return json({ records, role: access.role });
   } catch (error) {
     return errorJson(error);
   }
@@ -126,7 +129,8 @@ export async function onRequestGet({ request, env }) {
 
 export async function onRequestPost({ request, env }) {
   try {
-    if (!requireAdmin(request, env)) {
+    const access = getAccess(request, env);
+    if (!access) {
       return unauthorized();
     }
 

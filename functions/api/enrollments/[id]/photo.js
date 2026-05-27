@@ -31,13 +31,20 @@ function unauthorized() {
   return json({ ok: false, error: "Acesso nao autorizado." }, { status: 401 });
 }
 
-function requireAdmin(request, env) {
+function getAccess(request, env) {
   if (!env.ADMIN_PASSWORD) {
     throw new Error("Variavel ADMIN_PASSWORD nao configurada.");
   }
 
   const password = request.headers.get("x-admin-password") || "";
-  return password === env.ADMIN_PASSWORD;
+  if (password === env.ADMIN_PASSWORD) return { role: "admin" };
+  if (env.USER_PASSWORD && password === env.USER_PASSWORD) return { role: "usuario" };
+  return null;
+}
+
+function requireAdmin(request, env) {
+  const access = getAccess(request, env);
+  return access && access.role === "admin";
 }
 
 function getDatabase(env) {
@@ -94,7 +101,7 @@ async function saveEnrollmentPayload(db, enrollment) {
 
 export async function onRequestGet({ request, env, params }) {
   try {
-    if (!requireAdmin(request, env)) {
+    if (!getAccess(request, env)) {
       return unauthorized();
     }
 

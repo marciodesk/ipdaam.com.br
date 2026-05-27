@@ -21,7 +21,7 @@
 
     <form id="authForm" class="auth-panel" autocomplete="off">
       <h2>Acesso de presenca</h2>
-      <label>Senha administrativa<input id="adminPassword" type="password" required></label>
+      <label>Senha de acesso<input id="adminPassword" type="password" required></label>
       <p id="authError" class="auth-error" aria-live="polite"></p>
       <button class="primary-button" type="submit">Entrar</button>
     </form>
@@ -378,7 +378,7 @@ async function loadEnrollments() {
   const response = await fetch(`${apiBaseUrl}/api/enrollments`, { headers: apiHeaders() });
   if (response.status === 401) {
     sessionStorage.removeItem(passwordKey);
-    throw new Error("Senha administrativa invalida.");
+    throw new Error("Senha de acesso invalida.");
   }
   if (!response.ok) throw new Error("Nao foi possivel carregar alunos.");
   const data = await response.json();
