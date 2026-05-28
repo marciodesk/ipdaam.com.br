@@ -129,6 +129,15 @@
       </div>
       <label class="check-field"><input id="declarationAccepted" type="checkbox" required>Li e aceito a declaracao acima</label>
 
+      <div class="section-title">Privacidade e LGPD</div>
+      <div class="declaration-box">
+        <p>Ao enviar esta ficha, declaro estar ciente de que meus dados pessoais serao utilizados pela Secretaria ETDA Manaus exclusivamente para analise de inscricao, matricula, organizacao academica, comunicacao com o aluno e cumprimento das rotinas administrativas do curso.</p>
+        <p>Os dados fornecidos serao tratados com sigilo, nao sendo divulgados publicamente, e poderao ser acessados apenas por pessoas autorizadas da secretaria/direcao.</p>
+        <p>Dados de saude informados neste formulario serao utilizados somente para fins de cuidado, acessibilidade, seguranca e melhor atendimento ao aluno.</p>
+        <p>Declaro que li e concordo com o tratamento dos meus dados pessoais conforme a Lei Geral de Protecao de Dados - Lei no 13.709/2018. <a href="privacidade.html" target="_blank" rel="noopener">Ler a Politica de Privacidade e LGPD</a>.</p>
+      </div>
+      <label class="check-field"><input id="lgpdAccepted" type="checkbox" required>Li e concordo com o tratamento dos meus dados pessoais conforme a LGPD</label>
+
       <p id="formMessage" class="message" aria-live="polite"></p>
       <section id="documentsPanel" class="documents-panel" aria-live="polite">
         <h2>DOCUMENTOS NECESSARIOS PARA MATRICULA</h2>
@@ -168,6 +177,7 @@ const registrationEnd = new Date("2026-06-30T23:59:59-04:00");
 const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
 fields.declarationAccepted = document.querySelector("#declarationAccepted");
+fields.lgpdAccepted = document.querySelector("#lgpdAccepted");
 
 function fullDaysUntil(target, now = new Date()) {
   return Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000));
@@ -244,7 +254,7 @@ function maskDateInput(input) {
 function getFormData() {
   const data = {};
   Object.entries(fields).forEach(([key, field]) => {
-    if (key === "declarationAccepted") return;
+    if (key === "declarationAccepted" || key === "lgpdAccepted") return;
     data[key] = field.value.trim();
   });
 
@@ -256,6 +266,8 @@ function getFormData() {
   data.state = fields.state.value.trim().toUpperCase();
   data.declarationAccepted = fields.declarationAccepted.checked;
   data.declarationAcceptedDate = getTodayDate();
+  data.lgpdAccepted = fields.lgpdAccepted.checked;
+  data.lgpdAcceptedDate = getTodayDate();
   data.source = "public_form";
   return data;
 }

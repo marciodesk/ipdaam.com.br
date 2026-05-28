@@ -76,8 +76,8 @@ function normalizePayload(payload) {
     updatedAt: now,
   };
 
-  if (!enrollment.fullName || !enrollment.cpf || !enrollment.grade || !enrollment.declarationAccepted) {
-    throw new Error("Preencha nome, CPF, curso e aceite a declaracao.");
+  if (!enrollment.fullName || !enrollment.cpf || !enrollment.grade || !enrollment.declarationAccepted || !enrollment.lgpdAccepted) {
+    throw new Error("Preencha nome, CPF, curso e aceite a declaracao e o termo LGPD.");
   }
 
   const availableCourses = ["ALFA", "CFO", "INC"];
