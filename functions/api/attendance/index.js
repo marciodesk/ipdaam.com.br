@@ -1,9 +1,11 @@
+import { getAccess } from "../_auth.js";
+
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, OPTIONS",
-  "access-control-allow-headers": "content-type, accept, x-admin-password",
+  "access-control-allow-headers": "content-type, accept",
 };
 
 function json(data, init = {}) {
@@ -25,17 +27,6 @@ function errorJson(error, status = 500) {
 
 function unauthorized() {
   return json({ ok: false, error: "Acesso nao autorizado." }, { status: 401 });
-}
-
-function getAccess(request, env) {
-  if (!env.ADMIN_PASSWORD) {
-    throw new Error("Variavel ADMIN_PASSWORD nao configurada.");
-  }
-
-  const password = request.headers.get("x-admin-password") || "";
-  if (password === env.ADMIN_PASSWORD) return { role: "admin" };
-  if (env.USER_PASSWORD && password === env.USER_PASSWORD) return { role: "usuario" };
-  return null;
 }
 
 function getDatabase(env) {
@@ -95,7 +86,7 @@ function normalizeStatus(status) {
 
 export async function onRequestGet({ request, env }) {
   try {
-    const access = getAccess(request, env);
+    const access = await getAccess(request, env);
     if (!access) {
       return unauthorized();
     }
@@ -129,7 +120,7 @@ export async function onRequestGet({ request, env }) {
 
 export async function onRequestPost({ request, env }) {
   try {
-    const access = getAccess(request, env);
+    const access = await getAccess(request, env);
     if (!access) {
       return unauthorized();
     }

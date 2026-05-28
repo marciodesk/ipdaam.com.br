@@ -69,9 +69,8 @@
   </main>
 
   <script>
-const passwordKey = "etdaAdminPassword";
 const timeZone = "America/Manaus";
-const apiBaseUrl = location.protocol === "file:" || location.hostname === "ipdaam.com.br"
+const apiBaseUrl = location.protocol === "file:"
   ? "https://matriculasetdaam.pages.dev"
   : "";
 
@@ -99,16 +98,23 @@ let enrollments = [];
 let selectedCourse = "Todos";
 let photoUrls = [];
 
-function getAdminPassword() {
-  return sessionStorage.getItem(passwordKey) || "";
-}
-
 function apiHeaders(extra = {}) {
   return {
     accept: "application/json",
-    "x-admin-password": getAdminPassword(),
     ...extra,
   };
+}
+
+async function loginSession(password) {
+  const response = await fetch(`${apiBaseUrl}/api/session`, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: apiHeaders({ "content-type": "application/json" }),
+    body: JSON.stringify({ password }),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Senha de acesso invalida.");
+  return data;
 }
 
 function unlockDashboard() {
@@ -205,6 +211,7 @@ async function loadPhoto(img, item) {
   if (!item.id) return;
   try {
     const response = await fetch(`${apiBaseUrl}/api/enrollments/${encodeURIComponent(item.id)}/photo`, {
+      credentials: "same-origin",
       headers: apiHeaders(),
     });
     if (!response.ok) return;
@@ -283,6 +290,7 @@ async function loadEnrollments() {
   let response;
   try {
     response = await fetch(`${apiBaseUrl}/api/enrollments`, {
+      credentials: "same-origin",
       headers: apiHeaders(),
     });
   } catch {
@@ -290,8 +298,7 @@ async function loadEnrollments() {
   }
 
   if (response.status === 401) {
-    sessionStorage.removeItem(passwordKey);
-    throw new Error("Senha de acesso invalida.");
+    throw new Error("Sessao expirada. Entre novamente.");
   }
 
   if (!response.ok) {
@@ -307,8 +314,9 @@ async function loadEnrollments() {
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   authError.classList.remove("is-visible");
-  sessionStorage.setItem(passwordKey, adminPassword.value);
   try {
+    await loginSession(adminPassword.value);
+    adminPassword.value = "";
     await loadEnrollments();
     unlockDashboard();
   } catch (error) {
@@ -334,11 +342,9 @@ refreshButton.addEventListener("click", async () => {
   }
 });
 
-if (getAdminPassword()) {
-  loadEnrollments()
-    .then(() => unlockDashboard())
-    .catch((error) => lockDashboard(error.message));
-}
+loadEnrollments()
+  .then(() => unlockDashboard())
+  .catch(() => lockDashboard());
   </script>
 </body>
 </html>

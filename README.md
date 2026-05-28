@@ -11,7 +11,10 @@ As duas paginas usam Cloudflare Pages Functions e D1.
 Variaveis/bindings obrigatorios:
 
 - `ADMIN_PASSWORD`: senha usada pela secretaria para abrir `secretaria.html`.
+- `USER_PASSWORD`: senha de usuario para acessar cursos e presenca, sem liberar a secretaria.
+- `SESSION_SECRET`: segredo opcional para assinar os cookies de sessao. Se nao existir, o sistema usa `ADMIN_PASSWORD`.
 - `DB`: binding D1 apontando para o banco de matriculas.
+- `PHOTOS`: binding R2 para armazenar fotos dos candidatos.
 
 Crie a tabela do banco usando `migrations/0001_create_enrollments.sql`.
 

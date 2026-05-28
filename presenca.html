@@ -110,9 +110,8 @@
   <div id="toast" class="toast" hidden></div>
 
   <script>
-const passwordKey = "etdaAdminPassword";
 const timeZone = "America/Manaus";
-const apiBaseUrl = location.protocol === "file:" || location.hostname === "ipdaam.com.br"
+const apiBaseUrl = location.protocol === "file:"
   ? "https://matriculasetdaam.pages.dev"
   : "";
 
@@ -158,12 +157,20 @@ let scanTimer = null;
 let barcodeDetector = null;
 let scanCanvas = null;
 
-function getAdminPassword() {
-  return sessionStorage.getItem(passwordKey) || "";
+function apiHeaders(extra = {}) {
+  return { accept: "application/json", ...extra };
 }
 
-function apiHeaders(extra = {}) {
-  return { accept: "application/json", "x-admin-password": getAdminPassword(), ...extra };
+async function loginSession(password) {
+  const response = await fetch(`${apiBaseUrl}/api/session`, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: apiHeaders({ "content-type": "application/json" }),
+    body: JSON.stringify({ password }),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Senha de acesso invalida.");
+  return data;
 }
 
 function showToast(message) {
@@ -390,10 +397,9 @@ function render() {
 }
 
 async function loadEnrollments() {
-  const response = await fetch(`${apiBaseUrl}/api/enrollments`, { headers: apiHeaders() });
+  const response = await fetch(`${apiBaseUrl}/api/enrollments`, { credentials: "same-origin", headers: apiHeaders() });
   if (response.status === 401) {
-    sessionStorage.removeItem(passwordKey);
-    throw new Error("Senha de acesso invalida.");
+    throw new Error("Sessao expirada. Entre novamente.");
   }
   if (!response.ok) throw new Error("Nao foi possivel carregar alunos.");
   const data = await response.json();
@@ -404,7 +410,7 @@ async function loadAttendance() {
   const params = new URLSearchParams();
   params.set("date", classDate.value);
   if (courseFilter.value) params.set("course", courseFilter.value);
-  const response = await fetch(`${apiBaseUrl}/api/attendance?${params}`, { headers: apiHeaders() });
+  const response = await fetch(`${apiBaseUrl}/api/attendance?${params}`, { credentials: "same-origin", headers: apiHeaders() });
   if (!response.ok) throw new Error("Nao foi possivel carregar presencas.");
   const data = await response.json();
   attendanceRecords = data.records || [];
@@ -425,6 +431,7 @@ async function saveAttendance(method = "Manual") {
 
   const response = await fetch(`${apiBaseUrl}/api/attendance`, {
     method: "POST",
+    credentials: "same-origin",
     headers: apiHeaders({ "content-type": "application/json" }),
     body: JSON.stringify({
       enrollmentId: currentStudent.id,
@@ -551,8 +558,9 @@ function applyQrFromUrl() {
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   authError.classList.remove("is-visible");
-  sessionStorage.setItem(passwordKey, adminPassword.value);
   try {
+    await loginSession(adminPassword.value);
+    adminPassword.value = "";
     await refreshData();
     unlockDashboard();
   } catch (error) {
@@ -588,11 +596,9 @@ exportCsvButton.addEventListener("click", exportCsv);
 window.addEventListener("load", renderQrCodes);
 
 classDate.value = getTodayDate();
-if (getAdminPassword()) {
-  refreshData()
-    .then(() => unlockDashboard())
-    .catch((error) => lockDashboard(error.message));
-}
+refreshData()
+  .then(() => unlockDashboard())
+  .catch(() => lockDashboard());
   </script>
 </body>
 </html>
