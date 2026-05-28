@@ -15,6 +15,7 @@
         <a class="link-button" href="index.html">Site principal</a>
         <a class="link-button" href="presenca.html">Presenca</a>
         <a class="link-button" href="secretaria.html">Secretaria</a>
+        <button class="link-button" id="logoutButton" type="button" hidden>Sair</button>
       </div>
     </div>
 
@@ -77,6 +78,7 @@ const apiBaseUrl = location.protocol === "file:"
 const authForm = document.querySelector("#authForm");
 const adminPassword = document.querySelector("#adminPassword");
 const authError = document.querySelector("#authError");
+const logoutButton = document.querySelector("#logoutButton");
 const hero = document.querySelector("#hero");
 const dashboard = document.querySelector("#dashboard");
 const searchInput = document.querySelector("#searchInput");
@@ -117,14 +119,24 @@ async function loginSession(password) {
   return data;
 }
 
+async function logoutSession() {
+  await fetch(`${apiBaseUrl}/api/session`, {
+    method: "DELETE",
+    credentials: "same-origin",
+    headers: apiHeaders(),
+  }).catch(() => {});
+}
+
 function unlockDashboard() {
   authForm.style.display = "none";
+  logoutButton.hidden = false;
   hero.classList.remove("is-locked");
   dashboard.classList.remove("is-locked");
 }
 
 function lockDashboard(message = "") {
   authForm.style.display = "";
+  logoutButton.hidden = true;
   hero.classList.add("is-locked");
   dashboard.classList.add("is-locked");
   if (message) {
@@ -340,6 +352,10 @@ refreshButton.addEventListener("click", async () => {
   } catch (error) {
     alert(error.message);
   }
+});
+logoutButton.addEventListener("click", async () => {
+  await logoutSession();
+  lockDashboard("Sessao encerrada.");
 });
 
 loadEnrollments()

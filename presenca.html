@@ -17,6 +17,7 @@
         <a class="link-button" href="index.html">Site principal</a>
         <a class="link-button" href="cursos.html">Dashboard dos cursos</a>
         <a class="link-button" href="secretaria.html">Secretaria</a>
+        <button class="link-button" id="logoutButton" type="button" hidden>Sair</button>
       </div>
     </div>
 
@@ -118,6 +119,7 @@ const apiBaseUrl = location.protocol === "file:"
 const authForm = document.querySelector("#authForm");
 const adminPassword = document.querySelector("#adminPassword");
 const authError = document.querySelector("#authError");
+const logoutButton = document.querySelector("#logoutButton");
 const hero = document.querySelector("#hero");
 const workspace = document.querySelector("#workspace");
 const classDate = document.querySelector("#classDate");
@@ -173,6 +175,14 @@ async function loginSession(password) {
   return data;
 }
 
+async function logoutSession() {
+  await fetch(`${apiBaseUrl}/api/session`, {
+    method: "DELETE",
+    credentials: "same-origin",
+    headers: apiHeaders(),
+  }).catch(() => {});
+}
+
 function showToast(message) {
   toast.textContent = message;
   toast.hidden = false;
@@ -182,6 +192,7 @@ function showToast(message) {
 
 function lockDashboard(message = "") {
   authForm.style.display = "";
+  logoutButton.hidden = true;
   hero.classList.add("is-locked");
   workspace.classList.add("is-locked");
   if (message) {
@@ -192,6 +203,7 @@ function lockDashboard(message = "") {
 
 function unlockDashboard() {
   authForm.style.display = "none";
+  logoutButton.hidden = false;
   hero.classList.remove("is-locked");
   workspace.classList.remove("is-locked");
 }
@@ -593,6 +605,10 @@ qrGrid.addEventListener("click", (event) => {
 startScannerButton.addEventListener("click", startScanner);
 stopScannerButton.addEventListener("click", stopScanner);
 exportCsvButton.addEventListener("click", exportCsv);
+logoutButton.addEventListener("click", async () => {
+  await logoutSession();
+  lockDashboard("Sessao encerrada.");
+});
 window.addEventListener("load", renderQrCodes);
 
 classDate.value = getTodayDate();
