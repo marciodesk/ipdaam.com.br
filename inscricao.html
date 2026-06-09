@@ -321,7 +321,7 @@ form.addEventListener("submit", async (event) => {
 
   try {
     await submitEnrollment(getFormData());
-    showMessage("ok", "Inscricao enviada com sucesso. A secretaria entrara em contato pelo WhatsApp informado.");
+    showMessage("ok", "Inscricao enviada com sucesso. Favor comparecer com sua documentação completa no local.");
     documentsPanel.classList.add("is-visible");
     form.reset();
     submitButton.textContent = "Inscricao enviada";
