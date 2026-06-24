@@ -35,6 +35,8 @@ const registrationWindow = {
   start: "2026-06-01",
   end: "2026-06-30",
 };
+const baptismRequirementForCfo = "03 anos de batismo";
+const noCfoBaptismRequirement = "Nao tenho 03 anos de batismo";
 
 function getManausDate() {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -61,6 +63,14 @@ function cleanText(value, maxLength = 500) {
   return String(value || "").trim().slice(0, maxLength);
 }
 
+function cleanCpf(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function cpfSqlExpression() {
+  return "REPLACE(REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', ''), '/', '')";
+}
+
 function normalizePayload(payload) {
   const now = new Date().toISOString();
   const enrollment = {
@@ -69,6 +79,7 @@ function normalizePayload(payload) {
     fullName: cleanText(payload.fullName, 160),
     cpf: cleanText(payload.cpf, 20),
     grade: cleanText(payload.grade, 40),
+    baptismRequirement: cleanText(payload.baptismRequirement, 60),
     email: cleanText(payload.email, 160),
     status: "Em espera",
     source: "public_form",
@@ -85,7 +96,32 @@ function normalizePayload(payload) {
     throw new Error("Este curso esta sem previsao de inicio das aulas e nao esta disponivel para pre-inscricao.");
   }
 
+  if (enrollment.grade === "CFO" && enrollment.baptismRequirement !== baptismRequirementForCfo) {
+    throw new Error("Para continuar em CFO, selecione a opcao 03 anos de batismo.");
+  }
+
+  if (enrollment.baptismRequirement === noCfoBaptismRequirement && enrollment.grade !== "INC") {
+    throw new Error("Para candidatos sem 03 anos de batismo, a opcao disponivel e somente INC.");
+  }
+
   return enrollment;
+}
+
+async function assertCpfAvailable(db, cpf) {
+  const normalizedCpf = cleanCpf(cpf);
+  if (!normalizedCpf) {
+    throw new Error("CPF invalido.");
+  }
+
+  const existing = await db.prepare(
+    `SELECT id FROM enrollments WHERE ${cpfSqlExpression()} = ? LIMIT 1`
+  )
+    .bind(normalizedCpf)
+    .first();
+
+  if (existing) {
+    throw new Error("Ja existe uma pre-inscricao cadastrada para este CPF.");
+  }
 }
 
 export async function onRequestGet() {
@@ -105,6 +141,7 @@ export async function onRequestPost({ request, env }) {
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);
+    await assertCpfAvailable(db, enrollment.cpf);
     const payload = JSON.stringify(enrollment);
 
     await db.prepare(

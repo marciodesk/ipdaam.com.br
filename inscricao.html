@@ -84,14 +84,18 @@
 
       <div class="grid-2">
         <label>Data de batismo<input id="baptismDate" type="text" inputmode="numeric" placeholder="dd/mm/aaaa"></label>
-        <label>IPDA<select id="participatesInGroup"><option value="">Selecione</option><option>LOCAL</option><option>ESTADUAL</option><option>REGIONAL</option><option>CENTRAL</option><option>CASA DE ORACAO</option><option>SETORIAL</option></select></label>
+        <label>Tempo de batismo<select id="baptismRequirement"><option value="">Selecione</option><option>03 anos de batismo</option><option>Nao tenho 03 anos de batismo</option></select></label>
       </div>
 
       <div class="grid-2">
+        <label>IPDA<select id="participatesInGroup"><option value="">Selecione</option><option>LOCAL</option><option>ESTADUAL</option><option>REGIONAL</option><option>CENTRAL</option><option>CASA DE ORACAO</option><option>SETORIAL</option></select></label>
         <label>Bairro da IPDA<input id="ipdaNeighborhood" type="text" placeholder="Bairro da IPDA"></label>
-        <label>Numero da IPDA<input id="ipdaNumber" type="text" placeholder="Numero"></label>
       </div>
-      <label>Codigo TOTVS da igreja<input id="totvsCode" type="text" placeholder="Codigo TOTVS"></label>
+
+      <div class="grid-2">
+        <label>Numero da IPDA<input id="ipdaNumber" type="text" placeholder="Numero"></label>
+        <label>Codigo TOTVS da igreja<input id="totvsCode" type="text" placeholder="Codigo TOTVS"></label>
+      </div>
 
       <div class="section-title">Informacao sobre saude</div>
       <div class="grid-2">
@@ -174,10 +178,14 @@ const publicApiUrl = location.protocol === "file:" || location.hostname === "ipd
   : "/api/public-enrollments";
 const registrationStart = new Date("2026-06-01T00:00:00-04:00");
 const registrationEnd = new Date("2026-06-30T23:59:59-04:00");
-const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
+const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","baptismRequirement","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
 fields.declarationAccepted = document.querySelector("#declarationAccepted");
 fields.lgpdAccepted = document.querySelector("#lgpdAccepted");
+const courseOptions = Array.from(fields.grade.options);
+const availableCourseValues = courseOptions.filter((option) => !option.disabled && option.value).map((option) => option.value);
+const baptismRequirementForCfo = "03 anos de batismo";
+const noCfoBaptismRequirement = "Nao tenho 03 anos de batismo";
 
 function fullDaysUntil(target, now = new Date()) {
   return Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000));
@@ -219,6 +227,37 @@ function applyRegistrationStatus() {
 function showMessage(type, text) {
   formMessage.className = `message ${type} is-visible`;
   formMessage.textContent = text;
+}
+
+function getAvailableCourseOptions() {
+  return courseOptions.filter((option) => availableCourseValues.includes(option.value));
+}
+
+function applyCourseEligibility() {
+  const hasThreeYears = fields.baptismRequirement.value === baptismRequirementForCfo;
+  const hasLessThanThreeYears = fields.baptismRequirement.value === noCfoBaptismRequirement;
+  getAvailableCourseOptions().forEach((option) => {
+    option.disabled = hasLessThanThreeYears
+      ? option.value !== "INC"
+      : option.value === "CFO" && !hasThreeYears;
+  });
+
+  if ((fields.grade.value === "CFO" && !hasThreeYears) || (hasLessThanThreeYears && fields.grade.value !== "INC")) {
+    fields.grade.value = hasLessThanThreeYears ? "INC" : "";
+    showMessage("error", hasLessThanThreeYears
+      ? "Para candidatos sem 03 anos de batismo, a opcao disponivel e somente INC."
+      : "Para continuar em CFO, selecione a opcao 03 anos de batismo.");
+  }
+}
+
+function validateCourseEligibility(data) {
+  if (data.grade === "CFO" && data.baptismRequirement !== baptismRequirementForCfo) {
+    throw new Error("Para continuar em CFO, selecione a opcao 03 anos de batismo.");
+  }
+
+  if (data.baptismRequirement === noCfoBaptismRequirement && data.grade !== "INC") {
+    throw new Error("Para candidatos sem 03 anos de batismo, a opcao disponivel e somente INC.");
+  }
 }
 
 function getTodayDate() {
@@ -269,6 +308,7 @@ function getFormData() {
   data.lgpdAccepted = fields.lgpdAccepted.checked;
   data.lgpdAcceptedDate = getTodayDate();
   data.source = "public_form";
+  validateCourseEligibility(data);
   return data;
 }
 
@@ -335,7 +375,10 @@ form.addEventListener("submit", async (event) => {
 [fields.birthDate, fields.baptismDate].forEach((field) => {
   field.addEventListener("input", () => maskDateInput(field));
 });
+fields.grade.addEventListener("change", applyCourseEligibility);
+fields.baptismRequirement.addEventListener("change", applyCourseEligibility);
 applyRegistrationStatus();
+applyCourseEligibility();
   </script>
 </body>
 </html>
