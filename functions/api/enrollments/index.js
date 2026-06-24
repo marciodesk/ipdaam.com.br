@@ -37,6 +37,14 @@ function getDatabase(env) {
   return env.DB;
 }
 
+function cleanCpf(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function cpfSqlExpression() {
+  return "REPLACE(REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', ''), '/', '')";
+}
+
 function normalizePayload(payload) {
   const now = new Date().toISOString();
   const normalized = {
@@ -47,6 +55,23 @@ function normalizePayload(payload) {
   };
   delete normalized.candidatePhoto;
   return normalized;
+}
+
+async function assertCpfAvailable(db, cpf, currentId) {
+  const normalizedCpf = cleanCpf(cpf);
+  if (!normalizedCpf) {
+    return;
+  }
+
+  const existing = await db.prepare(
+    `SELECT id FROM enrollments WHERE ${cpfSqlExpression()} = ? AND id <> ? LIMIT 1`
+  )
+    .bind(normalizedCpf, currentId || "")
+    .first();
+
+  if (existing) {
+    throw new Error("Ja existe uma matricula cadastrada para este CPF.");
+  }
 }
 
 export async function onRequestGet({ request, env }) {
@@ -84,6 +109,7 @@ export async function onRequestPost({ request, env }) {
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);
+    await assertCpfAvailable(db, enrollment.cpf, enrollment.id);
     const payload = JSON.stringify(enrollment);
 
     await db.prepare(
