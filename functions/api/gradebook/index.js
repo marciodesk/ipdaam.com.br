@@ -71,9 +71,9 @@ function normalizeRecord(body) {
     period: body.period || "",
     modules: modules.map((item) => ({
       name: item.name || "",
-      grade: Number(item.grade || 0),
-      work: Number(item.work || 0),
-      total: Number(item.total || 0),
+      grade: Number(item.grade || item.total || 0),
+      work: 0,
+      total: Number(item.grade || item.total || 0),
     })),
     total: Number(body.total || 0),
     average,
