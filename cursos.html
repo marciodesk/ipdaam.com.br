@@ -265,14 +265,21 @@ function clearPhotoUrls() {
   photoUrls = [];
 }
 
-async function loadPhoto(img, item) {
-  if (item.candidatePhoto) {
-    img.src = item.candidatePhoto;
-    img.hidden = false;
-    const placeholder = img.parentElement.querySelector(".photo-placeholder");
-    if (placeholder) placeholder.hidden = true;
-    return;
-  }
+function setPhotoVisible(img, src) {
+  img.src = src;
+  img.hidden = false;
+  const placeholder = img.parentElement.querySelector(".photo-placeholder");
+  if (placeholder) placeholder.hidden = true;
+}
+
+function setPhotoFallback(img) {
+  img.removeAttribute("src");
+  img.hidden = true;
+  const placeholder = img.parentElement.querySelector(".photo-placeholder");
+  if (placeholder) placeholder.hidden = false;
+}
+
+async function loadStoredPhoto(img, item) {
   if (!item.id) return;
   try {
     const response = await fetch(`${apiBaseUrl}/api/enrollments/${encodeURIComponent(item.id)}/photo`, {
@@ -283,12 +290,23 @@ async function loadPhoto(img, item) {
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     photoUrls.push(url);
-    img.src = url;
-    img.hidden = false;
-    const placeholder = img.parentElement.querySelector(".photo-placeholder");
-    if (placeholder) placeholder.hidden = true;
+    setPhotoVisible(img, url);
   } catch {
   }
+}
+
+async function loadPhoto(img, item) {
+  if (item.candidatePhoto && /^data:image\//.test(String(item.candidatePhoto))) {
+    img.onerror = async () => {
+      img.onerror = null;
+      setPhotoFallback(img);
+      await loadStoredPhoto(img, item);
+    };
+    setPhotoVisible(img, item.candidatePhoto);
+    return;
+  }
+
+  await loadStoredPhoto(img, item);
 }
 
 function renderCounters() {
