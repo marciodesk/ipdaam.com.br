@@ -279,6 +279,15 @@ function setPhotoFallback(img) {
   if (placeholder) placeholder.hidden = false;
 }
 
+function verifyPhotoSource(src) {
+  return new Promise((resolve) => {
+    const testImage = new Image();
+    testImage.onload = () => resolve(true);
+    testImage.onerror = () => resolve(false);
+    testImage.src = src;
+  });
+}
+
 async function loadStoredPhoto(img, item) {
   if (!item.id) return;
   try {
@@ -288,22 +297,27 @@ async function loadStoredPhoto(img, item) {
     });
     if (!response.ok) return;
     const blob = await response.blob();
+    if (!blob.size || !String(blob.type || "").startsWith("image/")) return;
     const url = URL.createObjectURL(blob);
-    photoUrls.push(url);
-    setPhotoVisible(img, url);
+    const valid = await verifyPhotoSource(url);
+    if (valid) {
+      photoUrls.push(url);
+      setPhotoVisible(img, url);
+    } else {
+      URL.revokeObjectURL(url);
+    }
   } catch {
   }
 }
 
 async function loadPhoto(img, item) {
+  setPhotoFallback(img);
   if (item.candidatePhoto && /^data:image\//.test(String(item.candidatePhoto))) {
-    img.onerror = async () => {
-      img.onerror = null;
-      setPhotoFallback(img);
-      await loadStoredPhoto(img, item);
-    };
-    setPhotoVisible(img, item.candidatePhoto);
-    return;
+    const valid = await verifyPhotoSource(item.candidatePhoto);
+    if (valid) {
+      setPhotoVisible(img, item.candidatePhoto);
+      return;
+    }
   }
 
   await loadStoredPhoto(img, item);
