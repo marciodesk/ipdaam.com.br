@@ -14,6 +14,10 @@
     .user-form{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1.2fr auto;gap:10px;align-items:end;margin-top:14px}
     @media(max-width:980px){.user-form{grid-template-columns:1fr 1fr}}
     @media(max-width:560px){.user-form{grid-template-columns:1fr}}
+    .absence-alert{margin-bottom:16px;border:1px solid #efc76c;background:#fff8df}
+    .absence-alert h2{color:#7a5100}.absence-alert-list{display:grid;gap:8px;margin-top:12px}
+    .absence-alert-item{display:flex;justify-content:space-between;gap:12px;padding:11px;border-radius:7px;background:#fff;border:1px solid #f0d99e}
+    .absence-alert-count{font-weight:900;color:#a15e00;white-space:nowrap}
   </style>
 </head>
 <body>
@@ -65,6 +69,13 @@
 
       <section id="modulePanel" class="panel" style="margin-bottom:16px" hidden>
         <label>Modulo do CFO<select id="moduleFilter"><option value="">Selecione</option><option>Teologia Basica</option><option>Etica Crista</option><option>Pratica Ministerial</option></select></label>
+      </section>
+
+      <section id="absenceAlert" class="panel absence-alert" hidden>
+        <p class="eyebrow">Acompanhamento</p>
+        <h2>Alunos com 3 ou mais faltas</h2>
+        <p class="small-note">Verifique se o aluno possui justificativa pendente ou se desistiu do curso.</p>
+        <div id="absenceAlertList" class="absence-alert-list"></div>
       </section>
 
       <section id="usersPanel" class="panel" style="margin-bottom:16px" hidden>
@@ -190,6 +201,8 @@ const qrGrid = document.querySelector("#qrGrid");
 const exportCsvButton = document.querySelector("#exportCsvButton");
 const printQrA4Button = document.querySelector("#printQrA4Button");
 const toast = document.querySelector("#toast");
+const absenceAlert = document.querySelector("#absenceAlert");
+const absenceAlertList = document.querySelector("#absenceAlertList");
 const currentUserBadge = document.querySelector("#currentUserBadge");
 const modulePanel = document.querySelector("#modulePanel");
 const moduleFilter = document.querySelector("#moduleFilter");
@@ -212,6 +225,7 @@ const counters = {
 
 let enrollments = [];
 let attendanceRecords = [];
+let riskAttendanceRecords = [];
 let currentStudent = null;
 let scannerStream = null;
 let scanTimer = null;
@@ -449,6 +463,24 @@ function renderReports() {
   reportTable.innerHTML = records.map((item) => `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td></tr>`).join("");
   recentList.innerHTML = records.slice(0, 8).map((item) => `<article class="recent-item"><div><span class="recent-name">${escapeHtml(item.fullName)}</span><br><small>${escapeHtml(item.course)}${item.module ? ` | ${escapeHtml(item.module)}` : ""} | ${escapeHtml(item.recordedByName || "-")}</small></div><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></article>`).join("") || '<p class="small-note">Nenhum registro nesta data.</p>';
   renderCounters();
+  renderAbsenceAlerts();
+}
+
+function renderAbsenceAlerts() {
+  const selectedCourse = courseFilter.value;
+  const selectedModule = moduleFilter.value;
+  const counts = new Map();
+  riskAttendanceRecords.forEach((record) => {
+    if (record.status !== "Falta") return;
+    if (selectedCourse && record.course !== selectedCourse) return;
+    if (selectedModule && record.module !== selectedModule) return;
+    const current = counts.get(record.enrollmentId) || { name: record.fullName, course: record.course, module: record.module, count: 0 };
+    current.count += 1;
+    counts.set(record.enrollmentId, current);
+  });
+  const alerts = [...counts.values()].filter((item) => item.count >= 3).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "pt-BR"));
+  absenceAlert.hidden = alerts.length === 0;
+  absenceAlertList.innerHTML = alerts.map((item) => `<article class="absence-alert-item"><div><strong>${escapeHtml(item.name || "Aluno")}</strong><div class="small-note">${escapeHtml(item.course || "-")}${item.module ? ` · ${escapeHtml(item.module)}` : ""} · Verificar justificativa ou possível desistência</div></div><span class="absence-alert-count">${item.count} faltas</span></article>`).join("");
 }
 
 function renderQrCodes() {
@@ -594,9 +626,21 @@ async function loadAttendance() {
   attendanceRecords = data.records || [];
 }
 
+async function loadRiskAttendance() {
+  const params = new URLSearchParams();
+  if (courseFilter.value) params.set("course", courseFilter.value);
+  if (moduleFilter.value) params.set("module", moduleFilter.value);
+  params.set("limit", "1000");
+  const response = await fetch(`${apiBaseUrl}/api/attendance?${params}`, { credentials: apiCredentials, headers: apiHeaders() });
+  if (!response.ok) throw new Error("Nao foi possivel carregar o acompanhamento de faltas.");
+  const data = await response.json();
+  riskAttendanceRecords = data.records || [];
+}
+
 async function refreshData() {
   await loadEnrollments();
   await loadAttendance();
+  await loadRiskAttendance();
   render();
   applyQrFromUrl();
 }
@@ -632,6 +676,7 @@ async function saveAttendance(method = "Manual") {
   justification.value = "";
   renderSelectedStudent(null);
   await loadAttendance();
+  await loadRiskAttendance();
   renderReports();
 }
 
