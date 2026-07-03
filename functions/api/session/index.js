@@ -34,9 +34,12 @@ export async function onRequestPost({ request, env }) {
     const login = String(body.login || "").trim().toLowerCase();
     let access = !login || login === "admin" ? authenticatePassword(password, env) : null;
     if (!access && login && env.DB) {
-      const user = await env.DB.prepare("SELECT id, login, name, password_hash, role, course, module FROM attendance_users WHERE login=? COLLATE NOCASE AND active=1").bind(login).first();
+      const user = await env.DB.prepare("SELECT id, login, name, password_hash, role, course, module, scopes FROM attendance_users WHERE login=? COLLATE NOCASE AND active=1").bind(login).first();
       if (user && await verifyPassword(password, user.password_hash)) {
-        access = { role: user.role, userId: user.id, login: user.login, name: user.name, course: user.course, module: user.module || "" };
+        let scopes = [];
+        try { scopes = JSON.parse(user.scopes || "[]"); } catch {}
+        if (!scopes.length && user.course) scopes = [{ course: user.course, module: user.module || "" }];
+        access = { role: user.role, userId: user.id, login: user.login, name: user.name, course: user.course, module: user.module || "", scopes };
       }
     }
     if (!access) return unauthorized();

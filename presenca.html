@@ -23,6 +23,8 @@
         <a class="link-button" href="index.html">Site principal</a>
         <a class="link-button" href="cursos.html">Dashboard dos cursos</a>
         <a class="link-button" href="secretaria.html">Secretaria</a>
+        <a class="link-button" id="adminUsersLink" href="usuarios-presenca.html" hidden>Painel de usuarios</a>
+        <a class="link-button" id="passwordLink" href="trocar-senha-presenca.html" hidden>Trocar minha senha</a>
         <button class="link-button" id="logoutButton" type="button" hidden>Sair</button>
       </div>
       <span id="currentUserBadge" class="user-badge" hidden></span>
@@ -35,6 +37,7 @@
       <label>Senha<input id="adminPassword" type="password" autocomplete="current-password" required></label>
       <p id="authError" class="auth-error" aria-live="polite"></p>
       <button class="primary-button" type="submit">Entrar</button>
+      <a class="link-button" href="cadastro-presenca.html">Solicitar cadastro</a>
     </form>
 
     <section id="hero" class="hero is-locked">
@@ -158,6 +161,8 @@ const loginInput = document.querySelector("#loginInput");
 const adminPassword = document.querySelector("#adminPassword");
 const authError = document.querySelector("#authError");
 const logoutButton = document.querySelector("#logoutButton");
+const adminUsersLink = document.querySelector("#adminUsersLink");
+const passwordLink = document.querySelector("#passwordLink");
 const hero = document.querySelector("#hero");
 const workspace = document.querySelector("#workspace");
 const classDate = document.querySelector("#classDate");
@@ -248,6 +253,8 @@ function lockDashboard(message = "") {
   hero.classList.add("is-locked");
   workspace.classList.add("is-locked");
   currentUserBadge.hidden = true;
+  adminUsersLink.hidden = true;
+  passwordLink.hidden = true;
   usersPanel.hidden = true;
   currentAccess = null;
   if (message) {
@@ -266,16 +273,17 @@ function unlockDashboard(access = currentAccess) {
     ? "Administrador"
     : `${currentAccess?.name || "Professor"} · ${currentAccess?.course || ""}${currentAccess?.module ? ` · ${currentAccess.module}` : ""}`;
   currentUserBadge.hidden = false;
-  usersPanel.hidden = currentAccess?.role !== "admin";
+  usersPanel.hidden = true;
+  adminUsersLink.hidden = currentAccess?.role !== "admin";
+  passwordLink.hidden = currentAccess?.role === "admin";
   if (currentAccess?.role !== "admin") {
-    courseFilter.value = currentAccess.course || "";
-    courseFilter.disabled = true;
-    moduleFilter.value = currentAccess.module || "";
-    moduleFilter.disabled = true;
+    const allowedCourses = [...new Set((currentAccess?.scopes || [{ course: currentAccess?.course }]).map((scope) => scope.course).filter(Boolean))];
+    courseFilter.value = allowedCourses[0] || "";
+    courseFilter.disabled = allowedCourses.length <= 1;
+    moduleFilter.disabled = false;
   } else {
     courseFilter.disabled = false;
     moduleFilter.disabled = false;
-    loadUsers().catch((error) => showToast(error.message));
   }
   updateModuleVisibility();
 }
@@ -404,7 +412,8 @@ function renderCourseOptions() {
   const current = courseFilter.value;
   const courses = [...new Set(enrollments.filter(isActiveEnrollment).map((item) => item.grade).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"));
   courseFilter.innerHTML = '<option value="">Todos</option>' + courses.map((course) => `<option value="${escapeHtml(course)}">${escapeHtml(course)}</option>`).join("");
-  const requiredCourse = currentAccess?.role !== "admin" ? currentAccess?.course : current;
+  const allowedCourses = [...new Set((currentAccess?.scopes || [{ course: currentAccess?.course }]).map((scope) => scope.course).filter(Boolean))];
+  const requiredCourse = currentAccess?.role !== "admin" ? (allowedCourses.includes(current) ? current : allowedCourses[0]) : current;
   courseFilter.value = courses.includes(requiredCourse) ? requiredCourse : "";
 }
 
@@ -522,7 +531,16 @@ function updateModuleVisibility() {
   const isCfo = courseFilter.value === "CFO" || currentAccess?.course === "CFO";
   modulePanel.hidden = !isCfo;
   if (!isCfo) moduleFilter.value = "";
-  if (currentAccess?.role !== "admin" && currentAccess?.module) moduleFilter.value = currentAccess.module;
+  if (isCfo && currentAccess?.role !== "admin") {
+    const allowedModules = (currentAccess?.scopes || [{ course: currentAccess?.course, module: currentAccess?.module }])
+      .filter((scope) => scope.course === "CFO" && scope.module).map((scope) => scope.module);
+    const current = moduleFilter.value;
+    moduleFilter.innerHTML = allowedModules.map((module) => `<option value="${escapeHtml(module)}">${escapeHtml(module)}</option>`).join("");
+    moduleFilter.value = allowedModules.includes(current) ? current : (allowedModules[0] || "");
+    moduleFilter.disabled = allowedModules.length <= 1;
+  } else if (isCfo && currentAccess?.role === "admin" && !moduleFilter.querySelector('option[value=""]')) {
+    moduleFilter.innerHTML = '<option value="">Todos os modulos</option><option>Teologia Basica</option><option>Etica Crista</option><option>Pratica Ministerial</option>';
+  }
 }
 
 async function loadUsers() {

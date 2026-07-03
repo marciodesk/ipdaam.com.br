@@ -86,9 +86,10 @@ export async function onRequestGet({ request, env }) {
       "SELECT payload FROM enrollments ORDER BY updated_at DESC"
     ).all();
 
+    const allowedCourses = new Set((access.scopes || [{ course: access.course }]).map((scope) => String(scope.course || "").toUpperCase()));
     const enrollments = result.results
       .map((row) => JSON.parse(row.payload))
-      .filter((item) => access.role === "admin" || String(item.grade || "").toUpperCase() === String(access.course || "").toUpperCase());
+      .filter((item) => access.role === "admin" || allowedCourses.has(String(item.grade || "").toUpperCase()));
     return json({ enrollments, ...access });
   } catch (error) {
     return errorJson(error);

@@ -105,8 +105,10 @@ export async function onRequestGet({ request, env }) {
     const date = url.searchParams.get("date") || "";
     const requestedCourse = url.searchParams.get("course") || "";
     const requestedModule = url.searchParams.get("module") || "";
-    const course = access.role === "admin" ? requestedCourse : access.course;
-    const module = access.role === "admin" ? requestedModule : (access.module || "");
+    const scopes = access.scopes || (access.course ? [{ course: access.course, module: access.module || "" }] : []);
+    const allowedRequestedScope = scopes.find((scope) => scope.course === requestedCourse && (!requestedModule || scope.module === requestedModule));
+    const course = access.role === "admin" ? requestedCourse : (allowedRequestedScope ? requestedCourse : "");
+    const module = access.role === "admin" ? requestedModule : (allowedRequestedScope ? requestedModule : "");
     const limit = Math.min(Number(url.searchParams.get("limit") || 300), 1000);
     const where = [];
     const binds = [];
@@ -122,6 +124,20 @@ export async function onRequestGet({ request, env }) {
     if (module) {
       where.push("module = ?");
       binds.push(module);
+    }
+    if (access.role !== "admin" && !course) {
+      const scopeClauses = [];
+      scopes.forEach((scope) => {
+        if (scope.course === "CFO") {
+          scopeClauses.push("(course = ? AND module = ?)");
+          binds.push(scope.course, scope.module || "");
+        } else {
+          scopeClauses.push("course = ?");
+          binds.push(scope.course);
+        }
+      });
+      if (!scopeClauses.length) return json({ records: [], ...access });
+      where.push(`(${scopeClauses.join(" OR ")})`);
     }
 
     const sql = `SELECT payload FROM attendance ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY created_at DESC LIMIT ?`;
@@ -149,16 +165,14 @@ export async function onRequestPost({ request, env }) {
     }
 
     const enrollmentCourse = String(enrollment.grade || "").toUpperCase();
-    if (access.role !== "admin" && enrollmentCourse !== String(access.course || "").toUpperCase()) {
-      return json({ ok: false, error: "Este aluno nao pertence ao curso autorizado para seu usuario." }, { status: 403 });
-    }
+    const accessScopes = access.scopes || (access.course ? [{ course: access.course, module: access.module || "" }] : []);
     const allowedModules = ["Teologia Basica", "Etica Crista", "Pratica Ministerial"];
     let module = enrollmentCourse === "CFO" ? String(body.module || access.module || "") : "";
     if (enrollmentCourse === "CFO" && !allowedModules.includes(module)) {
       return json({ ok: false, error: "Selecione um modulo valido do CFO." }, { status: 400 });
     }
-    if (access.role !== "admin" && access.module && module !== access.module) {
-      return json({ ok: false, error: "Seu usuario nao possui acesso a este modulo." }, { status: 403 });
+    if (access.role !== "admin" && !accessScopes.some((scope) => scope.course === enrollmentCourse && (enrollmentCourse !== "CFO" || scope.module === module))) {
+      return json({ ok: false, error: "Seu usuario nao possui acesso a este curso ou modulo." }, { status: 403 });
     }
 
     const now = new Date().toISOString();
