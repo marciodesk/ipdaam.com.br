@@ -331,13 +331,18 @@ function renderCounters() {
 }
 
 function renderCourses() {
-  const courses = getCourses();
+  const status = statusFilter.value;
+  const statusEnrollments = status === "Todos"
+    ? enrollments
+    : enrollments.filter((item) => item.status === status);
+  const statusCounts = new Map(getCourses(statusEnrollments));
+  const courses = getCourses().map(([course]) => [course, statusCounts.get(course) || 0]);
   courseList.innerHTML = "";
   const allButton = document.createElement("button");
   allButton.className = `course-button${selectedCourse === "Todos" ? " is-active" : ""}`;
   allButton.type = "button";
   allButton.dataset.course = "Todos";
-  allButton.innerHTML = `<strong>Todos os cursos</strong><span class="course-count">${enrollments.length}</span>`;
+  allButton.innerHTML = `<strong>Todos os cursos</strong><span class="course-count">${statusEnrollments.length}</span>`;
   courseList.appendChild(allButton);
 
   courses.forEach(([course, count]) => {
@@ -456,7 +461,10 @@ courseList.addEventListener("click", (event) => {
 });
 
 searchInput.addEventListener("input", renderStudents);
-statusFilter.addEventListener("change", renderStudents);
+statusFilter.addEventListener("change", () => {
+  renderCourses();
+  renderStudents();
+});
 refreshButton.addEventListener("click", async () => {
   try {
     await loadEnrollments();
