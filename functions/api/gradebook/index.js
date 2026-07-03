@@ -1,4 +1,4 @@
-import { getAccess, requireAdmin } from "../_auth.js";
+import { getAccess } from "../_auth.js";
 
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
@@ -96,8 +96,10 @@ export async function onRequestGet({ request, env }) {
     const result = await db.prepare(
       "SELECT payload FROM gradebook ORDER BY updated_at DESC"
     ).all();
-    const records = result.results.map((row) => JSON.parse(row.payload));
-    return json({ records, role: access.role });
+    const allowedCourses = new Set((access.scopes || [{ course: access.course }]).map((scope) => String(scope.course || "").toUpperCase()));
+    const records = result.results.map((row) => JSON.parse(row.payload))
+      .filter((record) => access.role === "admin" || allowedCourses.has(String(record.course || "").toUpperCase()));
+    return json({ records, ...access });
   } catch (error) {
     return errorJson(error);
   }
@@ -105,14 +107,47 @@ export async function onRequestGet({ request, env }) {
 
 export async function onRequestPost({ request, env }) {
   try {
-    if (!await requireAdmin(request, env)) {
+    const access = await getAccess(request, env);
+    if (!access) {
       return unauthorized();
     }
 
     const db = getDatabase(env);
     await ensureGradebookTable(db);
     const body = await request.json();
-    const record = normalizeRecord(body);
+    let record;
+
+    if (access.role === "admin") {
+      record = normalizeRecord(body);
+    } else {
+      const enrollmentRow = await db.prepare("SELECT payload FROM enrollments WHERE id=?").bind(body.enrollmentId || "").first();
+      if (!enrollmentRow) return json({ ok: false, error: "Aluno nao encontrado." }, { status: 404 });
+      const enrollment = JSON.parse(enrollmentRow.payload);
+      const course = String(enrollment.grade || "").toUpperCase();
+      const scopes = access.scopes || [{ course: access.course, module: access.module || "" }];
+      const requestedModule = course === "CFO" ? String(body.moduleName || "") : "Nota final";
+      const allowed = scopes.some((scope) => scope.course === course && (course !== "CFO" || scope.module === requestedModule));
+      if (!allowed) return json({ ok: false, error: "Seu usuario nao possui acesso a este curso ou modulo." }, { status: 403 });
+      const period = String(body.period || "");
+      if (!period) return json({ ok: false, error: "Selecione o semestre." }, { status: 400 });
+      const grade = Math.max(0, Math.min(10, Number(body.grade || 0)));
+      const existingRow = await db.prepare("SELECT payload FROM gradebook WHERE enrollment_id=? AND period=?").bind(enrollment.id, period).first();
+      const existing = existingRow ? JSON.parse(existingRow.payload) : null;
+      const modules = Array.isArray(existing?.modules) ? [...existing.modules] : [];
+      const moduleIndex = modules.findIndex((item) => item.name === requestedModule);
+      const moduleGrade = { name: requestedModule, grade, work: 0, total: grade, recordedBy: access.userId, recordedByName: access.name };
+      if (moduleIndex >= 0) modules[moduleIndex] = moduleGrade; else modules.push(moduleGrade);
+      const total = modules.reduce((sum, item) => sum + Number(item.total ?? item.grade ?? 0), 0);
+      const average = modules.length ? total / modules.length : 0;
+      record = normalizeRecord({
+        ...(existing || {}), id: existing?.id, enrollmentId: enrollment.id, fullName: enrollment.fullName,
+        cpf: enrollment.cpf, course, period, modules, total, average,
+        status: average >= 7 ? "Aprovado" : "Em andamento", notes: existing?.notes || "",
+      });
+      record.modules = modules;
+      record.recordedBy = access.userId;
+      record.recordedByName = access.name;
+    }
 
     if (!record.enrollmentId) {
       return json({ ok: false, error: "Selecione um aluno para salvar o boletim." }, { status: 400 });

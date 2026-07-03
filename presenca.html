@@ -20,9 +20,10 @@
   <main class="shell">
     <div class="topline">
       <div class="links">
-        <a class="link-button" href="index.html">Site principal</a>
-        <a class="link-button" href="cursos.html">Dashboard dos cursos</a>
-        <a class="link-button" href="secretaria.html">Secretaria</a>
+        <a class="link-button admin-nav" href="index.html">Site principal</a>
+        <a class="link-button admin-nav" href="cursos.html">Dashboard dos cursos</a>
+        <a class="link-button admin-nav" href="secretaria.html">Secretaria</a>
+        <a class="link-button" id="gradesLink" href="notas.html" hidden>Lancamento de notas</a>
         <a class="link-button" id="adminUsersLink" href="usuarios-presenca.html" hidden>Painel de usuarios</a>
         <a class="link-button" id="passwordLink" href="trocar-senha-presenca.html" hidden>Trocar minha senha</a>
         <button class="link-button" id="logoutButton" type="button" hidden>Sair</button>
@@ -161,6 +162,8 @@ const loginInput = document.querySelector("#loginInput");
 const adminPassword = document.querySelector("#adminPassword");
 const authError = document.querySelector("#authError");
 const logoutButton = document.querySelector("#logoutButton");
+const gradesLink = document.querySelector("#gradesLink");
+const adminNavLinks = document.querySelectorAll(".admin-nav");
 const adminUsersLink = document.querySelector("#adminUsersLink");
 const passwordLink = document.querySelector("#passwordLink");
 const hero = document.querySelector("#hero");
@@ -255,6 +258,7 @@ function lockDashboard(message = "") {
   currentUserBadge.hidden = true;
   adminUsersLink.hidden = true;
   passwordLink.hidden = true;
+  gradesLink.hidden = true;
   usersPanel.hidden = true;
   currentAccess = null;
   if (message) {
@@ -276,6 +280,8 @@ function unlockDashboard(access = currentAccess) {
   usersPanel.hidden = true;
   adminUsersLink.hidden = currentAccess?.role !== "admin";
   passwordLink.hidden = currentAccess?.role === "admin";
+  gradesLink.hidden = currentAccess?.role === "admin";
+  adminNavLinks.forEach((link) => { link.hidden = currentAccess?.role !== "admin"; });
   if (currentAccess?.role !== "admin") {
     const allowedCourses = [...new Set((currentAccess?.scopes || [{ course: currentAccess?.course }]).map((scope) => scope.course).filter(Boolean))];
     courseFilter.value = allowedCourses[0] || "";
