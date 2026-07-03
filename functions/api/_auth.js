@@ -45,10 +45,11 @@ async function sign(value, env) {
   return base64UrlEncode(new Uint8Array(signature));
 }
 
-export async function createSessionCookie(role, env) {
+export async function createSessionCookie(access, env) {
   const now = Math.floor(Date.now() / 1000);
+  const sessionAccess = typeof access === "string" ? { role: access } : access;
   const payload = base64UrlEncode(JSON.stringify({
-    role,
+    ...sessionAccess,
     iat: now,
     exp: now + sessionMaxAge,
   }));
@@ -69,6 +70,18 @@ export function authenticatePassword(password, env) {
   return null;
 }
 
+export async function hashPassword(password, salt = crypto.randomUUID()) {
+  const data = new TextEncoder().encode(`${salt}:${String(password || "")}`);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return `${salt}:${base64UrlEncode(new Uint8Array(digest))}`;
+}
+
+export async function verifyPassword(password, storedHash) {
+  const [salt] = String(storedHash || "").split(":");
+  if (!salt) return false;
+  return await hashPassword(password, salt) === storedHash;
+}
+
 export async function getAccess(request, env) {
   const token = getCookie(request, cookieName);
   if (token) {
@@ -76,7 +89,7 @@ export async function getAccess(request, env) {
     if (payload && signature && signature === await sign(payload, env)) {
       const session = JSON.parse(base64UrlDecode(payload));
       if (session.exp && session.exp > Math.floor(Date.now() / 1000)) {
-        return { role: session.role };
+        return session;
       }
     }
   }

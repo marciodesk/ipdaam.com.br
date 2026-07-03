@@ -86,8 +86,10 @@ export async function onRequestGet({ request, env }) {
       "SELECT payload FROM enrollments ORDER BY updated_at DESC"
     ).all();
 
-    const enrollments = result.results.map((row) => JSON.parse(row.payload));
-    return json({ enrollments, role: access.role });
+    const enrollments = result.results
+      .map((row) => JSON.parse(row.payload))
+      .filter((item) => access.role === "admin" || String(item.grade || "").toUpperCase() === String(access.course || "").toUpperCase());
+    return json({ enrollments, ...access });
   } catch (error) {
     return errorJson(error);
   }
