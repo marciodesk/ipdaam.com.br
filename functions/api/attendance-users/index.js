@@ -100,7 +100,7 @@ export async function onRequestDelete({ request, env }) {
     const db = dbFrom(env);
     const id = new URL(request.url).searchParams.get("id");
     if (!id) return json({ error: "Usuario nao informado." }, { status: 400 });
-    await db.prepare("UPDATE attendance_users SET active=0, updated_at=datetime('now') WHERE id=?").bind(id).run();
+    await db.prepare("DELETE FROM attendance_users WHERE id=?").bind(id).run();
     return json({ ok: true });
   } catch (error) {
     return json({ error: error.message }, { status: 400 });
