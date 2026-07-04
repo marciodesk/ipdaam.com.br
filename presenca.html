@@ -18,6 +18,7 @@
     .absence-alert h2{color:#7a5100}.absence-alert-list{display:grid;gap:8px;margin-top:12px}
     .absence-alert-item{display:flex;justify-content:space-between;gap:12px;padding:11px;border-radius:7px;background:#fff;border:1px solid #f0d99e}
     .absence-alert-count{font-weight:900;color:#a15e00;white-space:nowrap}
+    .person-photo{display:block;width:120px;height:150px;margin:0 auto 5px;border:2px solid #fff;border-radius:8px;object-fit:cover;box-shadow:0 5px 14px rgba(37,47,77,.16)}
   </style>
 </head>
 <body>
@@ -455,7 +456,11 @@ function renderSelectedStudent(student) {
   }
 
   selectedPerson.hidden = false;
-  selectedPerson.innerHTML = `<strong>Pessoa encontrada</strong><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>`;
+  selectedPerson.innerHTML = `<img class="person-photo" alt="Foto de ${escapeHtml(student.fullName)}" hidden><strong>Pessoa encontrada</strong><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>`;
+  const photo = selectedPerson.querySelector(".person-photo");
+  photo.addEventListener("load", () => { photo.hidden = false; }, { once: true });
+  photo.addEventListener("error", () => { photo.remove(); }, { once: true });
+  photo.src = `${apiBaseUrl}/api/enrollments/${encodeURIComponent(student.id)}/photo`;
 }
 
 function renderReports() {
