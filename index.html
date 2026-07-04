@@ -11,6 +11,14 @@
   <style>
     :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#9ca3af;--brand:#2563eb;--line:rgba(255,255,255,.12);--warn:#ca8a04;--ok:#16a34a;--radius:18px}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#111827 60%,#0b1220);color:var(--text)}a{color:#93c5fd;text-decoration:none}a:hover{text-decoration:underline}.container{max-width:1100px;margin:auto;padding:24px}header{display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center}.logo{width:60px;height:auto;object-fit:contain}nav a{margin-left:16px;font-weight:700}.carousel{max-width:1100px;margin:18px auto 24px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.35)}.carousel img{display:block;width:100%;max-height:470px;object-fit:cover}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.hero-single{grid-template-columns:1fr}.card{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.28)}.left{padding:28px}.hero h1{margin:0 0 10px;font-size:42px;line-height:1.08}.hero p,.section p{color:var(--muted)}.registration-panel{display:grid;gap:8px;margin:18px 0;padding:14px;border:1px solid rgba(147,197,253,.26);border-radius:14px;background:rgba(37,99,235,.1)}.registration-panel strong{font-size:1.05rem}.countdown{display:inline-flex;width:max-content;max-width:100%;padding:7px 10px;border-radius:999px;background:rgba(234,179,8,.12);color:#fde68a;font-weight:900}.cta{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:800;border:1px solid transparent}.btn.is-disabled{pointer-events:none;opacity:.55}.primary{background:var(--brand);color:white}.secondary{border-color:var(--line);color:var(--text)}.badge{display:inline-block;background:rgba(22,163,74,.12);color:#86efac;padding:6px 10px;border:1px solid rgba(22,163,74,.35);border-radius:999px;font-size:12px;font-weight:800}.badge.closed{background:rgba(180,63,76,.12);color:#fecdd3;border-color:rgba(180,63,76,.35)}.notice{padding:14px;border-left:4px solid var(--warn);background:rgba(234,179,8,.08);border-radius:10px}.section{margin:28px 0}.section h2{margin:0 0 10px;font-size:26px}.grid{display:grid;gap:18px}.cols-3{grid-template-columns:repeat(3,1fr)}.item{padding:18px}.item h3{margin:0 0 6px}table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}th,td{padding:12px 10px;text-align:left}thead{background:rgba(255,255,255,.06)}tbody tr{border-top:1px solid var(--line)}.map-card{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:18px;align-items:stretch}.map-card iframe{display:block;width:100%;min-height:280px;border:0;border-radius:14px;background:#0b1220}.footer{margin:34px 0 14px;color:var(--muted);text-align:center;font-size:14px}@media(max-width:900px){header,.hero{display:block}nav{margin-top:16px}.cols-3,.map-card{grid-template-columns:1fr}.hero h1{font-size:34px}}
   </style>
+  <style>
+    .social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .social-card{display:flex;align-items:center;gap:15px;padding:18px;color:var(--text);transition:transform .2s ease,border-color .2s ease,background .2s ease}
+    .social-card:hover{transform:translateY(-2px);border-color:rgba(147,197,253,.45);background:rgba(255,255,255,.07);text-decoration:none}
+    .instagram-icon{display:grid;flex:0 0 48px;place-items:center;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-size:1.35rem;font-weight:800;box-shadow:0 8px 22px rgba(225,48,108,.24)}
+    .social-copy{min-width:0}.social-copy strong{display:block;margin-bottom:4px;font-size:1rem}.social-copy span{display:block;color:var(--muted);font-size:.9rem;line-height:1.35}.social-handle{margin-top:5px;color:#93c5fd!important;font-weight:800}
+    @media(max-width:700px){.container{padding:16px}.social-grid{grid-template-columns:1fr}.social-card{padding:15px}.instagram-icon{width:44px;height:44px;flex-basis:44px}.section{margin:22px 0}}
+  </style>
 </head>
 <body>
   <div class="container">
@@ -75,6 +83,21 @@
           <p><a href="https://www.google.com/maps/search/?api=1&query=Rua%20Alexandre%20Amorim%20525%20Aparecida%20Manaus%20AM" target="_blank" rel="noopener">Abrir rota no Google Maps</a></p>
         </div>
         <iframe title="Mapa da Escola Teologica Deus e Amor" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Rua%20Alexandre%20Amorim%2C%20525%2C%20Aparecida%2C%20Manaus%2C%20AM&output=embed"></iframe>
+      </div>
+    </section>
+
+    <section id="redes-sociais" class="section">
+      <h2>Redes sociais</h2>
+      <p>Acompanhe a Igreja Pentecostal Deus e Amor, nossos cursos e projetos missionarios.</p>
+      <div class="social-grid">
+        <a class="card social-card" href="https://www.instagram.com/escolateologicadeuseamor/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Escola Teologica Deus e Amor">
+          <span class="instagram-icon" aria-hidden="true">◎</span>
+          <span class="social-copy"><strong>Escola Teologica Deus e Amor</strong><span>Formacao biblica e ministerial da ETDA.</span><span class="social-handle">@escolateologicadeuseamor</span></span>
+        </a>
+        <a class="card social-card" href="https://www.instagram.com/missoesipda/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Projeto Multiplicacao Fazendo Missoes">
+          <span class="instagram-icon" aria-hidden="true">◎</span>
+          <span class="social-copy"><strong>Projeto Multiplicacao Fazendo Missoes</strong><span>Acoes missionarias da Igreja Pentecostal Deus e Amor.</span><span class="social-handle">@missoesipda</span></span>
+        </a>
       </div>
     </section>
 
