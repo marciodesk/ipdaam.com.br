@@ -45,7 +45,7 @@
           <button class="logout-button" id="logoutButton" type="button" hidden>Sair</button>
         </div>
       </div>
-      <nav class="system-nav" aria-label="Menu principal">
+      <nav id="systemNav" class="system-nav" aria-label="Menu principal" hidden>
         <a class="nav-link admin-nav" href="index.html">Site principal</a>
         <a class="nav-link admin-nav" href="cursos.html">Dashboard</a>
         <a class="nav-link admin-nav" href="secretaria.html">Secretaria</a>
@@ -225,6 +225,7 @@ const toast = document.querySelector("#toast");
 const absenceAlert = document.querySelector("#absenceAlert");
 const absenceAlertList = document.querySelector("#absenceAlertList");
 const currentUserBadge = document.querySelector("#currentUserBadge");
+const systemNav = document.querySelector("#systemNav");
 const modulePanel = document.querySelector("#modulePanel");
 const moduleFilter = document.querySelector("#moduleFilter");
 const usersPanel = document.querySelector("#usersPanel");
@@ -291,6 +292,7 @@ function lockDashboard(message = "") {
   hero.classList.add("is-locked");
   workspace.classList.add("is-locked");
   currentUserBadge.hidden = true;
+  systemNav.hidden = true;
   adminUsersLink.hidden = true;
   passwordLink.hidden = true;
   gradesLink.hidden = true;
@@ -312,6 +314,7 @@ function unlockDashboard(access = currentAccess) {
     ? "Administrador"
     : `${currentAccess?.name || "Professor"} · ${currentAccess?.course || ""}${currentAccess?.module ? ` · ${currentAccess.module}` : ""}`;
   currentUserBadge.hidden = false;
+  systemNav.hidden = false;
   usersPanel.hidden = true;
   adminUsersLink.hidden = currentAccess?.role !== "admin";
   passwordLink.hidden = currentAccess?.role === "admin";
