@@ -19,22 +19,42 @@
     .absence-alert-item{display:flex;justify-content:space-between;gap:12px;padding:11px;border-radius:7px;background:#fff;border:1px solid #f0d99e}
     .absence-alert-count{font-weight:900;color:#a15e00;white-space:nowrap}
     .person-photo{display:block;width:120px;height:150px;margin:0 auto 5px;border:2px solid #fff;border-radius:8px;object-fit:cover;box-shadow:0 5px 14px rgba(37,47,77,.16)}
+    .app-header{margin-bottom:22px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(37,47,77,.09);overflow:hidden}
+    .header-main{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px}
+    .system-brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none}
+    .brand-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(145deg,var(--brand),var(--brand-dark));color:#fff;font-size:.82rem;font-weight:900;letter-spacing:.04em;box-shadow:0 7px 16px rgba(68,87,192,.25)}
+    .brand-copy{display:grid;gap:2px;font-size:.95rem;font-weight:900}.brand-copy small{color:var(--muted);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .account-area{display:flex;align-items:center;gap:10px}.app-header .user-badge{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid #dfe6fb;background:#f3f6ff}
+    .logout-button{min-height:36px;padding:0 13px;border:1px solid #f0d2d6;border-radius:7px;background:#fff;color:var(--danger);font-weight:800;cursor:pointer}.logout-button:hover{background:#fff3f4}
+    .system-nav{display:flex;gap:4px;align-items:center;padding:7px 10px;border-top:1px solid var(--line);background:#f8f9fc;overflow-x:auto}
+    .nav-link{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border-radius:7px;color:#536174;font-size:.84rem;font-weight:800;text-decoration:none;white-space:nowrap}.nav-link:hover{background:#eaf0ff;color:var(--brand)}.nav-link.is-active{background:var(--brand);color:#fff;box-shadow:0 5px 12px rgba(68,87,192,.2)}
+    @media(max-width:640px){.app-header{border-radius:9px}.header-main{align-items:flex-start;padding:13px}.account-area{align-items:flex-end;flex-direction:column;gap:7px}.app-header .user-badge{max-width:170px;min-height:31px;font-size:.74rem;text-align:right}.logout-button{min-height:32px}.system-nav{padding:7px}.nav-link{min-height:36px;padding:0 10px}}
+    @media print{.app-header{display:none!important}}
   </style>
 </head>
 <body>
   <main class="shell">
-    <div class="topline">
-      <div class="links">
-        <a class="link-button admin-nav" href="index.html">Site principal</a>
-        <a class="link-button admin-nav" href="cursos.html">Dashboard dos cursos</a>
-        <a class="link-button admin-nav" href="secretaria.html">Secretaria</a>
-        <a class="link-button" id="gradesLink" href="notas.html" hidden>Lancamento de notas</a>
-        <a class="link-button" id="adminUsersLink" href="usuarios-presenca.html" hidden>Painel de usuarios</a>
-        <a class="link-button" id="passwordLink" href="trocar-senha-presenca.html" hidden>Trocar minha senha</a>
-        <button class="link-button" id="logoutButton" type="button" hidden>Sair</button>
+    <header class="app-header">
+      <div class="header-main">
+        <a class="system-brand" href="index.html" aria-label="Ir para o site principal">
+          <span class="brand-symbol">ETDA</span>
+          <span class="brand-copy">ETDA Manaus<small>Gestao academica</small></span>
+        </a>
+        <div class="account-area">
+          <span id="currentUserBadge" class="user-badge" hidden></span>
+          <button class="logout-button" id="logoutButton" type="button" hidden>Sair</button>
+        </div>
       </div>
-      <span id="currentUserBadge" class="user-badge" hidden></span>
-    </div>
+      <nav class="system-nav" aria-label="Menu principal">
+        <a class="nav-link admin-nav" href="index.html">Site principal</a>
+        <a class="nav-link admin-nav" href="cursos.html">Dashboard</a>
+        <a class="nav-link admin-nav" href="secretaria.html">Secretaria</a>
+        <a class="nav-link is-active" href="presenca.html" aria-current="page">Presenca</a>
+        <a class="nav-link" id="gradesLink" href="notas.html" hidden>Notas</a>
+        <a class="nav-link" id="adminUsersLink" href="usuarios-presenca.html" hidden>Usuarios</a>
+        <a class="nav-link" id="passwordLink" href="trocar-senha-presenca.html" hidden>Minha senha</a>
+      </nav>
+    </header>
 
     <form id="authForm" class="auth-panel" autocomplete="off">
       <h2>Acesso de presenca</h2>
