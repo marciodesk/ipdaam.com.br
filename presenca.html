@@ -289,7 +289,7 @@ function unlockDashboard(access = currentAccess) {
   workspace.classList.remove("is-locked");
   currentUserBadge.textContent = currentAccess?.role === "admin"
     ? "Administrador"
-    : `${currentAccess?.name || "Professor"} · Professor`;
+    : `${currentAccess?.name || "Professor"} · ${currentAccess?.course || ""}${currentAccess?.module ? ` · ${currentAccess.module}` : ""}`;
   currentUserBadge.hidden = false;
   usersPanel.hidden = true;
   adminUsersLink.hidden = currentAccess?.role !== "admin";
