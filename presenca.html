@@ -487,7 +487,7 @@ function renderSelectedStudent(student) {
   }
 
   selectedPerson.hidden = false;
-  selectedPerson.innerHTML = `<img class="person-photo" alt="Foto de ${escapeHtml(student.fullName)}" hidden><strong>Pessoa encontrada</strong><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>`;
+  selectedPerson.innerHTML = `<img class="person-photo" alt="Foto de ${escapeHtml(student.fullName)}" hidden><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>`;
   const photo = selectedPerson.querySelector(".person-photo");
   photo.addEventListener("load", () => { photo.hidden = false; }, { once: true });
   photo.addEventListener("error", () => { photo.remove(); }, { once: true });
