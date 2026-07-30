@@ -41,8 +41,39 @@ function cleanCpf(value) {
   return String(value || "").replace(/\D/g, "");
 }
 
+function cleanText(value, maxLength = 500) {
+  return String(value || "").trim().slice(0, maxLength);
+}
+
 function cpfSqlExpression() {
   return "REPLACE(REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', ''), '/', '')";
+}
+
+function getEnrollmentPeriodFromDate(value) {
+  const text = String(value || "").trim();
+  let year = "";
+  let month = "";
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    [year, month] = text.split("-");
+  } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
+    const parts = text.split("/");
+    year = parts[2];
+    month = parts[1];
+  }
+
+  if (!year || !month) {
+    const now = new Date();
+    year = String(now.getUTCFullYear());
+    month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  }
+
+  return `${year} - ${Number(month) >= 6 ? "2º semestre" : "1º semestre"}`;
+}
+
+function getEnrollmentPeriod(payload) {
+  return cleanText(payload.enrollmentPeriod, 60) ||
+    getEnrollmentPeriodFromDate(payload.enrollmentDate || payload.createdAt);
 }
 
 function normalizePayload(payload) {
@@ -53,24 +84,34 @@ function normalizePayload(payload) {
     updatedAt: now,
     createdAt: payload.createdAt || now,
   };
+  normalized.enrollmentPeriod = getEnrollmentPeriod(normalized);
   delete normalized.candidatePhoto;
   return normalized;
 }
 
-async function assertCpfAvailable(db, cpf, currentId) {
-  const normalizedCpf = cleanCpf(cpf);
+async function assertCpfAvailable(db, enrollment, currentId) {
+  const normalizedCpf = cleanCpf(enrollment.cpf);
   if (!normalizedCpf) {
     return;
   }
 
-  const existing = await db.prepare(
-    `SELECT id FROM enrollments WHERE ${cpfSqlExpression()} = ? AND id <> ? LIMIT 1`
+  const result = await db.prepare(
+    `SELECT id, payload FROM enrollments WHERE ${cpfSqlExpression()} = ? AND id <> ?`
   )
     .bind(normalizedCpf, currentId || "")
-    .first();
+    .all();
+
+  const period = getEnrollmentPeriod(enrollment);
+  const existing = (result.results || []).find((row) => {
+    try {
+      return getEnrollmentPeriod(JSON.parse(row.payload || "{}")) === period;
+    } catch (error) {
+      return true;
+    }
+  });
 
   if (existing) {
-    throw new Error("Ja existe uma matricula cadastrada para este CPF.");
+    throw new Error("Ja existe uma matricula cadastrada para este CPF neste periodo.");
   }
 }
 
@@ -112,7 +153,7 @@ export async function onRequestPost({ request, env }) {
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);
-    await assertCpfAvailable(db, enrollment.cpf, enrollment.id);
+    await assertCpfAvailable(db, enrollment, enrollment.id);
     const payload = JSON.stringify(enrollment);
 
     await db.prepare(

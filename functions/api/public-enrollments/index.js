@@ -71,6 +71,37 @@ function cpfSqlExpression() {
   return "REPLACE(REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), ' ', ''), '/', '')";
 }
 
+function getEnrollmentPeriodFromDate(value) {
+  const text = String(value || "").trim();
+  let year = "";
+  let month = "";
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    [year, month] = text.split("-");
+  } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
+    const parts = text.split("/");
+    year = parts[2];
+    month = parts[1];
+  }
+
+  if (!year || !month) {
+    [year, month] = getManausDate().split("-");
+  }
+
+  return `${year} - ${Number(month) >= 6 ? "2º semestre" : "1º semestre"}`;
+}
+
+function getEnrollmentPeriod(payload) {
+  return cleanText(payload.enrollmentPeriod, 60) ||
+    getEnrollmentPeriodFromDate(payload.enrollmentDate || payload.createdAt);
+}
+
+function getConfiguredEnrollmentPeriod(payload) {
+  return cleanText(payload.enrollmentPeriod, 60) ||
+    registrationWindow.period ||
+    getEnrollmentPeriod(payload);
+}
+
 function normalizePayload(payload) {
   const now = new Date().toISOString();
   const enrollment = {
@@ -86,6 +117,7 @@ function normalizePayload(payload) {
     createdAt: now,
     updatedAt: now,
   };
+  enrollment.enrollmentPeriod = getConfiguredEnrollmentPeriod(enrollment);
 
   if (!enrollment.fullName || !enrollment.cpf || !enrollment.grade || !enrollment.declarationAccepted || !enrollment.lgpdAccepted) {
     throw new Error("Preencha nome, CPF, curso e aceite a declaracao e o termo LGPD.");
@@ -107,20 +139,29 @@ function normalizePayload(payload) {
   return enrollment;
 }
 
-async function assertCpfAvailable(db, cpf) {
-  const normalizedCpf = cleanCpf(cpf);
+async function assertCpfAvailable(db, enrollment) {
+  const normalizedCpf = cleanCpf(enrollment.cpf);
   if (!normalizedCpf) {
     throw new Error("CPF invalido.");
   }
 
-  const existing = await db.prepare(
-    `SELECT id FROM enrollments WHERE ${cpfSqlExpression()} = ? LIMIT 1`
+  const result = await db.prepare(
+    `SELECT id, payload FROM enrollments WHERE ${cpfSqlExpression()} = ?`
   )
     .bind(normalizedCpf)
-    .first();
+    .all();
+
+  const period = getEnrollmentPeriod(enrollment);
+  const existing = (result.results || []).find((row) => {
+    try {
+      return getEnrollmentPeriod(JSON.parse(row.payload || "{}")) === period;
+    } catch (error) {
+      return true;
+    }
+  });
 
   if (existing) {
-    throw new Error("Ja existe uma pre-inscricao cadastrada para este CPF.");
+    throw new Error("Ja existe uma pre-inscricao cadastrada para este CPF neste periodo.");
   }
 }
 
@@ -141,7 +182,7 @@ export async function onRequestPost({ request, env }) {
     const db = getDatabase(env);
     const body = await request.json();
     const enrollment = normalizePayload(body);
-    await assertCpfAvailable(db, enrollment.cpf);
+    await assertCpfAvailable(db, enrollment);
     const payload = JSON.stringify(enrollment);
 
     await db.prepare(

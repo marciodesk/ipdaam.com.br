@@ -179,6 +179,7 @@ const publicApiUrl = location.protocol === "file:" || location.hostname === "ipd
   : "/api/public-enrollments";
 const registrationStart = new Date("2026-06-01T00:00:00-04:00");
 const registrationEnd = new Date("2026-06-30T23:59:59-04:00");
+const registrationPeriod = "";
 const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","baptismRequirement","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
 fields.declarationAccepted = document.querySelector("#declarationAccepted");
@@ -272,6 +273,26 @@ function getTodayDate() {
   return `${date.year}-${date.month}-${date.day}`;
 }
 
+function getEnrollmentPeriodFromDate(value = getTodayDate()) {
+  const text = String(value || "").trim();
+  let year = "";
+  let month = "";
+
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    [year, month] = text.split("-");
+  } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
+    const parts = text.split("/");
+    year = parts[2];
+    month = parts[1];
+  }
+
+  if (!year || !month) {
+    [year, month] = getTodayDate().split("-");
+  }
+
+  return `${year} - ${Number(month) >= 6 ? "2º semestre" : "1º semestre"}`;
+}
+
 function formatDate(value) {
   const clean = value.trim();
   if (!clean || /^\d{2}\/\d{2}\/\d{4}$/.test(clean)) return clean;
@@ -301,6 +322,7 @@ function getFormData() {
   data.id = crypto.randomUUID();
   data.status = "Em espera";
   data.enrollmentDate = formatDate(getTodayDate());
+  data.enrollmentPeriod = registrationPeriod || getEnrollmentPeriodFromDate(getTodayDate());
   data.birthDate = formatDate(fields.birthDate.value);
   data.baptismDate = formatDate(fields.baptismDate.value);
   data.state = fields.state.value.trim().toUpperCase();
