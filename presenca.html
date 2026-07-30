@@ -484,9 +484,10 @@ function renderCounters() {
   counters.records.textContent = records.length;
 }
 
-function renderSelectedStudent(student) {
-  currentStudent = student;
-  saveAttendanceButton.disabled = !student;
+function renderSelectedStudent(student, options = {}) {
+  const canRegister = options.canRegister !== false;
+  currentStudent = canRegister ? student : null;
+  saveAttendanceButton.disabled = !student || !canRegister;
   if (!student) {
     selectedPerson.hidden = true;
     selectedPerson.innerHTML = "";
@@ -494,7 +495,7 @@ function renderSelectedStudent(student) {
   }
 
   selectedPerson.hidden = false;
-  selectedPerson.innerHTML = `<img class="person-photo" alt="Foto de ${escapeHtml(student.fullName)}" hidden><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>`;
+  selectedPerson.innerHTML = `<img class="person-photo" alt="Foto de ${escapeHtml(student.fullName)}" hidden><span>Nome: ${escapeHtml(student.fullName)}</span><span>CPF: ${escapeHtml(student.cpf || "-")}</span><span>Curso: ${escapeHtml(student.grade || "-")}</span><span>Status: ${escapeHtml(student.status || "-")}</span>${canRegister ? "" : '<span>Complete o CPF para liberar o registro.</span>'}`;
   const photo = selectedPerson.querySelector(".person-photo");
   photo.addEventListener("load", () => { photo.hidden = false; }, { once: true });
   photo.addEventListener("error", () => { photo.remove(); }, { once: true });
@@ -568,6 +569,7 @@ function previewManualCode() {
   }
 
   if (matches.length === 1) {
+    renderSelectedStudent(matches[0], { canRegister: false });
     setManualLookupStatus(`Possivel aluno: ${matches[0].fullName}. Complete o CPF para confirmar.`, "is-warning");
     return;
   }
