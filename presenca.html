@@ -18,6 +18,10 @@
     .absence-alert h2{color:#7a5100}.absence-alert-list{display:grid;gap:8px;margin-top:12px}
     .absence-alert-item{display:flex;justify-content:space-between;gap:12px;padding:11px;border-radius:7px;background:#fff;border:1px solid #f0d99e}
     .absence-alert-count{font-weight:900;color:#a15e00;white-space:nowrap}
+    .lookup-status{min-height:20px;margin:0;color:var(--muted);font-size:.82rem;font-weight:800;line-height:1.3}
+    .lookup-status.is-found{color:var(--ok)}
+    .lookup-status.is-warning{color:#956800}
+    .lookup-status.is-error{color:var(--danger)}
     .person-photo{display:block;width:120px;height:150px;margin:0 auto 5px;border:2px solid #fff;border-radius:8px;object-fit:cover;box-shadow:0 5px 14px rgba(37,47,77,.16)}
     .app-header{margin-bottom:22px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(37,47,77,.09);overflow:hidden}
     .header-main{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px}
@@ -139,6 +143,7 @@
           <h2>CPF ou QR</h2>
           <div class="manual-card">
             <label>CPF ou codigo do QR<input id="manualCode" inputmode="numeric" placeholder="Digite o CPF ou leia o QR"></label>
+            <p id="manualLookupStatus" class="lookup-status" aria-live="polite"></p>
             <button id="findButton" class="primary-button" type="button">Buscar aluno</button>
             <div id="selectedPerson" class="person-card" hidden></div>
             <label>Status<select id="attendanceStatus"><option value="Presente">Presente</option><option value="Justificado">Justificado</option><option value="Falta">Falta</option></select></label>
@@ -216,6 +221,7 @@ const scannerVideo = document.querySelector("#scannerVideo");
 const startScannerButton = document.querySelector("#startScannerButton");
 const stopScannerButton = document.querySelector("#stopScannerButton");
 const manualCode = document.querySelector("#manualCode");
+const manualLookupStatus = document.querySelector("#manualLookupStatus");
 const findButton = document.querySelector("#findButton");
 const selectedPerson = document.querySelector("#selectedPerson");
 const attendanceStatus = document.querySelector("#attendanceStatus");
@@ -260,6 +266,7 @@ let scanTimer = null;
 let barcodeDetector = null;
 let scanCanvas = null;
 let currentAccess = null;
+let manualLookupTimer = null;
 
 function apiHeaders(extra = {}) {
   return { accept: "application/json", ...extra };
@@ -494,6 +501,85 @@ function renderSelectedStudent(student) {
   photo.src = `${apiBaseUrl}/api/enrollments/${encodeURIComponent(student.id)}/photo`;
 }
 
+function setManualLookupStatus(message = "", type = "") {
+  manualLookupStatus.textContent = message;
+  manualLookupStatus.className = `lookup-status${type ? ` ${type}` : ""}`;
+}
+
+function getAttendanceRecordForStudent(student) {
+  if (!student) return null;
+  const expectedModule = String(student.grade || "").toUpperCase() === "CFO" ? moduleFilter.value : "";
+  return attendanceRecords.find((record) =>
+    record.enrollmentId === student.id &&
+    (!expectedModule || record.module === expectedModule)
+  ) || null;
+}
+
+function describeStudentAttendance(student) {
+  const record = getAttendanceRecordForStudent(student);
+  if (!record) {
+    return {
+      message: `Aluno encontrado. Ainda sem presenca registrada em ${formatDateBr(classDate.value)}.`,
+      type: "is-found",
+    };
+  }
+
+  const moduleText = record.module ? ` | ${record.module}` : "";
+  return {
+    message: `Ja registrado em ${formatDateBr(record.classDate)}: ${record.status}${moduleText}. Salvar novamente atualiza o registro.`,
+    type: record.status === "Falta" ? "is-warning" : "is-found",
+  };
+}
+
+function previewManualCode() {
+  const rawValue = manualCode.value.trim();
+  const parsed = parseQrCode(rawValue);
+  const cpf = parsed.cpf || "";
+
+  if (!rawValue) {
+    renderSelectedStudent(null);
+    setManualLookupStatus("");
+    return;
+  }
+
+  if (parsed.id || cpf.length >= 11) {
+    const student = findStudent(rawValue);
+    renderSelectedStudent(student);
+    if (!student) {
+      setManualLookupStatus("Aluno nao encontrado no cadastro ativo.", "is-error");
+      return;
+    }
+
+    const result = describeStudentAttendance(student);
+    setManualLookupStatus(result.message, result.type);
+    return;
+  }
+
+  renderSelectedStudent(null);
+  if (cpf.length < 3) {
+    setManualLookupStatus("Digite pelo menos 3 numeros do CPF para localizar.", "");
+    return;
+  }
+
+  const matches = enrollments.filter((item) => cleanCpf(item.cpf).startsWith(cpf));
+  if (!matches.length) {
+    setManualLookupStatus("Nenhum aluno ativo encontrado com estes numeros.", "is-error");
+    return;
+  }
+
+  if (matches.length === 1) {
+    setManualLookupStatus(`Possivel aluno: ${matches[0].fullName}. Complete o CPF para confirmar.`, "is-warning");
+    return;
+  }
+
+  setManualLookupStatus(`${matches.length} alunos encontrados. Continue digitando o CPF.`, "is-warning");
+}
+
+function scheduleManualPreview() {
+  window.clearTimeout(manualLookupTimer);
+  manualLookupTimer = window.setTimeout(previewManualCode, 120);
+}
+
 function renderReports() {
   const records = filteredRecords();
   reportTable.innerHTML = records.map((item) => `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td></tr>`).join("");
@@ -709,6 +795,7 @@ async function saveAttendance(method = "Manual") {
 
   showToast(`${currentStudent.fullName} registrado como ${attendanceStatus.value}.`);
   manualCode.value = "";
+  setManualLookupStatus("");
   justification.value = "";
   renderSelectedStudent(null);
   await loadAttendance();
@@ -852,22 +939,22 @@ authForm.addEventListener("submit", async (event) => {
 });
 
 findButton.addEventListener("click", () => {
-  const student = findStudent(manualCode.value);
-  renderSelectedStudent(student);
-  showToast(student ? "Aluno encontrado." : "Aluno nao encontrado.");
+  previewManualCode();
+  showToast(currentStudent ? "Aluno encontrado." : "Aluno nao encontrado.");
 });
 
+manualCode.addEventListener("input", scheduleManualPreview);
 saveAttendanceButton.addEventListener("click", () => saveAttendance("Manual"));
 attendanceStatus.addEventListener("change", () => {
   justificationLabel.hidden = attendanceStatus.value !== "Justificado";
 });
-refreshButton.addEventListener("click", () => refreshData().catch((error) => showToast(error.message)));
-classDate.addEventListener("change", () => refreshData().catch((error) => showToast(error.message)));
+refreshButton.addEventListener("click", () => refreshData().then(previewManualCode).catch((error) => showToast(error.message)));
+classDate.addEventListener("change", () => refreshData().then(previewManualCode).catch((error) => showToast(error.message)));
 courseFilter.addEventListener("change", () => {
   updateModuleVisibility();
-  refreshData().catch((error) => showToast(error.message));
+  refreshData().then(previewManualCode).catch((error) => showToast(error.message));
 });
-moduleFilter.addEventListener("change", () => refreshData().catch((error) => showToast(error.message)));
+moduleFilter.addEventListener("change", () => refreshData().then(previewManualCode).catch((error) => showToast(error.message)));
 userCourse.addEventListener("change", () => { userModuleLabel.hidden = userCourse.value !== "CFO"; });
 userForm.addEventListener("submit", (event) => saveUser(event).catch((error) => showToast(error.message)));
 usersTable.addEventListener("click", async (event) => {
