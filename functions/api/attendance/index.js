@@ -263,6 +263,9 @@ export async function onRequestDelete({ request, env }) {
     if (!access) {
       return unauthorized();
     }
+    if (access.role !== "admin") {
+      return json({ ok: false, error: "Apenas o administrador pode remover presencas." }, { status: 403 });
+    }
 
     const db = getDatabase(env);
     await ensureAttendanceTable(db);

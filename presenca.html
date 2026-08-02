@@ -588,11 +588,13 @@ function scheduleManualPreview() {
 
 function renderReports() {
   const records = filteredRecords();
+  const canDeleteAttendance = currentAccess?.role === "admin";
   reportTable.innerHTML = records.map((item) => {
     const statusOptions = ["Presente", "Justificado", "Falta"]
       .map((status) => `<option value="${status}"${item.status === status ? " selected" : ""}>${status}</option>`)
       .join("");
-    return `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td><td><div class="attendance-row-actions"><select data-attendance-status="${escapeHtml(item.id)}" aria-label="Alterar status de ${escapeHtml(item.fullName)}">${statusOptions}</select><button class="danger-button" type="button" data-delete-attendance="${escapeHtml(item.id)}">Remover</button></div></td></tr>`;
+    const deleteButton = canDeleteAttendance ? `<button class="danger-button" type="button" data-delete-attendance="${escapeHtml(item.id)}">Remover</button>` : "";
+    return `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td><td><div class="attendance-row-actions"><select data-attendance-status="${escapeHtml(item.id)}" aria-label="Alterar status de ${escapeHtml(item.fullName)}">${statusOptions}</select>${deleteButton}</div></td></tr>`;
   }).join("");
   recentList.innerHTML = records.slice(0, 8).map((item) => `<article class="recent-item"><div><span class="recent-name">${escapeHtml(item.fullName)}</span><br><small>${escapeHtml(item.course)}${item.module ? ` | ${escapeHtml(item.module)}` : ""} | ${escapeHtml(item.recordedByName || "-")}</small></div><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></article>`).join("") || '<p class="small-note">Nenhum registro nesta data.</p>';
   renderCounters();
