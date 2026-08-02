@@ -26,6 +26,10 @@
     .attendance-row-actions select{min-height:34px;padding:6px 8px;font-size:.82rem}
     .danger-button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 10px;border:1px solid #f0d2d6;border-radius:6px;background:#fff;color:var(--danger);font-size:.82rem;font-weight:900;cursor:pointer}
     .danger-button:hover{background:#fff3f4}
+    .qr-card{grid-template-columns:140px minmax(0,1fr)}
+    .qr-code{width:132px;height:132px;background:#fff}
+    .qr-code img,.qr-code canvas{width:132px!important;height:132px!important;image-rendering:pixelated}
+    @media print{.qr-grid{grid-template-columns:repeat(2,1fr);gap:6mm}.qr-card{grid-template-columns:38mm minmax(0,1fr);min-height:46mm;padding:4mm}.qr-code,.qr-code img,.qr-code canvas{width:36mm!important;height:36mm!important}}
     .person-photo{display:block;width:120px;height:150px;margin:0 auto 5px;border:2px solid #fff;border-radius:8px;object-fit:cover;box-shadow:0 5px 14px rgba(37,47,77,.16)}
     .app-header{margin-bottom:22px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(37,47,77,.09);overflow:hidden}
     .header-main{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px}
@@ -408,11 +412,12 @@ function parseQrCode(value) {
 }
 
 function makeQrCode(item) {
-  return `ETDA:${item.id}:${cleanCpf(item.cpf)}`;
+  return `ETDA:${item.id}`;
 }
 
 function makeNativeQrUrl(item) {
-  const baseUrl = `${location.origin}${location.pathname}`;
+  const cleanPath = location.pathname.replace(/\.html$/i, "");
+  const baseUrl = `${location.origin}${cleanPath || "/presenca"}`;
   return `${baseUrl}?qr=${encodeURIComponent(makeQrCode(item))}`;
 }
 
@@ -629,8 +634,8 @@ function renderQrCodes() {
     if (window.QRCode) {
       new window.QRCode(card.querySelector(".qr-code"), {
         text: qrUrl,
-        width: 96,
-        height: 96,
+        width: 192,
+        height: 192,
         correctLevel: window.QRCode.CorrectLevel.M,
       });
     } else {
@@ -662,7 +667,9 @@ function downloadQrJpg(studentId) {
   context.fillText(student.fullName || "Aluno", canvas.width / 2, 126);
   context.font = "22px Arial";
   context.fillText(`${student.cpf || ""} | ${student.grade || ""}`, canvas.width / 2, 166);
-  context.drawImage(source, 170, 220, 380, 380);
+  context.fillStyle = "#ffffff";
+  context.fillRect(140, 190, 440, 440);
+  context.drawImage(source, 160, 210, 400, 400);
   context.font = "18px Arial";
   context.fillStyle = "#687385";
   context.fillText("Use a camera do celular para abrir a presenca", canvas.width / 2, 654);
