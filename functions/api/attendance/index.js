@@ -4,7 +4,7 @@ const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
   "access-control-allow-origin": "*",
-  "access-control-allow-methods": "GET, POST, OPTIONS",
+  "access-control-allow-methods": "GET, POST, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
 };
 
@@ -90,6 +90,19 @@ async function findEnrollment(db, body) {
 function normalizeStatus(status) {
   const allowed = ["Presente", "Justificado", "Falta"];
   return allowed.includes(status) ? status : "Presente";
+}
+
+function getAccessScopes(access) {
+  return access.scopes || (access.course ? [{ course: access.course, module: access.module || "" }] : []);
+}
+
+function canAccessAttendanceRecord(access, record) {
+  if (access.role === "admin") return true;
+  const course = String(record.course || "").toUpperCase();
+  const module = String(record.module || "");
+  return getAccessScopes(access).some((scope) =>
+    scope.course === course && (course !== "CFO" || scope.module === module)
+  );
 }
 
 export async function onRequestGet({ request, env }) {
@@ -239,6 +252,44 @@ export async function onRequestPost({ request, env }) {
         record.recordedByName, previous?.payload || null, payload).run();
 
     return json({ ok: true, record }, { status: 201 });
+  } catch (error) {
+    return errorJson(error);
+  }
+}
+
+export async function onRequestDelete({ request, env }) {
+  try {
+    const access = await getAccess(request, env);
+    if (!access) {
+      return unauthorized();
+    }
+
+    const db = getDatabase(env);
+    await ensureAttendanceTable(db);
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id") || "";
+    if (!id) {
+      return json({ ok: false, error: "Registro de presenca nao informado." }, { status: 400 });
+    }
+
+    const previous = await db.prepare("SELECT payload FROM attendance WHERE id = ?").bind(id).first();
+    if (!previous?.payload) {
+      return json({ ok: false, error: "Registro de presenca nao encontrado." }, { status: 404 });
+    }
+
+    const record = JSON.parse(previous.payload);
+    if (!canAccessAttendanceRecord(access, record)) {
+      return json({ ok: false, error: "Seu usuario nao possui acesso a este registro." }, { status: 403 });
+    }
+
+    await db.prepare("DELETE FROM attendance WHERE id = ?").bind(id).run();
+    await db.prepare(`INSERT INTO attendance_audit
+      (id, attendance_id, action, changed_by, changed_by_name, previous_payload, new_payload)
+      VALUES (?, ?, ?, ?, ?, ?, ?)`)
+      .bind(crypto.randomUUID(), id, "Remocao", access.userId || "admin",
+        access.name || "Administrador", previous.payload, "{}").run();
+
+    return json({ ok: true });
   } catch (error) {
     return errorJson(error);
   }

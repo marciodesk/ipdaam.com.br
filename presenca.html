@@ -22,6 +22,10 @@
     .lookup-status.is-found{color:var(--ok)}
     .lookup-status.is-warning{color:#956800}
     .lookup-status.is-error{color:var(--danger)}
+    .attendance-row-actions{display:grid;grid-template-columns:minmax(120px,1fr) auto;gap:7px;align-items:center}
+    .attendance-row-actions select{min-height:34px;padding:6px 8px;font-size:.82rem}
+    .danger-button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 10px;border:1px solid #f0d2d6;border-radius:6px;background:#fff;color:var(--danger);font-size:.82rem;font-weight:900;cursor:pointer}
+    .danger-button:hover{background:#fff3f4}
     .person-photo{display:block;width:120px;height:150px;margin:0 auto 5px;border:2px solid #fff;border-radius:8px;object-fit:cover;box-shadow:0 5px 14px rgba(37,47,77,.16)}
     .app-header{margin-bottom:22px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(37,47,77,.09);overflow:hidden}
     .header-main{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px}
@@ -160,7 +164,7 @@
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Data</th><th>Aluno</th><th>CPF</th><th>Curso</th><th>Modulo</th><th>Status</th><th>Professor</th><th>Justificativa</th><th>Metodo</th></tr></thead>
+              <thead><tr><th>Data</th><th>Aluno</th><th>CPF</th><th>Curso</th><th>Modulo</th><th>Status</th><th>Professor</th><th>Justificativa</th><th>Metodo</th><th>Acoes</th></tr></thead>
               <tbody id="reportTable"></tbody>
             </table>
           </div>
@@ -584,7 +588,12 @@ function scheduleManualPreview() {
 
 function renderReports() {
   const records = filteredRecords();
-  reportTable.innerHTML = records.map((item) => `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td></tr>`).join("");
+  reportTable.innerHTML = records.map((item) => {
+    const statusOptions = ["Presente", "Justificado", "Falta"]
+      .map((status) => `<option value="${status}"${item.status === status ? " selected" : ""}>${status}</option>`)
+      .join("");
+    return `<tr><td>${escapeHtml(formatDateBr(item.classDate))}</td><td>${escapeHtml(item.fullName)}</td><td>${escapeHtml(item.cpf)}</td><td>${escapeHtml(item.course)}</td><td>${escapeHtml(item.module || "-")}</td><td><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.recordedByName || "-")}</td><td>${escapeHtml(item.justification)}</td><td>${escapeHtml(item.method)}</td><td><div class="attendance-row-actions"><select data-attendance-status="${escapeHtml(item.id)}" aria-label="Alterar status de ${escapeHtml(item.fullName)}">${statusOptions}</select><button class="danger-button" type="button" data-delete-attendance="${escapeHtml(item.id)}">Remover</button></div></td></tr>`;
+  }).join("");
   recentList.innerHTML = records.slice(0, 8).map((item) => `<article class="recent-item"><div><span class="recent-name">${escapeHtml(item.fullName)}</span><br><small>${escapeHtml(item.course)}${item.module ? ` | ${escapeHtml(item.module)}` : ""} | ${escapeHtml(item.recordedByName || "-")}</small></div><span class="pill ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></article>`).join("") || '<p class="small-note">Nenhum registro nesta data.</p>';
   renderCounters();
   renderAbsenceAlerts();
@@ -805,6 +814,67 @@ async function saveAttendance(method = "Manual") {
   renderReports();
 }
 
+async function updateAttendanceStatus(record, status) {
+  let justificationText = "";
+  if (status === "Justificado") {
+    const input = prompt("Informe a justificativa da presenca:", record.justification || "");
+    if (input === null) {
+      renderReports();
+      return;
+    }
+    justificationText = input.trim();
+  }
+
+  const response = await fetch(`${apiBaseUrl}/api/attendance`, {
+    method: "POST",
+    credentials: apiCredentials,
+    headers: apiHeaders({ "content-type": "application/json" }),
+    body: JSON.stringify({
+      id: record.id,
+      enrollmentId: record.enrollmentId,
+      cpf: record.cpf,
+      classDate: record.classDate,
+      module: record.module,
+      status,
+      justification: justificationText,
+      method: "Ajuste manual",
+      createdAt: record.createdAt,
+    }),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(body.error || "Nao foi possivel alterar a presenca.");
+  }
+
+  showToast(`${record.fullName} alterado para ${status}.`);
+  await loadAttendance();
+  await loadRiskAttendance();
+  renderReports();
+  previewManualCode();
+}
+
+async function deleteAttendanceRecord(record) {
+  if (!confirm(`Remover a presenca de ${record.fullName} em ${formatDateBr(record.classDate)}?`)) {
+    return;
+  }
+
+  const response = await fetch(`${apiBaseUrl}/api/attendance?id=${encodeURIComponent(record.id)}`, {
+    method: "DELETE",
+    credentials: apiCredentials,
+    headers: apiHeaders(),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(body.error || "Nao foi possivel remover a presenca.");
+  }
+
+  showToast("Presenca removida.");
+  await loadAttendance();
+  await loadRiskAttendance();
+  renderReports();
+  previewManualCode();
+}
+
 async function startScanner() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     showToast("Este navegador nao liberou a camera. Use a camera nativa do celular ou a entrada manual por CPF.");
@@ -949,6 +1019,27 @@ manualCode.addEventListener("input", scheduleManualPreview);
 saveAttendanceButton.addEventListener("click", () => saveAttendance("Manual"));
 attendanceStatus.addEventListener("change", () => {
   justificationLabel.hidden = attendanceStatus.value !== "Justificado";
+});
+reportTable.addEventListener("change", (event) => {
+  const select = event.target.closest("[data-attendance-status]");
+  if (!select) return;
+
+  const record = attendanceRecords.find((item) => item.id === select.dataset.attendanceStatus);
+  if (!record || record.status === select.value) return;
+
+  updateAttendanceStatus(record, select.value).catch((error) => {
+    showToast(error.message);
+    renderReports();
+  });
+});
+reportTable.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-delete-attendance]");
+  if (!button) return;
+
+  const record = attendanceRecords.find((item) => item.id === button.dataset.deleteAttendance);
+  if (!record) return showToast("Registro de presenca nao encontrado.");
+
+  deleteAttendanceRecord(record).catch((error) => showToast(error.message));
 });
 refreshButton.addEventListener("click", () => refreshData().then(previewManualCode).catch((error) => showToast(error.message)));
 classDate.addEventListener("change", () => refreshData().then(previewManualCode).catch((error) => showToast(error.message)));
