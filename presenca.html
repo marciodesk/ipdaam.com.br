@@ -275,6 +275,7 @@ let barcodeDetector = null;
 let scanCanvas = null;
 let currentAccess = null;
 let manualLookupTimer = null;
+let lastAutoQrKey = "";
 
 function apiHeaders(extra = {}) {
   return { accept: "application/json", ...extra };
@@ -800,15 +801,17 @@ async function refreshData() {
   await loadAttendance();
   await loadRiskAttendance();
   render();
-  applyQrFromUrl();
+  await applyQrFromUrl();
 }
 
-async function saveAttendance(method = "Manual") {
+async function saveAttendance(method = "Manual", options = {}) {
   if (!currentStudent) {
     showToast("Selecione um aluno primeiro.");
-    return;
+    return false;
   }
 
+  const savedStatus = options.status || attendanceStatus.value;
+  const savedJustification = options.justification ?? justification.value;
   const response = await fetch(`${apiBaseUrl}/api/attendance`, {
     method: "POST",
     credentials: apiCredentials,
@@ -818,18 +821,18 @@ async function saveAttendance(method = "Manual") {
       cpf: currentStudent.cpf,
       classDate: classDate.value,
       module: moduleFilter.value,
-      status: attendanceStatus.value,
-      justification: justification.value,
+      status: savedStatus,
+      justification: savedJustification,
       method,
     }),
   });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
     showToast(body.error || "Nao foi possivel registrar.");
-    return;
+    return false;
   }
 
-  showToast(`${currentStudent.fullName} registrado como ${attendanceStatus.value}.`);
+  showToast(`${currentStudent.fullName} registrado como ${savedStatus}.`);
   manualCode.value = "";
   setManualLookupStatus("");
   justification.value = "";
@@ -837,6 +840,28 @@ async function saveAttendance(method = "Manual") {
   await loadAttendance();
   await loadRiskAttendance();
   renderReports();
+  return true;
+}
+
+async function registerQrAttendance(rawValue, source = "QR Code") {
+  const student = findStudent(rawValue);
+  if (!student) {
+    showToast("QR Code nao encontrado no cadastro.");
+    return false;
+  }
+
+  const autoQrKey = `${student.id}|${classDate.value}|${moduleFilter.value}|${source}`;
+  if (lastAutoQrKey === autoQrKey) return true;
+
+  manualCode.value = rawValue;
+  attendanceStatus.value = "Presente";
+  justification.value = "";
+  justificationLabel.hidden = true;
+  renderSelectedStudent(student);
+  setManualLookupStatus(`QR Code lido: registrando presenca de ${student.fullName}.`, "is-found");
+  const saved = await saveAttendance(source, { status: "Presente", justification: "" });
+  if (saved) lastAutoQrKey = autoQrKey;
+  return saved;
 }
 
 async function updateAttendanceStatus(record, status) {
@@ -946,14 +971,8 @@ async function scanFrame() {
   }
 
   if (!rawValue) return;
-  const student = findStudent(rawValue);
-  if (!student) {
-    showToast("QR Code nao encontrado no cadastro.");
-    return;
-  }
   stopScanner();
-  renderSelectedStudent(student);
-  await saveAttendance("QR Code");
+  await registerQrAttendance(rawValue, "QR Code");
 }
 
 function stopScanner() {
@@ -1007,17 +1026,10 @@ function printQrCodesA4() {
   window.print();
 }
 
-function applyQrFromUrl() {
+async function applyQrFromUrl() {
   const qr = new URLSearchParams(location.search).get("qr");
   if (!qr) return;
-  const student = findStudent(qr);
-  if (!student) {
-    showToast("QR Code nao encontrado no cadastro.");
-    return;
-  }
-  renderSelectedStudent(student);
-  manualCode.value = qr;
-  showToast(`Aluno identificado: ${student.fullName}. Confira e registre a presenca.`);
+  await registerQrAttendance(qr, "QR Code");
 }
 
 authForm.addEventListener("submit", async (event) => {
