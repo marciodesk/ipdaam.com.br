@@ -97,7 +97,16 @@ export async function getAccess(request, env) {
   return null;
 }
 
+function normalizeRole(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function isAdminAccess(access) {
+  const role = normalizeRole(access?.role);
+  return role === "admin" || role === "administrador";
+}
+
 export async function requireAdmin(request, env) {
   const access = await getAccess(request, env);
-  return access && access.role === "admin";
+  return access && isAdminAccess(access);
 }

@@ -92,12 +92,21 @@ function normalizeStatus(status) {
   return allowed.includes(status) ? status : "Presente";
 }
 
+function normalizeRole(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function isAdminAccess(access) {
+  const role = normalizeRole(access?.role);
+  return role === "admin" || role === "administrador";
+}
+
 function getAccessScopes(access) {
   return access.scopes || (access.course ? [{ course: access.course, module: access.module || "" }] : []);
 }
 
 function canAccessAttendanceRecord(access, record) {
-  if (access.role === "admin") return true;
+  if (isAdminAccess(access)) return true;
   const course = String(record.course || "").toUpperCase();
   const module = String(record.module || "");
   return getAccessScopes(access).some((scope) =>
@@ -120,8 +129,9 @@ export async function onRequestGet({ request, env }) {
     const requestedModule = url.searchParams.get("module") || "";
     const scopes = access.scopes || (access.course ? [{ course: access.course, module: access.module || "" }] : []);
     const allowedRequestedScope = scopes.find((scope) => scope.course === requestedCourse && (!requestedModule || scope.module === requestedModule));
-    const course = access.role === "admin" ? requestedCourse : (allowedRequestedScope ? requestedCourse : "");
-    const module = access.role === "admin" ? requestedModule : (allowedRequestedScope ? requestedModule : "");
+    const isAdmin = isAdminAccess(access);
+    const course = isAdmin ? requestedCourse : (allowedRequestedScope ? requestedCourse : "");
+    const module = isAdmin ? requestedModule : (allowedRequestedScope ? requestedModule : "");
     const limit = Math.min(Number(url.searchParams.get("limit") || 300), 1000);
     const where = [];
     const binds = [];
@@ -138,7 +148,7 @@ export async function onRequestGet({ request, env }) {
       where.push("module = ?");
       binds.push(module);
     }
-    if (access.role !== "admin" && !course) {
+    if (!isAdmin && !course) {
       const scopeClauses = [];
       scopes.forEach((scope) => {
         if (scope.course === "CFO") {
@@ -184,7 +194,7 @@ export async function onRequestPost({ request, env }) {
     if (enrollmentCourse === "CFO" && !allowedModules.includes(module)) {
       return json({ ok: false, error: "Selecione um modulo valido do CFO." }, { status: 400 });
     }
-    if (access.role !== "admin" && !accessScopes.some((scope) => scope.course === enrollmentCourse && (enrollmentCourse !== "CFO" || scope.module === module))) {
+    if (!isAdminAccess(access) && !accessScopes.some((scope) => scope.course === enrollmentCourse && (enrollmentCourse !== "CFO" || scope.module === module))) {
       return json({ ok: false, error: "Seu usuario nao possui acesso a este curso ou modulo." }, { status: 403 });
     }
 
@@ -263,7 +273,7 @@ export async function onRequestDelete({ request, env }) {
     if (!access) {
       return unauthorized();
     }
-    if (access.role !== "admin") {
+    if (!isAdminAccess(access)) {
       return json({ ok: false, error: "Apenas o administrador pode remover presencas." }, { status: 403 });
     }
 

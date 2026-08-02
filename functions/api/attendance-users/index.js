@@ -22,6 +22,15 @@ function dbFrom(env) {
   return env.DB;
 }
 
+function normalizeRole(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+function isAdminAccess(access) {
+  const role = normalizeRole(access?.role);
+  return role === "admin" || role === "administrador";
+}
+
 async function ensureTable(db) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS attendance_users (
     id TEXT PRIMARY KEY, login TEXT NOT NULL UNIQUE COLLATE NOCASE, name TEXT NOT NULL,
@@ -33,7 +42,7 @@ async function ensureTable(db) {
 
 async function requireAdmin(request, env) {
   const access = await getAccess(request, env);
-  return access?.role === "admin" ? access : null;
+  return isAdminAccess(access) ? access : null;
 }
 
 export async function onRequestGet({ request, env }) {
