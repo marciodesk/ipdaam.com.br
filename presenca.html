@@ -437,7 +437,7 @@ function getFirstName(value) {
 }
 
 function makeQrWhatsappMessage(item) {
-  return `Ola, ${getFirstName(item.fullName)}! Segue o seu QR Code de presenca da ETDA Manaus. Guarde esta imagem para apresentar nas aulas.`;
+  return `Ola, ${getFirstName(item.fullName)}! Paz do Senhor. Segue o seu QR Code de presenca da ETDA Manaus. Guarde esta imagem e apresente nas aulas para registrar sua presenca. Deus abencoe!`;
 }
 
 function findStudent(value) {
@@ -622,7 +622,7 @@ function renderQrCodes() {
     const qrUrl = makeNativeQrUrl(item);
     const card = document.createElement("article");
     card.className = "qr-card";
-    card.innerHTML = `<div class="qr-code"></div><div><span class="student-name">${escapeHtml(item.fullName)}</span><span class="student-meta">${escapeHtml(item.cpf || "-")} | ${escapeHtml(item.grade || "-")}</span><span class="student-meta">Camera do celular</span><div class="qr-card-actions"><button class="download-qr" type="button" data-action="download" data-id="${escapeHtml(item.id)}">Baixar JPG</button><button class="send-qr" type="button" data-action="share" data-id="${escapeHtml(item.id)}">Compartilhar JPG</button></div></div>`;
+    card.innerHTML = `<div class="qr-code"></div><div><span class="student-name">${escapeHtml(item.fullName)}</span><span class="student-meta">${escapeHtml(item.cpf || "-")} | ${escapeHtml(item.grade || "-")}</span><span class="student-meta">Camera do celular</span><div class="qr-card-actions"><button class="download-qr" type="button" data-action="download" data-id="${escapeHtml(item.id)}">Baixar JPG</button><button class="send-qr" type="button" data-action="send-whatsapp" data-id="${escapeHtml(item.id)}">Enviar WhatsApp</button></div></div>`;
     qrGrid.appendChild(card);
     if (window.QRCode) {
       new window.QRCode(card.querySelector(".qr-code"), {
@@ -682,25 +682,21 @@ function downloadQrJpg(studentId) {
   link.click();
 }
 
-async function shareQrJpg(studentId) {
+async function sendQrJpgWhatsapp(studentId) {
   const data = getQrJpgData(studentId);
   if (!data) return;
 
-  const blob = await new Promise((resolve) => data.canvas.toBlob(resolve, "image/jpeg", 0.92));
-  const file = new File([blob], data.filename, { type: "image/jpeg" });
-  const shareData = {
-    title: `QR Code ETDA - ${data.student.fullName || "Aluno"}`,
-    text: makeQrWhatsappMessage(data.student),
-    files: [file],
-  };
-
-  if (navigator.canShare?.(shareData)) {
-    await navigator.share(shareData);
-    return;
-  }
-
   downloadQrJpg(studentId);
-  showToast("Seu navegador nao permite anexar automaticamente. O JPG foi baixado para enviar pelo WhatsApp.");
+  const message = makeQrWhatsappMessage(data.student);
+  const phone = getWhatsappNumber(data.student);
+  const whatsappUrl = phone
+    ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    : `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappUrl, "_blank", "noopener");
+  showToast(phone
+    ? "JPG baixado. O WhatsApp do aluno foi aberto com a frase pronta; anexe a imagem baixada."
+    : "JPG baixado. Nao ha telefone no cadastro; escolha o contato no WhatsApp e anexe a imagem.");
 }
 
 function wrapCanvasText(context, text, x, y, maxWidth, lineHeight) {
@@ -1095,9 +1091,9 @@ searchInput.addEventListener("input", () => {
 qrGrid.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-id]");
   if (!button) return;
-  if (button.dataset.action === "share") {
-    shareQrJpg(button.dataset.id).catch((error) => {
-      if (error?.name !== "AbortError") showToast("Nao foi possivel compartilhar o JPG.");
+  if (button.dataset.action === "send-whatsapp") {
+    sendQrJpgWhatsapp(button.dataset.id).catch(() => {
+      showToast("Nao foi possivel abrir o WhatsApp.");
     });
     return;
   }
