@@ -40,7 +40,7 @@
         <h1>Formação simples, séria e próxima de você.</h1>
         <p>Informações para quem estuda conosco presencialmente em <strong>Manaus/AM</strong>. Tudo em um só lugar: cursos, agenda, documentos e contato.</p>
         <div class="registration-panel">
-          <strong>Inscrições de 01 a 30 de junho de 2026.</strong>
+          <strong>Inscrições temporariamente reabertas até sexta-feira, 4 de setembro de 2026.</strong>
           <span>Entrega de documentos e pagamento das apostilas nas segundas e quintas-feiras.</span>
           <span id="registrationCountdown" class="countdown"></span>
         </div>
@@ -115,8 +115,8 @@
     <p class="footer">&copy; <span id="year"></span> IPDAAM &bull; Secretaria ETDA Manaus &bull; <a href="privacidade.html">Politica de Privacidade e LGPD</a>.</p>
   </div>
   <script>
-const registrationStart = new Date("2026-06-01T00:00:00-04:00");
-const registrationEnd = new Date("2026-06-30T23:59:59-04:00");
+const registrationStart = new Date("2026-09-01T00:00:00-04:00");
+const registrationEnd = new Date("2026-09-04T23:59:59-04:00");
 const badge = document.querySelector("#registrationBadge");
 const countdown = document.querySelector("#registrationCountdown");
 const registrationLink = document.querySelector("#registrationLink");
@@ -138,7 +138,7 @@ function updateRegistrationStatus() {
   if (now > registrationEnd) {
     badge.textContent = "Inscricoes encerradas";
     badge.classList.add("closed");
-    countdown.textContent = "Inscricoes encerradas em 30/06/2026";
+    countdown.textContent = "Inscricoes encerradas em 04/09/2026";
     registrationLink.classList.add("is-disabled");
     registrationLink.setAttribute("aria-disabled", "true");
     return;

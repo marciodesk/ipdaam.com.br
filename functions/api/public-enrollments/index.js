@@ -32,8 +32,8 @@ function getDatabase(env) {
 }
 
 const registrationWindow = {
-  start: "2026-06-01",
-  end: "2026-06-30",
+  start: "2026-09-01",
+  end: "2026-09-04",
 };
 const baptismRequirementForCfo = "03 anos de batismo";
 const noCfoBaptismRequirement = "Nao tenho 03 anos de batismo";
@@ -52,10 +52,10 @@ function getManausDate() {
 function assertRegistrationOpen() {
   const today = getManausDate();
   if (today < registrationWindow.start) {
-    throw new Error("As inscricoes iniciam em 01/06/2026.");
+    throw new Error("As inscricoes iniciam em 01/09/2026.");
   }
   if (today > registrationWindow.end) {
-    throw new Error("Inscricoes encerradas em 30/06/2026.");
+    throw new Error("Inscricoes encerradas em 04/09/2026.");
   }
 }
 

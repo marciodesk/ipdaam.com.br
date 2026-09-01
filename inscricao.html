@@ -16,7 +16,7 @@
       <h1>Ficha de inscricao</h1>
       <p class="lead">Preencha seus dados para candidatura aos cursos. As informacoes serao enviadas com seguranca para a secretaria e nao ficam visiveis no site.</p>
       <div id="registrationNotice" class="registration-notice">
-        <strong>Inscricoes de 01 a 30 de junho de 2026.</strong>
+        <strong>Inscricoes temporariamente reabertas ate sexta-feira, 4 de setembro de 2026.</strong>
         <span>Disponivel apenas o turno Vespertino entrega de documentos e pagamento das apostilas nas segundas e quintas-feiras.</span>
         <span id="registrationStatus"></span>
       </div>
@@ -177,8 +177,8 @@ const registrationStatus = document.querySelector("#registrationStatus");
 const publicApiUrl = location.protocol === "file:" || location.hostname === "ipdaam.com.br"
   ? "https://matriculasetdaam.pages.dev/api/public-enrollments"
   : "/api/public-enrollments";
-const registrationStart = new Date("2026-06-01T00:00:00-04:00");
-const registrationEnd = new Date("2026-06-30T23:59:59-04:00");
+const registrationStart = new Date("2026-09-01T00:00:00-04:00");
+const registrationEnd = new Date("2026-09-04T23:59:59-04:00");
 const registrationPeriod = "";
 const fieldIds = ["fullName","cpf","rg","birthDate","maritalStatus","grade","mobileDdd","mobilePhone","whatsappDdd","whatsappPhone","email","address","addressNumber","neighborhood","state","city","pastor","hasChildren","childrenCount","spouseName","spouseConverted","currentOccupation","currentMinistryRole","baptismDate","baptismRequirement","participatesInGroup","ipdaNeighborhood","ipdaNumber","totvsCode","hasHealthRestriction","healthRestriction","usesContinuousMedication","medicationName","hasAnyAllergy","allergyType","hasSpecialNeed","specialNeed","emergencyKinship","emergencyContact","notes"];
 const fields = Object.fromEntries(fieldIds.map((id) => [id, document.querySelector(`#${id}`)]));
@@ -199,13 +199,13 @@ function getRegistrationStatus() {
     const days = fullDaysUntil(registrationStart, now);
     return {
       open: false,
-      message: `As inscricoes iniciam em 01/06/2026. Faltam ${days} dia${days === 1 ? "" : "s"}.`,
+      message: `As inscricoes iniciam em 01/09/2026. Faltam ${days} dia${days === 1 ? "" : "s"}.`,
     };
   }
   if (now > registrationEnd) {
     return {
       open: false,
-      message: "Inscricoes encerradas em 30/06/2026.",
+      message: "Inscricoes encerradas em 04/09/2026.",
     };
   }
   const days = fullDaysUntil(registrationEnd, now);
