@@ -1,0 +1,728 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T02:23:02Z",
+  "title": "Design System: IPDAAM — ETDA Manaus",
+  "extensions": {
+    "colorMeta": {
+      "azul-institucional": {
+        "role": "primary",
+        "displayName": "Azul institucional",
+        "tonalRamp": [
+          "oklch(15.00% 0.21521 262.88)",
+          "oklch(26.43% 0.21521 262.88)",
+          "oklch(37.86% 0.21521 262.88)",
+          "oklch(49.29% 0.21521 262.88)",
+          "oklch(60.71% 0.21521 262.88)",
+          "oklch(72.14% 0.21521 262.88)",
+          "oklch(83.57% 0.21521 262.88)",
+          "oklch(95.00% 0.21521 262.88)"
+        ]
+      },
+      "verde-profundo": {
+        "role": "primary",
+        "displayName": "Verde profundo",
+        "tonalRamp": [
+          "oklch(15.00% 0.08281 176.88)",
+          "oklch(26.43% 0.08281 176.88)",
+          "oklch(37.86% 0.08281 176.88)",
+          "oklch(49.29% 0.08281 176.88)",
+          "oklch(60.71% 0.08281 176.88)",
+          "oklch(72.14% 0.08281 176.88)",
+          "oklch(83.57% 0.08281 176.88)",
+          "oklch(95.00% 0.08281 176.88)"
+        ]
+      },
+      "verde-profundo-hover": {
+        "role": "primary",
+        "displayName": "Verde profundo — hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.06497 178.22)",
+          "oklch(26.43% 0.06497 178.22)",
+          "oklch(37.86% 0.06497 178.22)",
+          "oklch(49.29% 0.06497 178.22)",
+          "oklch(60.71% 0.06497 178.22)",
+          "oklch(72.14% 0.06497 178.22)",
+          "oklch(83.57% 0.06497 178.22)",
+          "oklch(95.00% 0.06497 178.22)"
+        ]
+      },
+      "violeta": {
+        "role": "primary",
+        "displayName": "Violeta",
+        "tonalRamp": [
+          "oklch(15.00% 0.21054 291.53)",
+          "oklch(26.43% 0.21054 291.53)",
+          "oklch(37.86% 0.21054 291.53)",
+          "oklch(49.29% 0.21054 291.53)",
+          "oklch(60.71% 0.21054 291.53)",
+          "oklch(72.14% 0.21054 291.53)",
+          "oklch(83.57% 0.21054 291.53)",
+          "oklch(95.00% 0.21054 291.53)"
+        ]
+      },
+      "amarelo": {
+        "role": "secondary",
+        "displayName": "Amarelo",
+        "tonalRamp": [
+          "oklch(15.00% 0.17141 90.83)",
+          "oklch(26.43% 0.17141 90.83)",
+          "oklch(37.86% 0.17141 90.83)",
+          "oklch(49.29% 0.17141 90.83)",
+          "oklch(60.71% 0.17141 90.83)",
+          "oklch(72.14% 0.17141 90.83)",
+          "oklch(83.57% 0.17141 90.83)",
+          "oklch(95.00% 0.17141 90.83)"
+        ]
+      },
+      "indigo": {
+        "role": "primary",
+        "displayName": "Índigo",
+        "tonalRamp": [
+          "oklch(15.00% 0.16506 271.44)",
+          "oklch(26.43% 0.16506 271.44)",
+          "oklch(37.86% 0.16506 271.44)",
+          "oklch(49.29% 0.16506 271.44)",
+          "oklch(60.71% 0.16506 271.44)",
+          "oklch(72.14% 0.16506 271.44)",
+          "oklch(83.57% 0.16506 271.44)",
+          "oklch(95.00% 0.16506 271.44)"
+        ]
+      },
+      "indigo-hover": {
+        "role": "primary",
+        "displayName": "Índigo — hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.14552 270.79)",
+          "oklch(26.43% 0.14552 270.79)",
+          "oklch(37.86% 0.14552 270.79)",
+          "oklch(49.29% 0.14552 270.79)",
+          "oklch(60.71% 0.14552 270.79)",
+          "oklch(72.14% 0.14552 270.79)",
+          "oklch(83.57% 0.14552 270.79)",
+          "oklch(95.00% 0.14552 270.79)"
+        ]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Perigo",
+        "tonalRamp": [
+          "oklch(15.00% 0.15140 17.40)",
+          "oklch(26.43% 0.15140 17.40)",
+          "oklch(37.86% 0.15140 17.40)",
+          "oklch(49.29% 0.15140 17.40)",
+          "oklch(60.71% 0.15140 17.40)",
+          "oklch(72.14% 0.15140 17.40)",
+          "oklch(83.57% 0.15140 17.40)",
+          "oklch(95.00% 0.15140 17.40)"
+        ]
+      },
+      "site-bg": {
+        "role": "neutral",
+        "displayName": "site-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.03982 265.75)",
+          "oklch(26.43% 0.03982 265.75)",
+          "oklch(37.86% 0.03982 265.75)",
+          "oklch(49.29% 0.03982 265.75)",
+          "oklch(60.71% 0.03982 265.75)",
+          "oklch(72.14% 0.03982 265.75)",
+          "oklch(83.57% 0.03982 265.75)",
+          "oklch(95.00% 0.03982 265.75)"
+        ]
+      },
+      "site-depth": {
+        "role": "neutral",
+        "displayName": "site-depth",
+        "tonalRamp": [
+          "oklch(15.00% 0.03176 264.66)",
+          "oklch(26.43% 0.03176 264.66)",
+          "oklch(37.86% 0.03176 264.66)",
+          "oklch(49.29% 0.03176 264.66)",
+          "oklch(60.71% 0.03176 264.66)",
+          "oklch(72.14% 0.03176 264.66)",
+          "oklch(83.57% 0.03176 264.66)",
+          "oklch(95.00% 0.03176 264.66)"
+        ]
+      },
+      "site-text": {
+        "role": "neutral",
+        "displayName": "site-text",
+        "tonalRamp": [
+          "oklch(15.00% 0.00581 264.53)",
+          "oklch(26.43% 0.00581 264.53)",
+          "oklch(37.86% 0.00581 264.53)",
+          "oklch(49.29% 0.00581 264.53)",
+          "oklch(60.71% 0.00581 264.53)",
+          "oklch(72.14% 0.00581 264.53)",
+          "oklch(83.57% 0.00581 264.53)",
+          "oklch(95.00% 0.00581 264.53)"
+        ]
+      },
+      "site-muted": {
+        "role": "neutral",
+        "displayName": "site-muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.01918 261.32)",
+          "oklch(26.43% 0.01918 261.32)",
+          "oklch(37.86% 0.01918 261.32)",
+          "oklch(49.29% 0.01918 261.32)",
+          "oklch(60.71% 0.01918 261.32)",
+          "oklch(72.14% 0.01918 261.32)",
+          "oklch(83.57% 0.01918 261.32)",
+          "oklch(95.00% 0.01918 261.32)"
+        ]
+      },
+      "site-card": {
+        "role": "neutral",
+        "displayName": "site-card",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00 / 0.04)",
+          "oklch(26.43% 0.00000 0.00 / 0.04)",
+          "oklch(37.86% 0.00000 0.00 / 0.04)",
+          "oklch(49.29% 0.00000 0.00 / 0.04)",
+          "oklch(60.71% 0.00000 0.00 / 0.04)",
+          "oklch(72.14% 0.00000 0.00 / 0.04)",
+          "oklch(83.57% 0.00000 0.00 / 0.04)",
+          "oklch(95.00% 0.00000 0.00 / 0.04)"
+        ]
+      },
+      "site-line": {
+        "role": "neutral",
+        "displayName": "site-line",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00 / 0.12)",
+          "oklch(26.43% 0.00000 0.00 / 0.12)",
+          "oklch(37.86% 0.00000 0.00 / 0.12)",
+          "oklch(49.29% 0.00000 0.00 / 0.12)",
+          "oklch(60.71% 0.00000 0.00 / 0.12)",
+          "oklch(72.14% 0.00000 0.00 / 0.12)",
+          "oklch(83.57% 0.00000 0.00 / 0.12)",
+          "oklch(95.00% 0.00000 0.00 / 0.12)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "white",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "enrollment-bg": {
+        "role": "neutral",
+        "displayName": "enrollment-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.00344 174.48)",
+          "oklch(26.43% 0.00344 174.48)",
+          "oklch(37.86% 0.00344 174.48)",
+          "oklch(49.29% 0.00344 174.48)",
+          "oklch(60.71% 0.00344 174.48)",
+          "oklch(72.14% 0.00344 174.48)",
+          "oklch(83.57% 0.00344 174.48)",
+          "oklch(95.00% 0.00344 174.48)"
+        ]
+      },
+      "enrollment-soft": {
+        "role": "neutral",
+        "displayName": "enrollment-soft",
+        "tonalRamp": [
+          "oklch(15.00% 0.00841 168.75)",
+          "oklch(26.43% 0.00841 168.75)",
+          "oklch(37.86% 0.00841 168.75)",
+          "oklch(49.29% 0.00841 168.75)",
+          "oklch(60.71% 0.00841 168.75)",
+          "oklch(72.14% 0.00841 168.75)",
+          "oklch(83.57% 0.00841 168.75)",
+          "oklch(95.00% 0.00841 168.75)"
+        ]
+      },
+      "enrollment-text": {
+        "role": "neutral",
+        "displayName": "enrollment-text",
+        "tonalRamp": [
+          "oklch(15.00% 0.01939 185.18)",
+          "oklch(26.43% 0.01939 185.18)",
+          "oklch(37.86% 0.01939 185.18)",
+          "oklch(49.29% 0.01939 185.18)",
+          "oklch(60.71% 0.01939 185.18)",
+          "oklch(72.14% 0.01939 185.18)",
+          "oklch(83.57% 0.01939 185.18)",
+          "oklch(95.00% 0.01939 185.18)"
+        ]
+      },
+      "enrollment-muted": {
+        "role": "neutral",
+        "displayName": "enrollment-muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.01898 177.74)",
+          "oklch(26.43% 0.01898 177.74)",
+          "oklch(37.86% 0.01898 177.74)",
+          "oklch(49.29% 0.01898 177.74)",
+          "oklch(60.71% 0.01898 177.74)",
+          "oklch(72.14% 0.01898 177.74)",
+          "oklch(83.57% 0.01898 177.74)",
+          "oklch(95.00% 0.01898 177.74)"
+        ]
+      },
+      "enrollment-line": {
+        "role": "neutral",
+        "displayName": "enrollment-line",
+        "tonalRamp": [
+          "oklch(15.00% 0.01200 170.24)",
+          "oklch(26.43% 0.01200 170.24)",
+          "oklch(37.86% 0.01200 170.24)",
+          "oklch(49.29% 0.01200 170.24)",
+          "oklch(60.71% 0.01200 170.24)",
+          "oklch(72.14% 0.01200 170.24)",
+          "oklch(83.57% 0.01200 170.24)",
+          "oklch(95.00% 0.01200 170.24)"
+        ]
+      },
+      "courses-bg": {
+        "role": "neutral",
+        "displayName": "courses-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.01643 301.22)",
+          "oklch(26.43% 0.01643 301.22)",
+          "oklch(37.86% 0.01643 301.22)",
+          "oklch(49.29% 0.01643 301.22)",
+          "oklch(60.71% 0.01643 301.22)",
+          "oklch(72.14% 0.01643 301.22)",
+          "oklch(83.57% 0.01643 301.22)",
+          "oklch(95.00% 0.01643 301.22)"
+        ]
+      },
+      "courses-soft": {
+        "role": "neutral",
+        "displayName": "courses-soft",
+        "tonalRamp": [
+          "oklch(15.00% 0.01717 99.59)",
+          "oklch(26.43% 0.01717 99.59)",
+          "oklch(37.86% 0.01717 99.59)",
+          "oklch(49.29% 0.01717 99.59)",
+          "oklch(60.71% 0.01717 99.59)",
+          "oklch(72.14% 0.01717 99.59)",
+          "oklch(83.57% 0.01717 99.59)",
+          "oklch(95.00% 0.01717 99.59)"
+        ]
+      },
+      "courses-text": {
+        "role": "neutral",
+        "displayName": "courses-text",
+        "tonalRamp": [
+          "oklch(15.00% 0.01539 182.99)",
+          "oklch(26.43% 0.01539 182.99)",
+          "oklch(37.86% 0.01539 182.99)",
+          "oklch(49.29% 0.01539 182.99)",
+          "oklch(60.71% 0.01539 182.99)",
+          "oklch(72.14% 0.01539 182.99)",
+          "oklch(83.57% 0.01539 182.99)",
+          "oklch(95.00% 0.01539 182.99)"
+        ]
+      },
+      "courses-muted": {
+        "role": "neutral",
+        "displayName": "courses-muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.01632 168.80)",
+          "oklch(26.43% 0.01632 168.80)",
+          "oklch(37.86% 0.01632 168.80)",
+          "oklch(49.29% 0.01632 168.80)",
+          "oklch(60.71% 0.01632 168.80)",
+          "oklch(72.14% 0.01632 168.80)",
+          "oklch(83.57% 0.01632 168.80)",
+          "oklch(95.00% 0.01632 168.80)"
+        ]
+      },
+      "courses-line": {
+        "role": "neutral",
+        "displayName": "courses-line",
+        "tonalRamp": [
+          "oklch(15.00% 0.03881 298.67)",
+          "oklch(26.43% 0.03881 298.67)",
+          "oklch(37.86% 0.03881 298.67)",
+          "oklch(49.29% 0.03881 298.67)",
+          "oklch(60.71% 0.03881 298.67)",
+          "oklch(72.14% 0.03881 298.67)",
+          "oklch(83.57% 0.03881 298.67)",
+          "oklch(95.00% 0.03881 298.67)"
+        ]
+      },
+      "attendance-bg": {
+        "role": "neutral",
+        "displayName": "attendance-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.00542 274.97)",
+          "oklch(26.43% 0.00542 274.97)",
+          "oklch(37.86% 0.00542 274.97)",
+          "oklch(49.29% 0.00542 274.97)",
+          "oklch(60.71% 0.00542 274.97)",
+          "oklch(72.14% 0.00542 274.97)",
+          "oklch(83.57% 0.00542 274.97)",
+          "oklch(95.00% 0.00542 274.97)"
+        ]
+      },
+      "attendance-soft": {
+        "role": "neutral",
+        "displayName": "attendance-soft",
+        "tonalRamp": [
+          "oklch(15.00% 0.01608 262.75)",
+          "oklch(26.43% 0.01608 262.75)",
+          "oklch(37.86% 0.01608 262.75)",
+          "oklch(49.29% 0.01608 262.75)",
+          "oklch(60.71% 0.01608 262.75)",
+          "oklch(72.14% 0.01608 262.75)",
+          "oklch(83.57% 0.01608 262.75)",
+          "oklch(95.00% 0.01608 262.75)"
+        ]
+      },
+      "attendance-text": {
+        "role": "neutral",
+        "displayName": "attendance-text",
+        "tonalRamp": [
+          "oklch(15.00% 0.02656 253.31)",
+          "oklch(26.43% 0.02656 253.31)",
+          "oklch(37.86% 0.02656 253.31)",
+          "oklch(49.29% 0.02656 253.31)",
+          "oklch(60.71% 0.02656 253.31)",
+          "oklch(72.14% 0.02656 253.31)",
+          "oklch(83.57% 0.02656 253.31)",
+          "oklch(95.00% 0.02656 253.31)"
+        ]
+      },
+      "attendance-muted": {
+        "role": "neutral",
+        "displayName": "attendance-muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.03104 260.27)",
+          "oklch(26.43% 0.03104 260.27)",
+          "oklch(37.86% 0.03104 260.27)",
+          "oklch(49.29% 0.03104 260.27)",
+          "oklch(60.71% 0.03104 260.27)",
+          "oklch(72.14% 0.03104 260.27)",
+          "oklch(83.57% 0.03104 260.27)",
+          "oklch(95.00% 0.03104 260.27)"
+        ]
+      },
+      "attendance-line": {
+        "role": "neutral",
+        "displayName": "attendance-line",
+        "tonalRamp": [
+          "oklch(15.00% 0.01756 264.48)",
+          "oklch(26.43% 0.01756 264.48)",
+          "oklch(37.86% 0.01756 264.48)",
+          "oklch(49.29% 0.01756 264.48)",
+          "oklch(60.71% 0.01756 264.48)",
+          "oklch(72.14% 0.01756 264.48)",
+          "oklch(83.57% 0.01756 264.48)",
+          "oklch(95.00% 0.01756 264.48)"
+        ]
+      },
+      "attendance-nav-bg": {
+        "role": "neutral",
+        "displayName": "attendance-nav-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.00412 271.37)",
+          "oklch(26.43% 0.00412 271.37)",
+          "oklch(37.86% 0.00412 271.37)",
+          "oklch(49.29% 0.00412 271.37)",
+          "oklch(60.71% 0.00412 271.37)",
+          "oklch(72.14% 0.00412 271.37)",
+          "oklch(83.57% 0.00412 271.37)",
+          "oklch(95.00% 0.00412 271.37)"
+        ]
+      },
+      "attendance-nav-text": {
+        "role": "neutral",
+        "displayName": "attendance-nav-text",
+        "tonalRamp": [
+          "oklch(15.00% 0.03518 256.10)",
+          "oklch(26.43% 0.03518 256.10)",
+          "oklch(37.86% 0.03518 256.10)",
+          "oklch(49.29% 0.03518 256.10)",
+          "oklch(60.71% 0.03518 256.10)",
+          "oklch(72.14% 0.03518 256.10)",
+          "oklch(83.57% 0.03518 256.10)",
+          "oklch(95.00% 0.03518 256.10)"
+        ]
+      },
+      "attendance-nav-hover": {
+        "role": "neutral",
+        "displayName": "attendance-nav-hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.02117 268.43)",
+          "oklch(26.43% 0.02117 268.43)",
+          "oklch(37.86% 0.02117 268.43)",
+          "oklch(49.29% 0.02117 268.43)",
+          "oklch(60.71% 0.02117 268.43)",
+          "oklch(72.14% 0.02117 268.43)",
+          "oklch(83.57% 0.02117 268.43)",
+          "oklch(95.00% 0.02117 268.43)"
+        ]
+      },
+      "admin-bg": {
+        "role": "neutral",
+        "displayName": "admin-bg",
+        "tonalRamp": [
+          "oklch(15.00% 0.00287 264.54)",
+          "oklch(26.43% 0.00287 264.54)",
+          "oklch(37.86% 0.00287 264.54)",
+          "oklch(49.29% 0.00287 264.54)",
+          "oklch(60.71% 0.00287 264.54)",
+          "oklch(72.14% 0.00287 264.54)",
+          "oklch(83.57% 0.00287 264.54)",
+          "oklch(95.00% 0.00287 264.54)"
+        ]
+      },
+      "admin-sidebar": {
+        "role": "neutral",
+        "displayName": "admin-sidebar",
+        "tonalRamp": [
+          "oklch(15.00% 0.00850 268.08)",
+          "oklch(26.43% 0.00850 268.08)",
+          "oklch(37.86% 0.00850 268.08)",
+          "oklch(49.29% 0.00850 268.08)",
+          "oklch(60.71% 0.00850 268.08)",
+          "oklch(72.14% 0.00850 268.08)",
+          "oklch(83.57% 0.00850 268.08)",
+          "oklch(95.00% 0.00850 268.08)"
+        ]
+      },
+      "admin-line": {
+        "role": "neutral",
+        "displayName": "admin-line",
+        "tonalRamp": [
+          "oklch(15.00% 0.01044 261.79)",
+          "oklch(26.43% 0.01044 261.79)",
+          "oklch(37.86% 0.01044 261.79)",
+          "oklch(49.29% 0.01044 261.79)",
+          "oklch(60.71% 0.01044 261.79)",
+          "oklch(72.14% 0.01044 261.79)",
+          "oklch(83.57% 0.01044 261.79)",
+          "oklch(95.00% 0.01044 261.79)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-site": {
+        "displayName": "Título da página inicial",
+        "purpose": "Título principal em index.html; 34 px na regra até 900 px."
+      },
+      "headline-admin": {
+        "displayName": "Título da secretaria",
+        "purpose": "Medida da última sobrescrita em secretaria.html."
+      },
+      "body-academic": {
+        "displayName": "Texto acadêmico",
+        "purpose": "Família de inscrição, secretaria, cursos e presença; tamanho depende do contexto."
+      },
+      "label-enrollment": {
+        "displayName": "Rótulo de formulário",
+        "purpose": "Rótulos em inscrição e secretaria."
+      }
+    },
+    "shadows": [
+      {
+        "name": "site-card",
+        "value": "0 10px 30px rgba(0,0,0,.28)",
+        "purpose": "Cartões sobre fundo escuro em index.html."
+      },
+      {
+        "name": "enrollment-panel",
+        "value": "0 18px 48px rgba(22,44,39,.12)",
+        "purpose": "Formulário em inscricao.html e autenticação da secretaria."
+      },
+      {
+        "name": "courses-panel",
+        "value": "0 18px 42px rgba(74,45,122,.14)",
+        "purpose": "Painéis em cursos.html."
+      },
+      {
+        "name": "attendance-panel",
+        "value": "0 18px 40px rgba(37,47,77,.11)",
+        "purpose": "Painéis em presenca.html."
+      },
+      {
+        "name": "admin-panel",
+        "value": "0 1px 2px rgba(15,23,42,.05)",
+        "purpose": "Sobrescrita final dos painéis operacionais em secretaria.html."
+      },
+      {
+        "name": "courses-student",
+        "value": "0 8px 22px rgba(74,45,122,.08)",
+        "purpose": "Cartão comum de aluno em cursos.html."
+      }
+    ],
+    "motion": [
+      {
+        "name": "site-social-card",
+        "value": "transform .2s ease,border-color .2s ease,background .2s ease",
+        "purpose": "Cartões de redes sociais em index.html; translateY(-2px) no hover. Não há alternativa global de movimento reduzido implementada."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "admin-menu",
+        "value": "480px"
+      },
+      {
+        "name": "academic-small",
+        "value": "560px"
+      },
+      {
+        "name": "attendance-header",
+        "value": "640px"
+      },
+      {
+        "name": "enrollment-fields",
+        "value": "680px"
+      },
+      {
+        "name": "site-social",
+        "value": "700px"
+      },
+      {
+        "name": "grades-small",
+        "value": "720px"
+      },
+      {
+        "name": "admin-sidebar-and-users",
+        "value": "760px"
+      },
+      {
+        "name": "grades-filters",
+        "value": "860px"
+      },
+      {
+        "name": "site-and-courses",
+        "value": "900px"
+      },
+      {
+        "name": "admin-workspace",
+        "value": "920px"
+      },
+      {
+        "name": "attendance-layout",
+        "value": "980px"
+      },
+      {
+        "name": "courses-layout",
+        "value": "1160px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Ação principal — página inicial",
+      "kind": "button",
+      "refersTo": "button-site-primary",
+      "description": "Extraído de index.html; Inter depende da fonte disponível na página hospedeira.",
+      "html": "<a class=\"ds-site-primary\" href=\"#cursos\">Ver cursos</a>",
+      "css": ".ds-site-primary{display:inline-block;padding:12px 18px;border-radius:14px;border:1px solid transparent;background:var(--brand,#2563eb);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;font-weight:800;text-decoration:none}.ds-site-primary:hover{text-decoration:underline}.ds-site-primary:focus-visible{outline:auto}.ds-site-primary[aria-disabled=\"true\"]{pointer-events:none;opacity:.55}"
+    },
+    {
+      "name": "Ação secundária — página inicial",
+      "kind": "button",
+      "refersTo": "button-site-secondary",
+      "description": "Link contornado de index.html, sobre amostra do fundo da própria página.",
+      "html": "<div class=\"ds-site-sample\"><a class=\"ds-site-secondary\" href=\"#contato\">Contato</a></div>",
+      "css": ".ds-site-sample{background:var(--bg,#0f172a);padding:18px}.ds-site-secondary{display:inline-block;padding:12px 18px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:14px;color:var(--text,#e5e7eb);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;font-weight:800;text-decoration:none}.ds-site-secondary:hover{text-decoration:underline}.ds-site-secondary:focus-visible{outline:auto}"
+    },
+    {
+      "name": "Ação principal — inscrição",
+      "kind": "button",
+      "refersTo": "button-enrollment-primary",
+      "description": "Extraído de inscricao.html; inclui hover e disabled observados.",
+      "html": "<button class=\"ds-enrollment-primary\" type=\"button\">Enviar inscrição</button>",
+      "css": ".ds-enrollment-primary{min-height:44px;padding:0 18px;border:0;border-radius:6px;background:var(--brand,#126b5b);color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:800;cursor:pointer}.ds-enrollment-primary:hover{background:var(--brand-dark,#0b4d42)}.ds-enrollment-primary:focus-visible{outline:auto}.ds-enrollment-primary:disabled{cursor:not-allowed;opacity:.72}"
+    },
+    {
+      "name": "Ação alternativa — secretaria",
+      "kind": "button",
+      "refersTo": "button-admin-ghost",
+      "description": "Extraído de secretaria.html; não há tratamento visual de hover próprio neste botão.",
+      "html": "<button class=\"ds-admin-ghost\" type=\"button\">Limpar</button>",
+      "css": ".ds-admin-ghost{min-height:40px;padding:0 14px;border:1px solid var(--line,#d8e2de);border-radius:6px;background:var(--surface-strong,#edf4f1);color:var(--text,#1c2a28);font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;cursor:pointer}.ds-admin-ghost:hover{background:var(--surface-strong,#edf4f1)}.ds-admin-ghost:focus-visible{outline:auto}"
+    },
+    {
+      "name": "Ação principal — presença",
+      "kind": "button",
+      "refersTo": "button-attendance-primary",
+      "description": "Extraído de presenca.html; preserva a altura atual, sem corrigir a área de toque.",
+      "html": "<button class=\"ds-attendance-primary\" type=\"button\">Entrar</button>",
+      "css": ".ds-attendance-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 14px;border:0;border-radius:6px;background:var(--brand,#4457c0);color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:800;cursor:pointer}.ds-attendance-primary:hover{background:var(--brand-dark,#33449d)}.ds-attendance-primary:focus-visible{outline:auto}"
+    },
+    {
+      "name": "Campo — inscrição",
+      "kind": "input",
+      "refersTo": "input-enrollment",
+      "description": "Rótulo e anel de foco extraídos de inscricao.html. O hover mantém a borda padrão.",
+      "html": "<label class=\"ds-enrollment-label\">Nome completo<input class=\"ds-enrollment-input\" type=\"text\" placeholder=\"Nome completo\"></label>",
+      "css": ".ds-enrollment-label{display:grid;gap:7px;color:var(--muted,#64736f);font-family:Arial,Helvetica,sans-serif;font-size:.86rem;font-weight:700}.ds-enrollment-input{width:100%;min-height:42px;padding:10px 11px;border:1px solid var(--line,#d8e2de);border-radius:6px;background:#fff;color:var(--text,#1c2a28);font-family:Arial,Helvetica,sans-serif;font-size:.86rem;font-weight:700;outline:none}.ds-enrollment-input:hover{border-color:var(--line,#d8e2de)}.ds-enrollment-input:focus,.ds-enrollment-input:focus-visible{border-color:var(--brand,#126b5b);box-shadow:0 0 0 3px rgba(18,107,91,.13)}"
+    },
+    {
+      "name": "Navegação — presença",
+      "kind": "nav",
+      "refersTo": "navigation-attendance",
+      "description": "Extraído de presenca.html; itens e caminhos ilustram a navegação existente sem lógica de sessão.",
+      "html": "<nav class=\"ds-attendance-nav\" aria-label=\"Navegação acadêmica\"><a class=\"ds-attendance-link\" href=\"cursos.html\">Dashboard</a><a class=\"ds-attendance-link ds-attendance-current\" aria-current=\"page\" href=\"presenca.html\">Presença</a><a class=\"ds-attendance-link\" href=\"notas.html\">Notas</a></nav>",
+      "css": ".ds-attendance-nav{display:flex;gap:4px;align-items:center;padding:7px 10px;border-top:1px solid var(--line,#dde3ef);background:#f8f9fc;overflow-x:auto}.ds-attendance-link{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border-radius:7px;color:#536174;font-family:Arial,Helvetica,sans-serif;font-size:.84rem;font-weight:800;text-decoration:none;white-space:nowrap}.ds-attendance-link:hover{background:#eaf0ff;color:var(--brand,#4457c0)}.ds-attendance-link:focus-visible{outline:auto}.ds-attendance-link.ds-attendance-current{background:var(--brand,#4457c0);color:#fff;box-shadow:0 5px 12px rgba(68,87,192,.2)}@media(max-width:640px){.ds-attendance-nav{padding:7px}.ds-attendance-link{min-height:36px;padding:0 10px}}"
+    },
+    {
+      "name": "Etiqueta de matrícula cancelada",
+      "kind": "chip",
+      "refersTo": "status-admin-cancelled",
+      "description": "Extraído de secretaria.html; etiqueta informativa, não interativa.",
+      "html": "<span class=\"ds-status-cancelled\">Cancelada</span>",
+      "css": ".ds-status-cancelled{display:inline-flex;align-items:center;justify-content:center;min-width:86px;min-height:28px;padding:5px 10px;border-radius:999px;background:#b43f4c;color:#fff;font-family:Arial,Helvetica,sans-serif;font-size:.82rem;font-weight:800;white-space:nowrap}"
+    },
+    {
+      "name": "Painel — inscrição",
+      "kind": "card",
+      "refersTo": "card-enrollment",
+      "description": "Superfície do formulário em inscricao.html; texto demonstrativo sem dados pessoais.",
+      "html": "<section class=\"ds-enrollment-card\"><h2 class=\"ds-enrollment-title\">Inscrição</h2><p class=\"ds-enrollment-copy\">Dados do candidato</p></section>",
+      "css": ".ds-enrollment-card{display:grid;gap:14px;padding:18px;border:1px solid var(--line,#d8e2de);border-radius:8px;background:var(--surface,#fff);box-shadow:var(--shadow,0 18px 48px rgba(22,44,39,.12));color:var(--text,#1c2a28);font-family:Arial,Helvetica,sans-serif}.ds-enrollment-title{margin:0;font-size:1.5em}.ds-enrollment-copy{margin:0}"
+    },
+    {
+      "name": "Cartão de aluno — cursos",
+      "kind": "card",
+      "refersTo": "card-student",
+      "description": "Estrutura de cursos.html com iniciais e conteúdo demonstrativo; não representa um aluno real.",
+      "html": "<article class=\"ds-student-card\"><div class=\"ds-student-photo\"><span class=\"ds-student-placeholder\">AL</span></div><div class=\"ds-student-info\"><span class=\"ds-student-name\">Nome do aluno</span><span class=\"ds-student-meta\">Curso</span></div></article>",
+      "css": ".ds-student-card{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:center;width:100%;min-height:104px;padding:11px 12px;border:1px solid var(--line,#e1d9f5);border-radius:8px;background:#fff;box-shadow:0 8px 22px rgba(74,45,122,.08);overflow:hidden;color:var(--text,#26312f);font-family:Arial,Helvetica,sans-serif}.ds-student-photo{position:relative;width:72px;height:72px;border-radius:9px;background:#efe0ff;border:2px solid #d4b8ff;overflow:hidden}.ds-student-placeholder{display:grid;place-items:center;width:100%;height:100%;font-weight:900;font-size:1.45rem;color:var(--brand,#6d3fd1)}.ds-student-info{min-width:0;padding-right:2px}.ds-student-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800}.ds-student-meta{display:block;margin-top:5px;color:var(--muted,#68746f);font-size:.9rem}@media(max-width:560px){.ds-student-card{grid-template-columns:60px minmax(0,1fr);gap:10px;padding:12px}.ds-student-photo{width:60px;height:60px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Comunidade de formação",
+    "overview": "“Comunidade de formação” é a expressão escolhida para descrever o sistema existente: acolhedor e próximo da comunidade. Botões, cartões e campos devem ser simples, acolhedores e fáceis de reconhecer. A documentação evita recomendar aparência de loja ou publicidade.\n\nO código reúne famílias visuais por área: página inicial escura com azul institucional; inscrição e formulários da secretaria com verde profundo; cursos com violeta e amarelo; presença e páginas relacionadas com índigo. A secretaria também possui uma estrutura administrativa de barra lateral escura e conteúdo claro. Essas diferenças são registradas como implementadas; não constituem um alternador global de tema.\n\nRegistro baseado no código local, sem validação visual em navegador. As descrições qualitativas foram confirmadas pelo responsável; as medidas foram extraídas dos estilos, considerando suas sobrescritas. Os nomes dos tokens desta documentação distinguem áreas que reutilizam nomes CSS como --brand. O arquivo assets/ipda-system.css existe, mas nenhum dos dez HTML examinados o referencia; seus valores não são tratados como tema ativo.",
+    "keyCharacteristics": [
+      "Acolhedor e próximo da comunidade.",
+      "Componentes simples e reconhecíveis.",
+      "Paletas contextualizadas por área.",
+      "Sombras e camadas para separação discreta.",
+      "Sem recomendação de aparência de loja ou publicidade."
+    ],
+    "rules": [],
+    "dos": [
+      "**Do** preservar a família visual da página ao refinar componentes existentes.",
+      "**Do** usar sombras e camadas para distinguir painéis e conteúdos.",
+      "**Do** manter botões, cartões e campos simples, acolhedores e fáceis de reconhecer.",
+      "**Do** consultar as regras posteriores e as media queries antes de reutilizar medidas.",
+      "**Do** preservar os rótulos de campos e os indicadores de foco já presentes."
+    ],
+    "donts": [
+      "**Don't** recomendar aparência de loja ou publicidade.",
+      "**Don't** tratar a paleta de uma área como tema global de todo o portal.",
+      "**Don't** assumir que assets/ipda-system.css já governa as páginas.",
+      "**Don't** transformar uma deficiência de acessibilidade observada em regra a replicar.",
+      "**Don't** apresentar rampas tonais geradas para o painel como cores já implementadas."
+    ]
+  }
+}
