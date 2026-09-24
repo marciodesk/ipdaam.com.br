@@ -246,7 +246,7 @@ async function loadCall() {
       if(version!==loadVersion) return;
       rows.push(...data.rows); snapshot=data.snapshot; cursor=data.nextCursor;
     } while(cursor);
-    callRows=rows; callSnapshot=snapshot; ready=true; notice.hidden=rows.length>0;
+    callRows=rows.sort((a,b)=>String(a.fullName || '').trim().localeCompare(String(b.fullName || '').trim(),'pt-BR',{sensitivity:'base'}) || String(a.id).localeCompare(String(b.id))); callSnapshot=snapshot; ready=true; notice.hidden=rows.length>0;
     notice.textContent='Nenhum aluno ativo neste curso.'; renderCall();
     const risk=await requestJson(`/api/attendance?${new URLSearchParams({view:'risk',course:context.course,module:context.module})}`);
     if(version===loadVersion) {absenceAlerts=risk.alerts||[];renderAbsenceAlerts();}
