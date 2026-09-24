@@ -1,0 +1,39 @@
+:root{--nav-bg:#080a0e;--nav-active:#4457c0;--nav-text:#d5dbe6;--nav-muted:#b9c8e5;--nav-border:#465064;--nav-focus:#93c5fd;--nav-hover:#18202e;--nav-mobile-text:#26334a}
+/* Shared navigation for authenticated academic pages. */
+body:has(.system-sidebar:not([hidden])){padding-left:240px}
+body .system-sidebar{position:fixed;inset:0 auto 0 0;z-index:30;width:240px;height:100dvh;margin:0;display:flex;flex-direction:column;border:0!important;border-radius:0!important;background:var(--nav-bg)!important;box-shadow:none;overflow-y:auto;color:#f3f4f6}
+body .system-sidebar[hidden]{display:none!important}
+body .system-sidebar .header-main,body .system-sidebar .system-main{display:flex;flex-direction:column;align-items:stretch;gap:18px;padding:24px 18px}
+body .system-sidebar .system-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+body .system-sidebar .brand-copy,body .system-sidebar .system-brand>span:last-child{color:#fff;font-size:1rem}
+body .system-sidebar .system-brand small{color:var(--nav-muted);font-size:.68rem}
+body .system-sidebar .brand-symbol{flex:0 0 40px;background:var(--nav-active)!important;color:#fff;border:0}
+body .system-sidebar .account-area{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+body .system-sidebar .user-badge{max-width:none;white-space:normal;text-align:left;background:#192234;color:#dbeafe;border-radius:6px}
+body .system-sidebar .system-nav{display:flex;flex-direction:column;gap:6px;padding:0 12px 20px;background:transparent!important;border:0!important;overflow:visible}
+body .system-sidebar .system-nav[hidden]{display:none!important}
+body .system-sidebar .system-nav a{display:flex;align-items:center;justify-content:flex-start;gap:10px;min-height:46px;width:100%;margin:0;padding:12px;border:0;border-radius:6px;background:transparent!important;color:var(--nav-text)!important;font-size:.875rem;font-weight:600;line-height:1.4;text-decoration:none;white-space:normal}
+body .system-sidebar .system-nav a[hidden]{display:none!important}
+body .system-sidebar .system-nav a:hover{background:var(--nav-hover)!important;color:#fff!important}
+body .system-sidebar .system-nav a:is(.active,.is-active,[aria-current="page"]){background:var(--nav-active)!important;color:#fff!important}
+body .system-sidebar .nav-icon{display:none}
+body .system-sidebar .menu-icon{width:18px;height:18px;flex:0 0 18px}
+body .system-sidebar .logout-button,body .system-sidebar .logout{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin:0;padding:10px;border:1px solid var(--nav-border)!important;border-radius:6px;background:transparent!important;color:#fff!important;cursor:pointer}
+body .system-sidebar .sidebar-footer{margin-top:auto;padding:16px}
+body .system-sidebar a:focus-visible,body .system-sidebar button:focus-visible,.system-menu-toggle:focus-visible{outline:2px solid var(--nav-focus);outline-offset:2px}
+body:has(.system-sidebar) .app-shell{display:block;width:100%!important}
+body:has(.system-sidebar) .app-content{width:100%;min-width:0}
+.system-menu-toggle{display:none}
+@media(max-width:760px){
+  body:has(.system-sidebar:not([hidden])){padding-left:0;padding-top:0}
+  body .system-sidebar{position:relative;inset:auto;width:100%;height:auto;max-height:none;display:none}
+  body.system-menu-open .system-sidebar:not([hidden]){display:flex}
+  body:has(.system-sidebar:not([hidden])) .system-menu-toggle{position:relative;z-index:31;inset:auto;display:flex;align-items:center;gap:10px;width:100%;min-height:62px;margin:0;padding:12px 18px;border:0;border-bottom:1px solid #dde3ef;border-radius:0;background:#fff;color:var(--nav-mobile-text);font:700 1rem Arial,sans-serif;cursor:pointer}
+  .system-menu-toggle svg{width:22px;height:22px}
+  body .system-sidebar .header-main,body .system-sidebar .system-main{padding:18px}
+  body .system-sidebar .system-nav{display:flex;flex-wrap:nowrap}
+}
+
+body .system-sidebar .system-nav a{overflow-wrap:anywhere;min-width:0}
+body .system-sidebar .brand-copy{min-width:0;overflow-wrap:anywhere}
+body .system-sidebar .logout-button[hidden],body .system-sidebar .logout[hidden]{display:none!important}

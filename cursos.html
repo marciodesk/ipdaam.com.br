@@ -9,14 +9,18 @@
     .content-grid{grid-template-columns:270px minmax(0,1fr) 350px}.birthday-month-panel{display:grid;gap:12px;padding:14px;border:1px solid #f0cd55;border-radius:8px;background:#fffdf6;box-shadow:0 14px 32px rgba(128,84,28,.14)}.birthday-month-panel h2{font-size:1rem;line-height:1.2}.birthday-month-list{display:grid;gap:10px}.birthday-month-card{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px 10px;align-items:start;padding:10px;border:1px solid rgba(244,196,0,.5);border-radius:8px;background:#fff}.birthday-month-day{display:grid;place-items:center;min-height:44px;border-radius:7px;background:#f4c400;color:#4b3700;font-size:.9rem;font-weight:900}.birthday-month-info{min-width:0}.birthday-month-name{display:block;font-size:.94rem;font-weight:900;line-height:1.18;overflow-wrap:anywhere}.birthday-month-meta{display:block;margin-top:3px;color:var(--muted);font-size:.78rem;font-weight:700}.birthday-month-action{display:block;grid-column:1/-1}.birthday-month-action .birthday-message{width:100%;min-width:0;min-height:34px;padding:6px 10px}.birthday-month-action .message-unavailable{margin-top:2px;text-align:center}.birthday-month-empty{margin:0;padding:12px;border:1px dashed rgba(244,196,0,.75);border-radius:8px;color:var(--muted);font-size:.85rem;font-weight:700;text-align:center}.student-card.is-birthday{align-items:center}.birthday-panel{grid-template-columns:minmax(0,max-content) auto;align-items:center}.birthday-actions{display:block}.birthday-note{display:none}.birthday-message{min-width:138px}@media(max-width:1160px){.content-grid{grid-template-columns:270px minmax(0,1fr)}.birthday-month-panel{grid-column:1/-1;order:3}.birthday-month-list{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}}@media(max-width:900px){.content-grid{grid-template-columns:1fr}}@media(max-width:560px){.birthday-panel{grid-template-columns:1fr}.birthday-message{width:100%}.birthday-month-list{grid-template-columns:1fr}}
   </style>
   <style>
-    .app-header{margin-bottom:20px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(74,45,122,.1);overflow:hidden}.header-main{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 17px}.system-brand,.login-brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none}.brand-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(145deg,var(--brand),#4f28a9);color:#fff;font-size:.8rem;font-weight:900}.brand-copy{display:grid;gap:2px;font-weight:900}.brand-copy small{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.login-brand{padding-bottom:14px;border-bottom:1px solid var(--line)}.system-nav{display:flex;gap:4px;padding:7px 10px;border-top:1px solid var(--line);background:#faf8ff;overflow-x:auto}.nav-link{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border-radius:7px;color:#59645f;font-size:.84rem;font-weight:800;text-decoration:none;white-space:nowrap}.nav-link.is-active{background:var(--brand);color:#fff}.logout-button{min-height:36px;padding:0 13px;border:1px solid #f0d2d6;border-radius:7px;background:#fff;color:var(--danger);font-weight:800;cursor:pointer}@media(max-width:560px){.shell{width:min(100% - 16px,1180px)}.app-header{border-radius:9px}.header-main{padding:12px}.system-nav{padding:6px}.nav-link{min-height:40px;padding:0 11px}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-card{min-height:82px}.course-panel,.students-panel{padding:13px}.student-card,.student-card.is-birthday{grid-template-columns:60px minmax(0,1fr);gap:10px}.photo-wrap,.student-card.is-birthday .photo-wrap{width:60px;height:60px}}
+    .app-header{margin-bottom:20px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(74,45,122,.1);overflow:hidden}.header-main{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 17px}.system-brand,.login-brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none}.brand-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(145deg,var(--brand),#4f28a9);color:#fff;font-size:.8rem;font-weight:900}.brand-copy{display:grid;gap:2px;font-weight:900}.brand-copy small{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.login-brand{padding-bottom:14px;border-bottom:1px solid var(--line)}.logout-button{min-height:36px;padding:0 13px;border:1px solid #f0d2d6;border-radius:7px;background:#fff;color:var(--danger);font-weight:800;cursor:pointer}@media(max-width:560px){.shell{width:min(100% - 16px,1180px)}.app-header{border-radius:9px}.header-main{padding:12px}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-card{min-height:82px}.course-panel,.students-panel{padding:13px}.student-card,.student-card.is-birthday{grid-template-columns:60px minmax(0,1fr);gap:10px}.photo-wrap,.student-card.is-birthday .photo-wrap{width:60px;height:60px}}
   </style>
+<link rel="stylesheet" href="assets/system-navigation.css?v=20260922-2">
+<script src="assets/system-navigation.js?v=20260922-2" defer></script>
+<link rel="stylesheet" href="assets/dashboard-cards.css">
 </head>
 <body>
   <main class="shell">
-    <header id="appHeader" class="app-header" hidden><div class="header-main"><a class="system-brand" href="index.html"><span class="brand-symbol">ETDA</span><span class="brand-copy">ETDA Manaus<small>Gestao academica</small></span></a><button class="logout-button" id="logoutButton" type="button" hidden>Sair</button></div><nav class="system-nav" aria-label="Menu principal"><a class="nav-link" href="index.html">Site principal</a><a class="nav-link is-active" href="cursos.html" aria-current="page">Dashboard</a><a class="nav-link" href="secretaria.html">Secretaria</a><a class="nav-link" href="presenca.html">Presenca</a><a class="nav-link" href="usuarios-presenca.html">Usuarios</a></nav></header>
+    <header id="appHeader" class="app-header system-sidebar" hidden><div class="header-main"><a class="system-brand" href="presenca.html"><span class="brand-symbol">ETDA</span><span class="brand-copy">ETDA Manaus<small>Gestao academica</small></span></a><button class="logout-button" id="logoutButton" type="button" hidden>Sair</button></div><nav class="system-nav" aria-label="Menu principal"><a class="nav-link is-active" href="cursos.html" aria-current="page"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>Dashboard</a><a class="nav-link" href="secretaria.html"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 21V5h16v16M8 5V3h8v2M8 9h2m4 0h2M8 13h2m4 0h2M10 21v-4h4v4"/></svg>Secretaria</a><a class="nav-link" href="inscricao.html"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3H4v18h16V11M8 8h4M8 12h3M8 16h8M18 2v6M15 5h6"/></svg>Cadastrar aluno</a><a class="nav-link" href="presenca.html"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5H5v16h14V5h-4M9 3h6v4H9zM8 14l3 3 5-6"/></svg>Presenca</a><a class="nav-link" href="usuarios-presenca.html"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8M17 4a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-4"/></svg>Usuarios</a></nav></header>
 
-    <form id="authForm" class="auth-panel" autocomplete="off">
+    <p id="sessionLoading" role="status" style="padding:24px;text-align:center;color:#536174">Carregando o sistema...</p>
+    <form id="authForm" class="auth-panel" autocomplete="off" style="display:none">
       <div class="login-brand"><span class="brand-symbol">ETDA</span><span class="brand-copy">ETDA Manaus<small>Gestao academica</small></span></div>
       <h2>Acesso ao dashboard</h2>
       <label>Senha de acesso<input id="adminPassword" type="password" required></label>
@@ -28,13 +32,13 @@
       <div>
         <p class="eyebrow">Secretaria ETDA Manaus</p>
         <h1>Dashboard dos Cursos</h1>
-        <p>Acompanhe os alunos por curso, status e aniversariantes do dia em uma visao separada da validacao de matriculas.</p>
+        <p>Acompanhe os alunos por curso, status e aniversariantes da semana em uma visao separada da validacao de matriculas.</p>
       </div>
       <div class="summary-grid">
         <article class="summary-card"><span>Total</span><strong id="totalCount">0</strong></article>
         <article class="summary-card"><span>Ativas</span><strong id="activeCount">0</strong></article>
         <article class="summary-card"><span>Cursos</span><strong id="courseCount">0</strong></article>
-        <article class="summary-card"><span>Anivers.</span><strong id="birthdayCount">0</strong></article>
+        <article class="summary-card"><span>Anivers. na semana</span><strong id="birthdayCount">0</strong></article>
       </div>
     </section>
 
@@ -46,6 +50,14 @@
       </section>
 
       <section class="content-grid">
+        <aside class="birthday-month-panel" aria-label="Aniversariantes da semana">
+          <div>
+
+            <h2 id="birthdayMonthTitle">Da semana</h2>
+          </div>
+          <div id="birthdayMonthList" class="birthday-month-list"></div>
+          <p id="birthdayMonthEmpty" class="birthday-month-empty" hidden>Nenhum aniversariante nesta semana.</p>
+        </aside>
         <aside class="course-panel">
           <h2>Cursos</h2>
           <p class="small-note">Clique em um curso para ver somente os alunos daquele grupo.</p>
@@ -55,7 +67,7 @@
         <section class="students-panel">
           <div class="cards-header">
             <div>
-              <p class="eyebrow">Alunos</p>
+
               <h2 id="cardsTitle">Todos os cursos</h2>
             </div>
             <span id="cardsCount" class="status-pill">0 alunos</span>
@@ -64,14 +76,7 @@
           <p id="emptyState" class="empty-state" hidden>Nenhum aluno encontrado para este filtro.</p>
         </section>
 
-        <aside class="birthday-month-panel" aria-label="Aniversariantes do mes">
-          <div>
-            <p class="eyebrow">Aniversarios</p>
-            <h2 id="birthdayMonthTitle">Do mes</h2>
-          </div>
-          <div id="birthdayMonthList" class="birthday-month-list"></div>
-          <p id="birthdayMonthEmpty" class="birthday-month-empty" hidden>Nenhum aniversariante neste mes.</p>
-        </aside>
+
       </section>
     </section>
   </main>
@@ -138,7 +143,31 @@ async function logoutSession() {
   }).catch(() => {});
 }
 
+async function openAuthenticatedPage() {
+  const areas = [dashboard];
+  const notice = document.querySelector("#sessionLoading");
+  areas.forEach(area => { area.inert = true; area.setAttribute("aria-busy", "true"); });
+
+  unlockDashboard();
+  notice.hidden = false;
+  notice.textContent = "Carregando dados...";
+  try {
+    await loadEnrollments();
+    notice.hidden = true;
+    areas.forEach(area => { area.inert = false; area.removeAttribute("aria-busy"); });
+  } catch (error) {
+    notice.textContent = "Não foi possível carregar os dados. ";
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "ghost-button";
+    retry.textContent = "Tentar novamente";
+    retry.addEventListener("click", openAuthenticatedPage);
+    notice.append(retry);
+  }
+}
+
 function unlockDashboard() {
+  document.querySelector("#sessionLoading").hidden = true;
   authForm.style.display = "none";
   appHeader.hidden = false;
   logoutButton.hidden = false;
@@ -147,6 +176,7 @@ function unlockDashboard() {
 }
 
 function lockDashboard(message = "") {
+  document.querySelector("#sessionLoading").hidden = true;
   authForm.style.display = "";
   appHeader.hidden = true;
   logoutButton.hidden = true;
@@ -298,9 +328,10 @@ async function loadStoredPhoto(img, item) {
     if (!response.ok) return;
     const blob = await response.blob();
     if (!blob.size || !String(blob.type || "").startsWith("image/")) return;
+    if (!img.isConnected) return;
     const url = URL.createObjectURL(blob);
     const valid = await verifyPhotoSource(url);
-    if (valid) {
+    if (valid && img.isConnected) {
       photoUrls.push(url);
       setPhotoVisible(img, url);
     } else {
@@ -314,7 +345,7 @@ async function loadPhoto(img, item) {
   setPhotoFallback(img);
   if (item.candidatePhoto && /^data:image\//.test(String(item.candidatePhoto))) {
     const valid = await verifyPhotoSource(item.candidatePhoto);
-    if (valid) {
+    if (valid && img.isConnected) {
       setPhotoVisible(img, item.candidatePhoto);
       return;
     }
@@ -327,7 +358,7 @@ function renderCounters() {
   counters.total.textContent = enrollments.length;
   counters.active.textContent = enrollments.filter((item) => item.status === "Ativa").length;
   counters.courses.textContent = getCourses().length;
-  counters.birthdays.textContent = enrollments.filter(isBirthdayToday).length;
+  counters.birthdays.textContent = enrollments.filter(item => birthdayWeekOffset(item) !== null).length;
 }
 
 function renderCourses() {
@@ -355,27 +386,34 @@ function renderCourses() {
   });
 }
 
-function renderMonthBirthdays() {
-  const month = currentMonthNumber();
-  const birthdays = enrollments
-    .map((item) => ({ item, parts: birthdayParts(item) }))
-    .filter(({ parts }) => parts && parts.month === month)
-    .sort((a, b) => a.parts.day - b.parts.day || String(a.item.fullName || "").localeCompare(String(b.item.fullName || ""), "pt-BR"));
+function birthdayWeekOffset(item, now = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year:"numeric", month:"2-digit", day:"2-digit" }).formatToParts(now);
+  const local = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  const today = new Date(Date.UTC(Number(local.year), Number(local.month)-1, Number(local.day)));
+  const monday = new Date(today);
+  monday.setUTCDate(today.getUTCDate() - (today.getUTCDay()+6)%7);
+  const birthday = birthdayParts(item);
+  if (!birthday) return null;
+  for (let day=0; day<7; day++) {
+    const date = new Date(monday);
+    date.setUTCDate(monday.getUTCDate()+day);
+    if (date.getUTCDate()===birthday.day && date.getUTCMonth()+1===birthday.month) return day;
+  }
+  return null;
+}
 
-  birthdayMonthTitle.textContent = `Aniversariantes de ${currentMonthName()}`;
+function renderMonthBirthdays() {
+  const birthdays = enrollments.map(item => ({item, offset:birthdayWeekOffset(item)}))
+    .filter(entry => entry.offset !== null)
+    .sort((a,b) => a.offset-b.offset || String(a.item.fullName).localeCompare(String(b.item.fullName), "pt-BR"));
+  birthdayMonthTitle.textContent = "Aniversariantes da semana";
   birthdayMonthList.innerHTML = "";
   birthdayMonthEmpty.hidden = birthdays.length > 0;
-
-  birthdays.forEach(({ item, parts }) => {
+  birthdays.forEach(({item,offset},index) => {
     const card = document.createElement("article");
-    card.className = "birthday-month-card";
-    card.innerHTML = `
-      <span class="birthday-month-day">${String(parts.day).padStart(2, "0")}</span>
-      <div class="birthday-month-info">
-        <span class="birthday-month-name">${escapeHtml(item.fullName || "Aluno sem nome")}</span>
-        <span class="birthday-month-meta">${escapeHtml(item.grade || "Sem curso")}</span>
-      </div>
-      <div class="birthday-month-action">${renderBirthdayAction(item)}</div>`;
+    card.className = "birthday-month-card" + (isBirthdayToday(item) ? " is-today" : "");
+    card.style.animationDelay = Math.min(index,5)*60 + "ms";
+    card.innerHTML = '<span class="birthday-month-day">'+escapeHtml(formatDate(item.birthDate))+'<small>'+['SEG','TER','QUA','QUI','SEX','SAB','DOM'][offset]+'</small></span><div class="birthday-month-info"><span class="birthday-month-name">'+escapeHtml(item.fullName || "Aluno sem nome")+'</span><span class="birthday-month-meta">'+escapeHtml(item.grade || "Sem curso")+'</span>'+(isBirthdayToday(item)?'<span class="birthday-today">Aniversariante de hoje</span>':'')+'</div><div class="birthday-month-action">'+renderBirthdayAction(item)+'</div>';
     birthdayMonthList.appendChild(card);
   });
 }
@@ -385,25 +423,26 @@ function renderStudents() {
   clearPhotoUrls();
   studentGrid.innerHTML = "";
   cardsTitle.textContent = selectedCourse === "Todos" ? "Todos os cursos" : selectedCourse;
-  cardsCount.textContent = `${filtered.length} aluno${filtered.length === 1 ? "" : "s"}`;
+  cardsCount.textContent = filtered.length + " aluno" + (filtered.length===1?"":"s");
   emptyState.hidden = filtered.length > 0;
-
-  filtered.forEach((item) => {
-    const birthday = isBirthdayToday(item);
+  filtered.forEach((item,index) => {
     const card = document.createElement("article");
-    card.className = `student-card${birthday ? " is-birthday" : ""}`;
-    card.innerHTML = `
-      <div class="photo-wrap">
-        <span class="photo-placeholder">${escapeHtml(initials(item.fullName))}</span>
-        <img alt="Foto de ${escapeHtml(item.fullName)}" hidden>
-      </div>
-      <div class="student-info">
-        <span class="student-name">${escapeHtml(item.fullName || "Aluno sem nome")}</span>
-        <span class="student-meta">${escapeHtml(formatDate(item.birthDate) || "-")} &bull; ${escapeHtml(item.grade || "Sem curso")}</span>
-        ${birthday ? `<div class="birthday-panel"><span class="birthday-pill">Aniversariante de hoje</span><div class="birthday-actions">${renderBirthdayAction(item)}</div></div>` : `<span class="status-pill">${escapeHtml(item.status || "Sem status")}</span>`}
-      </div>`;
+    card.className = "student-card";
+    const detailId = "studentDetail-"+index;
+    card.innerHTML = '<div class="student-row"><div class="student-info"><strong class="student-name">'+escapeHtml(item.fullName || "Aluno sem nome")+'</strong><span class="student-meta">'+escapeHtml(item.grade || "Sem curso")+' | CPF: '+escapeHtml(item.cpf || "-")+'</span></div><span class="status-pill">'+escapeHtml(item.status || "Sem status")+'</span><button type="button" class="student-consult" aria-expanded="false" aria-controls="'+detailId+'">Consultar aluno</button></div><div class="student-detail" id="'+detailId+'" hidden><div class="photo-wrap"><span class="photo-placeholder">'+escapeHtml(initials(item.fullName))+'</span><img alt="Foto de '+escapeHtml(item.fullName)+'" hidden></div><dl><div><dt>Nascimento</dt><dd>'+escapeHtml(item.birthDate || "-")+'</dd></div><div><dt>E-mail</dt><dd>'+escapeHtml(item.email || "-")+'</dd></div><div><dt>Curso</dt><dd>'+escapeHtml(item.grade || "Sem curso")+'</dd></div></dl></div>';
+    const button = card.querySelector("button");
+    const detail = card.querySelector(".student-detail");
+    let photoRequested = false;
+    button.addEventListener("click", () => {
+      detail.hidden = !detail.hidden;
+      button.setAttribute("aria-expanded", String(!detail.hidden));
+      button.textContent = detail.hidden ? "Consultar aluno" : "Fechar consulta";
+      if (!detail.hidden && !photoRequested) {
+        photoRequested = true;
+        loadPhoto(card.querySelector("img"), item);
+      }
+    });
     studentGrid.appendChild(card);
-    loadPhoto(card.querySelector("img"), item);
   });
 }
 
@@ -445,8 +484,7 @@ authForm.addEventListener("submit", async (event) => {
   try {
     await loginSession(adminPassword.value);
     adminPassword.value = "";
-    await loadEnrollments();
-    unlockDashboard();
+    await openAuthenticatedPage();
   } catch (error) {
     lockDashboard(error.message);
   }
@@ -477,8 +515,8 @@ logoutButton.addEventListener("click", async () => {
   lockDashboard("Sessao encerrada.");
 });
 
-loadEnrollments()
-  .then(() => unlockDashboard())
+fetch(`${apiBaseUrl}/api/session`, { credentials: "same-origin", headers: apiHeaders() })
+  .then(response => { if (!response.ok) throw new Error(); return openAuthenticatedPage(); })
   .catch(() => lockDashboard());
   </script>
 </body>

@@ -41,7 +41,16 @@ function cleanCpf(value) {
   return String(value || "").replace(/\D/g, "");
 }
 
-async function ensureAttendanceTable(db) {
+const attendanceSchema = new WeakMap();
+export async function ensureAttendanceTable(db) {
+  if (!attendanceSchema.has(db)) {
+    const ready = initializeAttendanceTable(db).catch(error => { attendanceSchema.delete(db); throw error; });
+    attendanceSchema.set(db,ready);
+  }
+  return attendanceSchema.get(db);
+}
+
+async function initializeAttendanceTable(db) {
   await db.prepare(
     `CREATE TABLE IF NOT EXISTS attendance (
       id TEXT PRIMARY KEY,
@@ -65,6 +74,8 @@ async function ensureAttendanceTable(db) {
   await db.prepare("CREATE INDEX IF NOT EXISTS idx_attendance_date ON attendance(class_date)").run();
   await db.prepare("CREATE INDEX IF NOT EXISTS idx_attendance_course ON attendance(course)").run();
   await db.prepare("CREATE INDEX IF NOT EXISTS idx_attendance_cpf ON attendance(cpf)").run();
+  await db.prepare("CREATE INDEX IF NOT EXISTS idx_attendance_page ON attendance(class_date, created_at DESC, id DESC)").run();
+  await db.prepare("CREATE INDEX IF NOT EXISTS idx_attendance_risk ON attendance(course, module, enrollment_id) WHERE status = 'Falta'").run();
   await db.prepare(`CREATE TABLE IF NOT EXISTS attendance_audit (
     id TEXT PRIMARY KEY, attendance_id TEXT NOT NULL, action TEXT NOT NULL,
     changed_by TEXT, changed_by_name TEXT, previous_payload TEXT, new_payload TEXT NOT NULL,
@@ -132,11 +143,14 @@ export async function onRequestGet({ request, env }) {
     const isAdmin = isAdminAccess(access);
     const course = isAdmin ? requestedCourse : (allowedRequestedScope ? requestedCourse : "");
     const module = isAdmin ? requestedModule : (allowedRequestedScope ? requestedModule : "");
-    const limit = Math.min(Number(url.searchParams.get("limit") || 300), 1000);
+    const pageMode = url.searchParams.get("view") === "page";
+    const riskMode = url.searchParams.get("view") === "risk";
+    const requestedLimit = Number(url.searchParams.get("limit") || (pageMode ? 50 : 300));
+    const limit = Number.isFinite(requestedLimit) ? Math.max(1, Math.min(Math.floor(requestedLimit), pageMode ? 200 : 1000)) : 50;
     const where = [];
     const binds = [];
 
-    if (date) {
+    if (date && !riskMode) {
       where.push("class_date = ?");
       binds.push(date);
     }
@@ -148,7 +162,7 @@ export async function onRequestGet({ request, env }) {
       where.push("module = ?");
       binds.push(module);
     }
-    if (!isAdmin && !course) {
+    if (!isAdmin) {
       const scopeClauses = [];
       scopes.forEach((scope) => {
         if (scope.course === "CFO") {
@@ -159,14 +173,41 @@ export async function onRequestGet({ request, env }) {
           binds.push(scope.course);
         }
       });
-      if (!scopeClauses.length) return json({ records: [], ...access });
+      if (!scopeClauses.length) return json({ records: [], alerts: [], totals: { total:0, present:0, justified:0, absence:0 }, nextCursor:null, ...access });
       where.push(`(${scopeClauses.join(" OR ")})`);
     }
 
-    const sql = `SELECT payload FROM attendance ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY created_at DESC LIMIT ?`;
-    const result = await db.prepare(sql).bind(...binds, limit).all();
-    const records = result.results.map((row) => JSON.parse(row.payload));
-    return json({ records, ...access });
+    if (riskMode) {
+      where.push("status = 'Falta'");
+      const result = await db.prepare(`SELECT enrollment_id AS enrollmentId, MAX(full_name) AS name, MAX(course) AS course, MAX(module) AS module, COUNT(*) AS count FROM attendance WHERE ${where.join(" AND ")} GROUP BY enrollment_id HAVING COUNT(*) >= 3 ORDER BY count DESC, name COLLATE NOCASE`).bind(...binds).all();
+      return json({ alerts: result.results || [] });
+    }
+    const enrollmentId = url.searchParams.get("enrollmentId");
+    if (enrollmentId) { where.push("enrollment_id = ?"); binds.push(enrollmentId); }
+    const query = String(url.searchParams.get("q") || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    if (query) {
+      let searchable = "lower(COALESCE(full_name,'') || ' ' || COALESCE(cpf,'') || ' ' || COALESCE(course,''))";
+      for (const [letters, replacement] of [["áàâãäÁÀÂÃÄ","a"],["éèêëÉÈÊË","e"],["íìîïÍÌÎÏ","i"],["óòôõöÓÒÔÕÖ","o"],["úùûüÚÙÛÜ","u"],["çÇ","c"]]) {
+        for (const letter of letters) searchable = `replace(${searchable}, '${letter}', '${replacement}')`;
+      }
+      where.push(`instr(${searchable}, ?) > 0`); binds.push(query);
+    }
+    const baseWhere = where.length ? `WHERE ${where.join(" AND ")}` : "";
+    const totalsQuery = db.prepare(`SELECT COUNT(*) AS total, COALESCE(SUM(status='Presente'),0) AS present, COALESCE(SUM(status='Justificado'),0) AS justified, COALESCE(SUM(status='Falta'),0) AS absence FROM attendance ${baseWhere}`).bind(...binds);
+    if (pageMode && url.searchParams.has("cursor")) {
+      let cursor;
+      try { cursor = JSON.parse(url.searchParams.get("cursor")); } catch { return errorJson(new Error("Cursor invalido."), 400); }
+      if (!Array.isArray(cursor) || cursor.length !== 2 || cursor.some(value => typeof value !== "string" || value.length > 100)) return errorJson(new Error("Cursor invalido."),400);
+      where.push("(created_at < ? OR (created_at = ? AND id < ?))"); binds.push(cursor[0],cursor[0],cursor[1]);
+    }
+    const rowsQuery = db.prepare(`SELECT payload, created_at, id FROM attendance ${where.length ? 'WHERE '+where.join(' AND ') : ''} ORDER BY created_at DESC, id DESC LIMIT ?`).bind(...binds, pageMode ? limit+1 : limit);
+    const includeTotals = pageMode && url.searchParams.get("totals") !== "0";
+    const results = includeTotals ? await db.batch([rowsQuery,totalsQuery]) : [await rowsQuery.all()];
+    const rows = results[0].results || [];
+    const hasMore = pageMode && rows.length > limit;
+    if (hasMore) rows.pop();
+    const last = rows[rows.length-1];
+    return json({ records:rows.map(row=>JSON.parse(row.payload)), ...(includeTotals ? {totals:results[1].results[0]} : {}), ...(pageMode ? { nextCursor:hasMore ? JSON.stringify([last.created_at,last.id]) : null } : {}), ...access });
   } catch (error) {
     return errorJson(error);
   }

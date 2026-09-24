@@ -1,0 +1,18 @@
+.call-footer{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.call-footer>p{line-height:1.5}.call-footer button{min-height:44px}
+.call-status{min-width:150px}.call-status select,.call-save{min-height:44px}
+.call-status textarea{margin-top:8px;min-height:70px}
+.call-error{color:var(--danger);font-size:.85rem;max-width:32ch;white-space:normal}
+.call-name{font-weight:800;min-width:180px;overflow-wrap:anywhere}
+.attendance-table td:nth-child(2){min-width:125px;font-weight:400}
+.attendance-table td:nth-child(8){min-width:140px;white-space:normal}
+.attendance-table td:last-child{min-width:125px}
+.call-time{font-variant-numeric:tabular-nums;font-size:.85rem}
+.pill.Pendente{background:var(--soft);color:var(--muted)}
+button:disabled{cursor:not-allowed;opacity:.6}
+.call-save:focus-visible,#finalizeCall:focus-visible,dialog button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+#recordsNotice:not([hidden]){padding:12px;background:var(--soft);border-radius:6px;line-height:1.5}
+dialog{width:min(480px,calc(100% - 32px));padding:24px;border:1px solid var(--line);border-radius:8px;color:var(--text);background:var(--surface)}
+dialog::backdrop{background:rgba(29,39,51,.45)}dialog p{line-height:1.5}
+.attendance-card .call-status{margin:12px 0}.attendance-card .call-save{width:100%}
+@media(max-width:767px){.call-footer button{width:100%;min-height:48px}.call-status select{min-height:48px}dialog .report-actions{display:grid}dialog button{min-height:48px}}

@@ -1,0 +1,34 @@
+﻿const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const {DatabaseSync}=require('node:sqlite');
+const sqlite=new DatabaseSync(':memory:');
+let access={role:'admin'};
+const db={prepare(sql){let values=[];const s={bind(...v){values=v;return s;},async run(){const r=sqlite.prepare(sql).run(...values);return {meta:{changes:r.changes}};},async all(){const q=sqlite.prepare(sql);if(q.columns().length)return {results:q.all(...values)};const r=q.run(...values);return {results:[],meta:{changes:r.changes}};},async first(){return sqlite.prepare(sql).get(...values);}};return s;},async batch(statements){sqlite.exec('BEGIN');try{const result=[];for(const s of statements)result.push(await s.all());sqlite.exec('COMMIT');return result;}catch(e){sqlite.exec('ROLLBACK');throw e;}}};
+const ctx=vm.createContext({getAccess:async()=>access,Response,URL,crypto:require('node:crypto').webcrypto,TextEncoder});
+const source=path=>fs.readFileSync(path,'utf8').replace(/^import .*;\r?\n/gm,'').replaceAll('export async function','async function');
+vm.runInContext(source('functions/api/attendance/index.js'),ctx);
+const ensure=ctx.ensureAttendanceTable;
+const call=vm.createContext({getAccess:async()=>access,ensureAttendanceTable:ensure,Response,URL,crypto:require('node:crypto').webcrypto,TextEncoder});
+vm.runInContext(source('functions/api/roll-call/index.js'),call);
+async function request(body,code=200){const request=typeof body==='string'?{url:'https://test/api/roll-call?'+body}:{json:async()=>body};const r=await call[typeof body==='string'?'onRequestGet':'onRequestPost']({request,env:{DB:db}});const data=await r.json();assert.equal(r.status,code,JSON.stringify(data));return data;}
+(async()=>{
+ sqlite.exec(fs.readFileSync('migrations/0001_create_enrollments.sql','utf8'));await ensure(db);
+ const insert=sqlite.prepare('INSERT INTO enrollments(id,full_name,course,status,payload) VALUES(?,?,?,?,?)');
+ for(let i=0;i<205;i++)insert.run(String(i).padStart(4,'0'),'Aluno '+i,'CFO','Ativa','{}');
+ insert.run('inactive','Inativo','CFO','Cancelada','{}');
+ const c={course:'CFO',module:'Teologia Basica',date:'2026-09-24'};
+ let first=await request(new URLSearchParams(c).toString());assert.equal(first.totals.pending,205);assert.equal(first.rows.length,100);
+ let count=first.rows.length,cursor=first.nextCursor;
+ while(cursor){const p=await request(new URLSearchParams({...c,cursor,snapshot:first.snapshot}).toString());count+=p.rows.length;cursor=p.nextCursor;}assert.equal(count,205);
+ const saved=await request({...c,action:'save',enrollmentId:'0000',status:'Presente'});
+ await request({...c,action:'finalize',confirmed:true,expectedPending:205,snapshot:first.snapshot},409);
+ await request({...c,action:'save',enrollmentId:'inactive',status:'Presente'},404);
+ await request({...c,action:'save',enrollmentId:'0001',status:'Pendente'},400);
+ first=await request(new URLSearchParams(c).toString());
+ const done=await request({...c,action:'finalize',confirmed:true,expectedPending:204,snapshot:first.snapshot});assert.equal(done.totals.absence,204);assert.equal(done.totals.present,1);assert.equal(done.totals.pending,0);
+ const retry=await request({...c,action:'finalize',confirmed:true,expectedPending:204,snapshot:first.snapshot});assert.equal(retry.created,0);
+ assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM attendance_audit').get().n,205);
+ const updated=await request({...c,action:'save',enrollmentId:'0000',status:'Justificado',justification:'Teste'});assert.equal(updated.record.id,saved.record.id);assert.equal(updated.record.createdAt,saved.record.createdAt);
+ access={role:'professor',scopes:[{course:'CFO',module:'Etica Crista'}]};await request(new URLSearchParams(c).toString(),403);await request({...c,action:'save',enrollmentId:'0001',status:'Presente'},403);
+ access=null;await request('view=courses',401);
+ console.log('PASS: roster pagination, inactive exclusion, snapshot conflicts, save/update, finalization of 204 pending students, retries, audit and access isolation.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

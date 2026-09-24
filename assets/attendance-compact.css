@@ -1,0 +1,57 @@
+/* Compact attendance workspace; keep controls comfortable for touch. */
+html{scroll-padding-top:160px}
+.shell{width:min(1100px,calc(100% - 32px));padding-top:12px}
+.hero{position:sticky;top:0;z-index:10;grid-template-columns:minmax(0,1fr) minmax(320px,400px);align-items:center;gap:16px;margin-bottom:12px;padding:12px 0;background:var(--bg);border-bottom:1px solid var(--line)}
+.hero .eyebrow{display:none}
+.hero h1{font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.15}
+.hero p{margin:6px 0 0;font-size:.875rem;line-height:1.4}
+.summary-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.summary-card{min-height:64px;padding:10px;box-shadow:none}
+.summary-card span{font-size:.75rem;overflow-wrap:anywhere}
+.summary-card strong{margin-top:4px;font-size:1.5rem}
+.filters{gap:10px;padding:12px;margin-bottom:12px;grid-template-columns:minmax(145px,.8fr) minmax(140px,1fr) minmax(180px,1.3fr) auto}
+.panel{padding:14px;box-shadow:none}
+#modulePanel{padding:12px;margin-bottom:12px!important}
+#modulePanel label{max-width:420px}
+.absence-alert{margin-bottom:12px;padding:8px 14px}
+.attendance-entry h2,.records-header h2{font-size:1.25rem}
+.attendance-entry h2{margin-bottom:12px}
+.attendance-entry .manual-card{grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:12px}
+.student-search,.manual-matches,.lookup-status,.person-card,#justificationLabel,.attendance-confirmation{grid-column:1/-1}
+.student-search{max-width:780px}
+.attendance-entry label:has(#attendanceStatus){grid-column:1;grid-row:auto;max-width:none}
+.attendance-entry #saveAttendanceButton{grid-column:2;align-self:end;min-height:44px}
+.manual-card:has(#justificationLabel:not([hidden])) #saveAttendanceButton{grid-column:1/-1}
+.attendance-entry .person-card{padding:12px;gap:14px}
+.attendance-entry input,.attendance-entry select,.filters input,.filters select,#moduleFilter{min-height:44px}
+.records-panel{margin-top:12px}
+.records-header{margin-bottom:12px;gap:12px}
+.attendance-table th,.attendance-table td{padding:10px 12px}
+.attendance-table{max-height:60vh;overflow:auto;scroll-padding-top:52px;scrollbar-gutter:stable}
+.attendance-table:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.attendance-table table{border-collapse:separate;border-spacing:0}
+.attendance-table thead th{position:sticky;top:0;z-index:3;background:#f0f3fa;box-shadow:0 1px 0 var(--line)}
+.attendance-table thead th:last-child{right:auto;z-index:3;background:#f0f3fa;box-shadow:0 1px 0 var(--line)}
+.attendance-table tbody td:last-child{position:static;right:auto;z-index:auto;box-shadow:none}
+@media(max-width:1000px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero>div:first-child>p:not(.eyebrow){display:none}
+  .summary-card{min-height:52px;padding:8px 10px}
+  .summary-card strong{font-size:1.25rem;margin-top:2px}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .shell{width:calc(100% - 20px);padding-top:8px}
+  .hero{gap:8px;padding:10px 0}
+  .hero h1{font-size:1.35rem}
+  .summary-grid{gap:4px}
+  .summary-card{padding:7px 5px;min-height:50px}
+  .summary-card span{font-size:.7rem}
+  .filters{grid-template-columns:minmax(0,1fr)}
+  .attendance-entry .manual-card{grid-template-columns:minmax(0,1fr)}
+  .attendance-entry #saveAttendanceButton{grid-column:1}
+  #justificationLabel{grid-row:auto}
+  .student-search{max-width:none}
+}
+@media(max-height:500px){.hero{position:static}html{scroll-padding-top:16px}}
+@media print{.hero{position:static}.attendance-table{max-height:none;overflow:visible}.attendance-table thead th,.attendance-table th:last-child,.attendance-table td:last-child{position:static}}

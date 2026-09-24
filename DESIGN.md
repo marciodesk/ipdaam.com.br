@@ -162,6 +162,16 @@ components:
 
 # Design System: IPDAAM — ETDA Manaus
 
+## Navegação lateral compartilhada
+
+As páginas internas e a inscrição autenticada usam `assets/system-navigation.css`.
+Os tokens `--nav-bg` (#080a0e), `--nav-active` (#4457c0), `--nav-text` (#d5dbe6),
+`--nav-muted` (#b9c8e5), `--nav-border` (#465064), `--nav-focus` (#93c5fd),
+`--nav-hover` (#18202e) e `--nav-mobile-text` (#26334a) preservam a lateral escura aprovada.
+A marca usa 1rem e o subtítulo .68rem. Links têm altura mínima de 46px e ícones SVG de 18px
+presentes no HTML. A página ativa usa `aria-current="page"`. “Sair” fica no rodapé.
+Até 760px, o menu expansível ocupa espaço no fluxo da página, sem sobrepor formulários.
+
 ## Overview
 
 **Creative North Star: "Comunidade de formação"**

@@ -1,0 +1,33 @@
+.content-grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;align-items:start}
+.birthday-month-panel{grid-column:1/-1;grid-row:1;padding:20px;border:1px solid #ebd69a;border-radius:8px;background:#fffdf4}
+.birthday-month-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;margin-top:16px}
+.birthday-month-card{display:grid;grid-template-columns:54px minmax(0,1fr);gap:12px;align-items:start;padding:16px;border:1px solid #ead8a1;border-radius:8px;background:#fff;animation:birthday-arrive .45s cubic-bezier(.16,1,.3,1) both}
+.birthday-month-card.is-today{border-color:#bc8800;background:#fff7da}
+.birthday-month-day{display:grid;place-content:center;min-height:54px;border-radius:8px;background:#f4c400;color:#493800;text-align:center;font-weight:800}
+.birthday-month-day small{font-size:.68rem;margin-top:3px}
+.birthday-month-name{display:block;font-weight:800;overflow-wrap:anywhere;line-height:1.4}
+.birthday-month-meta{display:block;margin-top:5px;color:#665b3c;font-size:.85rem}
+.birthday-month-action{grid-column:1/-1}
+.birthday-month-action .birthday-message{width:100%}
+.birthday-today{display:block;margin-top:8px;color:#765100;font-weight:800;font-size:.85rem}
+.student-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.student-card,.student-card.is-birthday{display:block;min-height:0;padding:0;box-shadow:none;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.student-row{display:flex;align-items:center;gap:16px;padding:16px;flex-wrap:wrap}
+.student-row .student-info{flex:1 1 200px}
+.student-row .student-name{white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+.student-row .student-meta{font-size:.85rem}
+.student-row .status-pill{margin:0}
+.student-consult{min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:6px;background:#f7f3ff;color:#5330a1;font:700 .85rem Arial,sans-serif;cursor:pointer}
+.student-consult:hover{background:#eee6fc}
+.student-consult:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.student-detail{display:flex;gap:16px;align-items:flex-start;padding:16px;border-top:1px solid var(--line);background:#faf8ff}
+.student-detail[hidden]{display:none}
+.student-detail .photo-wrap{flex:0 0 110px;width:110px;height:132px}
+.student-detail dl{display:grid;gap:8px;margin:0;min-width:0;font-size:.875rem;line-height:1.4}
+.student-detail dl div{display:flex;flex-wrap:wrap;gap:4px 8px}
+.student-detail dt{font-weight:700}
+.student-detail dd{margin:0;overflow-wrap:anywhere}
+@keyframes birthday-arrive{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.birthday-month-card{animation:none}}
+@media(max-width:1000px){.content-grid{grid-template-columns:minmax(0,1fr)}.course-list{display:flex;flex-wrap:wrap;gap:8px}.course-button{width:auto;flex:1 1 120px}.birthday-month-panel{grid-row:1}}
+@media(max-width:560px){.student-row{gap:12px}.student-row .student-info{flex-basis:100%}.student-consult{margin-left:auto}.student-detail{gap:12px;padding:12px}.birthday-month-panel{padding:16px}}
