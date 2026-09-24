@@ -13,3 +13,9 @@
 
 /cursos*
   Link: </assets/ipda-system.css?v=20260710>; rel="stylesheet"
+
+/assets/roll-call.*
+  Cache-Control: no-cache, must-revalidate
+
+/assets/attendance-compact.css
+  Cache-Control: no-cache, must-revalidate
