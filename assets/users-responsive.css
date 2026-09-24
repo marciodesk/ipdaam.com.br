@@ -1,0 +1,28 @@
+/* Preserve existing user actions while reflowing each record on smaller screens. */
+.shell .form label{min-width:0}
+.form input{width:100%;min-width:0;min-height:44px}
+.scope-grid label{min-height:44px;line-height:1.5;overflow-wrap:anywhere}
+.scope-grid input{flex:0 0 18px}
+.panel .actions button{min-height:44px;line-height:1.4;padding:10px 13px;white-space:normal}
+.panel button[hidden]{display:none!important}
+.panel button:focus-visible,.panel input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.message:empty{display:none}
+.table td{line-height:1.5}
+.table td:first-child{font-weight:700}
+@media(max-width:1050px){
+  .shell .table{margin:0;padding:0;overflow:visible}
+  .shell .table table{display:block;width:100%;min-width:0}
+  .table thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .table tbody{display:block;width:100%}
+  .table tbody tr{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:20px 0;border-bottom:1px solid var(--line)}
+  .table tbody tr:last-child{padding-bottom:0;border-bottom:0}
+  .table tbody td{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;padding:0;border:0;overflow-wrap:anywhere}
+  .table tbody td:first-child{font-size:1.1rem}
+  .table tbody td:nth-child(2)::before{content:'Login'}
+  .table tbody td:nth-child(3)::before{content:'Responsabilidades'}
+  .table tbody td:nth-child(4)::before{content:'Status'}
+  .table tbody td:nth-child(n+2)::before{font-size:.8rem;font-weight:700;color:#536174}
+  .table .actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%;margin-top:4px}
+  .table .actions button{width:100%;min-height:48px}
+}
+@media(max-width:760px){.panel .actions{width:100%}.panel .actions button{width:100%}.panel h1,.panel h2{font-size:1.4rem;line-height:1.25;overflow-wrap:anywhere}}
