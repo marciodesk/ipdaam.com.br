@@ -115,8 +115,8 @@
     <p class="footer">&copy; <span id="year"></span> IPDAAM &bull; Secretaria ETDA Manaus &bull; <a href="privacidade.html">Politica de Privacidade e LGPD</a>.</p>
   </div>
   <script>
-const registrationStart = new Date("2026-09-01T00:00:00-04:00");
-const registrationEnd = new Date("2026-09-04T23:59:59-04:00");
+const registrationStart = new Date("2026-09-28T00:00:00-04:00");
+const registrationEnd = null; // Aberto ate novo aviso.
 const badge = document.querySelector("#registrationBadge");
 const countdown = document.querySelector("#registrationCountdown");
 const registrationLink = document.querySelector("#registrationLink");
@@ -135,12 +135,17 @@ function updateRegistrationStatus() {
     registrationLink.setAttribute("aria-disabled", "true");
     return;
   }
-  if (now > registrationEnd) {
+  if (registrationEnd && now > registrationEnd) {
     badge.textContent = "Inscricoes encerradas";
     badge.classList.add("closed");
-    countdown.textContent = "Inscricoes encerradas em 04/09/2026";
+    countdown.textContent = "Inscricoes encerradas";
     registrationLink.classList.add("is-disabled");
     registrationLink.setAttribute("aria-disabled", "true");
+    return;
+  }
+  if (!registrationEnd) {
+    badge.textContent = "Inscricoes abertas";
+    countdown.textContent = "Cadastro disponivel ate novo aviso";
     return;
   }
   const days = fullDaysUntil(registrationEnd, now);
