@@ -1,2 +1,4 @@
 .wrangler/cache/
 .wrangler/state/
+.dev.vars
+.dev.vars.*
