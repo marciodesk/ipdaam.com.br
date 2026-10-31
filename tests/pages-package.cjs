@@ -9,10 +9,10 @@ const first = buildPages(root);
 const snapshot = fs.readFileSync(path.join(first.output, 'manifest.json'));
 buildPages(root);
 assert(fs.readFileSync(path.join(first.output, 'manifest.json')).equals(snapshot), 'Repeated build must be byte-identical');
-assert.equal(first.publicFiles, 33);
+assert.equal(first.publicFiles, 41);
 assert.equal(first.functionFiles, 14);
 assert.equal(first.imports, 13);
-assert.equal(first.references, 89);
+assert.equal(first.references, 99);
 for (const entry of first.manifest.files) {
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(first.output, entry.name))).digest('hex'), entry.sha256);
   assert(!/^public\/(?:functions|migrations|tests|scripts|\.git|\.wrangler)\//.test(entry.name));
@@ -91,4 +91,4 @@ for (const name of ['scripts/pages-files.json', ...policy.public, ...policy.func
 }
 fs.mkdirSync(path.join(unowned, 'build/pages'), {recursive:true});
 assert.throws(() => buildPages(unowned), /Unowned output/);
-console.log('PASS: 47 reviewed files; SHA-256 integrity; deterministic repeated/LF/CRLF builds; private-file exclusion; traversal/duplicate/symlink rejection; missing asset/import/reference checks; unreviewed Functions and stale/unowned outputs refused without recursive deletion.');
+console.log('PASS: 55 reviewed files; SHA-256 integrity; deterministic repeated/LF/CRLF builds; private-file exclusion; traversal/duplicate/symlink rejection; missing asset/import/reference checks; unreviewed Functions and stale/unowned outputs refused without recursive deletion.');

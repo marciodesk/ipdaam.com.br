@@ -1,0 +1,106 @@
+:root {
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --soft: #eef3ff;
+  --text: #1d2a42;
+  --muted: #596b83;
+  --line: #e2e8f2;
+  --brand: #3e56bd;
+  --brand-dark: #2e4299;
+  --shadow: 0 6px 24px rgba(30, 50, 90, .05);
+}
+
+body {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.auth-panel,
+.filters,
+.panel,
+.summary-card {
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.summary-card {
+  background: var(--surface);
+}
+
+h1, h2 {
+  letter-spacing: -0.025em;
+}
+
+input, select, textarea {
+  border-radius: 10px;
+}
+
+.primary-button,
+.ghost-button,
+.success-button,
+.link-button {
+  border-radius: 10px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+/* ETDA — Refinamento visual para celular */
+
+@media screen and (max-width: 760px) {
+  .shell {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .hero {
+    position: static;
+    padding: 4px 0;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .summary-grid {
+    gap: 10px;
+  }
+
+  .summary-card {
+    min-height: 76px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .summary-card strong {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .filters,
+  .records-panel,
+  .attendance-entry {
+    border-radius: 14px;
+  }
+
+  .filters {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .filters input,
+  .filters select,
+  .filters button {
+    min-height: 46px;
+  }
+
+  .primary-button {
+    min-height: 46px;
+  }
+}

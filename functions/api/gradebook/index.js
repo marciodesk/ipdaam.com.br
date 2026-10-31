@@ -142,7 +142,7 @@ export async function onRequestPost({ request, env }) {
       record = normalizeRecord({
         ...(existing || {}), id: existing?.id, enrollmentId: enrollment.id, fullName: enrollment.fullName,
         cpf: enrollment.cpf, course, period, modules, total, average,
-        status: average >= 7 ? "Aprovado" : "Em andamento", notes: existing?.notes || "",
+        status: average >= 6 ? "Aprovado" : "Em andamento", notes: existing?.notes || "",
       });
       record.modules = modules;
       record.recordedBy = access.userId;

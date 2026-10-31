@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
+  <link rel="stylesheet" href="assets/etda-ui-refresh.css">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,12 +92,12 @@
     .logout-button{min-height:36px;padding:0 13px;border:1px solid #f0d2d6;border-radius:7px;background:#fff;color:var(--danger);font-weight:800;cursor:pointer}.logout-button:hover{background:#fff3f4}
     @media(max-width:640px){.app-header{border-radius:9px}.header-main{align-items:flex-start;padding:13px}.account-area{align-items:flex-end;flex-direction:column;gap:7px}.app-header .user-badge{max-width:170px;min-height:31px;font-size:.74rem;text-align:right}.logout-button{min-height:32px}}
   </style>
-<link rel="stylesheet" href="assets/system-navigation.css?v=20260922-2">
+<link rel="stylesheet" href="assets/system-navigation.css?v=20261031-2">
 <script src="assets/system-navigation.js?v=20261031-1" defer></script>
 <link rel="stylesheet" href="assets/attendance-compact.css?v=20260924-3">
-<link rel="stylesheet" href="assets/roll-call.css?v=20260924-3">
+<link rel="stylesheet" href="assets/roll-call.css?v=20261031-2">
 </head>
-<body>
+<body class="attendance-page">
   <main class="shell">
     <header id="appHeader" class="app-header system-sidebar" hidden>
       <div class="header-main">
@@ -150,15 +151,14 @@
     </section>
 
     <section id="workspace" class="workspace is-locked">
-      <section class="filters">
+      <section class="filters" aria-label="Filtros da chamada">
         <label>Data da aula<input id="classDate" type="date"></label>
         <label>Curso<select id="courseFilter"><option value="">Todos</option></select></label>
+        <div id="modulePanel" class="filter-module" hidden>
+          <label>Módulo do CFO<select id="moduleFilter"><option value="">Selecione</option><option>Teologia Basica</option><option>Etica Crista</option><option>Pratica Ministerial</option></select></label>
+        </div>
         <label>Buscar aluno<input id="searchInput" type="search" placeholder="Nome ou CPF"></label>
         <button id="refreshButton" class="primary-button" type="button">Atualizar</button>
-      </section>
-
-      <section id="modulePanel" class="panel" style="margin-bottom:16px" hidden>
-        <label>Modulo do CFO<select id="moduleFilter"><option value="">Selecione</option><option>Teologia Basica</option><option>Etica Crista</option><option>Pratica Ministerial</option></select></label>
       </section>
 
       <details id="absenceAlert" class="panel absence-alert" hidden>
@@ -187,7 +187,7 @@
             <h2 id="recordsTitle">Chamada nominal</h2>
             <button id="exportCsvButton" class="ghost-button" type="button">Exportar relatório CSV</button>
           </div>
-          <div class="report-actions" aria-label="Paginas dos registros"><button id="previousRecords" class="ghost-button" type="button" disabled>Anterior</button><span id="recordsPage" role="status"></span><button id="nextRecords" class="ghost-button" type="button" disabled>Proxima</button></div>
+          <div class="report-actions" aria-label="Páginas dos registros"><button id="previousRecords" class="ghost-button" type="button" disabled>Anterior</button><span id="recordsPage" role="status"></span><button id="nextRecords" class="ghost-button" type="button" disabled>Próxima</button></div>
           <div id="recordsNotice" role="status" hidden></div>
           <p id="callContext" class="small-note"></p>
           <div id="reportRecords">
@@ -198,6 +198,7 @@
             </table>
           </div>
           <div id="reportCards" class="attendance-cards" role="list" aria-label="Registros de presença"></div>
+          <p id="callSearchEmpty" class="small-note" role="status" hidden>Nenhum aluno corresponde à busca. Tente outro nome ou CPF; a turma completa continua sendo considerada na finalização.</p>
           </div>
           <footer class="call-footer">
             <p id="callSummary" role="status" aria-live="polite"></p>
@@ -216,7 +217,7 @@
     <div class="report-actions"><button id="cancelFinalize" type="button" class="ghost-button" autofocus>Cancelar</button><button id="confirmFinalize" type="button" class="primary-button">Finalizar</button></div>
   </dialog>
 
-  <script src="assets/roll-call.js?v=20260924-3"></script>
+  <script src="assets/roll-call.js?v=20261028-4"></script>
 
 </body>
 </html>

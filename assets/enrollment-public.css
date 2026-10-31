@@ -1,0 +1,20 @@
+/* Public information only; registration controls and shared navigation stay unchanged. */
+.enrollment-share,.enrollment-contact{padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.enrollment-share h2,.enrollment-contact h2{font-size:1.05rem;line-height:1.4}
+.enrollment-share-actions{display:flex;align-items:center;gap:10px;margin-top:12px}
+.enrollment-share-actions input{flex:1;min-width:0;color:var(--brand-dark);background:var(--surface-strong);font-size:.95rem}
+.enrollment-share-actions button{flex-shrink:0;min-height:44px;padding:10px 18px;border:1px solid var(--brand);border-radius:6px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer}
+.enrollment-share-actions button:hover{background:var(--brand-dark)}
+.enrollment-share-actions button:disabled{opacity:.72;cursor:wait}
+.enrollment-share-actions button:focus-visible{outline:2px solid var(--brand-dark);outline-offset:3px}
+.enrollment-share-status{min-height:1.5em;margin:6px 0 0;color:var(--brand-dark);font-size:.875rem;line-height:1.5}
+.enrollment-contact{display:flex;align-items:flex-start;gap:14px;background:var(--surface-strong)}
+.enrollment-contact-icon{flex:0 0 36px;width:36px;height:36px;color:var(--brand)}
+.enrollment-contact>div{min-width:0}
+.enrollment-contact p{margin:6px 0 0;line-height:1.5}
+.enrollment-contact .enrollment-contact-phone{font-size:1.2rem;font-weight:700;color:var(--brand-dark);font-variant-numeric:tabular-nums}
+.enrollment-whatsapp-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:12px;padding:10px 16px;border-radius:6px;background:var(--brand);color:#fff;font-size:.9rem;font-weight:700;text-decoration:none}
+.enrollment-whatsapp-link:hover{background:var(--brand-dark)}
+.enrollment-whatsapp-link:focus-visible{outline:2px solid var(--brand-dark);outline-offset:3px}
+.enrollment-whatsapp-link:disabled{max-width:100%;border:0;background:var(--line);color:var(--text);font-family:inherit;line-height:1.4;cursor:not-allowed}
+@media(max-width:680px){.enrollment-share,.enrollment-contact{padding:14px}.enrollment-share-actions{flex-direction:column;align-items:stretch}.enrollment-contact{gap:10px}.enrollment-contact-icon{flex-basis:28px;width:28px;height:28px}.enrollment-share-actions input{font-size:.875rem}}

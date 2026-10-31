@@ -1,9 +1,7 @@
 const timeZone = "America/Manaus";
-const isLocalPreview = location.protocol === "file:" || ["localhost", "127.0.0.1", "::1"].includes(location.hostname);
-const apiBaseUrl = isLocalPreview
-  ? "https://matriculasetdaam.pages.dev"
-  : "";
-const apiCredentials = apiBaseUrl ? "include" : "same-origin";
+// Serve this page through the local server; never fall back to a remote API.
+const apiBaseUrl = "";
+const apiCredentials = "same-origin";
 
 const authForm = document.querySelector("#authForm");
 const appHeader = document.querySelector("#appHeader");
@@ -208,7 +206,7 @@ function filteredRows() {
 function statusControls(row) {
   const draft=drafts.get(row.id) || {status:row.record?.status || '',justification:row.record?.justification || ''};
   const id=escapeHtml(row.id), name=escapeHtml(row.fullName);
-  return `<div class="call-status" data-student="${id}"><select aria-label="Presença de ${name}" ${busy?'disabled':''}><option value="">Pendente</option>${['Presente','Justificado','Falta'].map(status=>`<option ${draft.status===status?'selected':''}>${status}</option>`).join('')}</select><textarea aria-label="Justificativa de ${name}" maxlength="2000" placeholder="Justificativa" ${draft.status==='Justificado'?'':'hidden'} ${busy?'disabled':''}>${escapeHtml(draft.justification)}</textarea></div>`;
+  return `<div class="call-status" data-student="${id}" data-status="${escapeHtml(draft.status || 'Pendente')}"><select aria-label="Presença de ${name}" ${busy?'disabled':''}><option value="">Pendente</option>${['Presente','Justificado','Falta'].map(status=>`<option ${draft.status===status?'selected':''}>${status}</option>`).join('')}</select><label class="call-justification" ${draft.status==='Justificado'?'':'hidden'}>Justificativa<textarea aria-label="Justificativa de ${name}" maxlength="2000" placeholder="Justificativa" ${draft.status==='Justificado'?'':'hidden'} ${busy?'disabled':''}>${escapeHtml(draft.justification)}</textarea></label></div>`;
 }
 function renderCall() {
   const totals={present:0,justified:0,absence:0,records:0};
@@ -216,15 +214,18 @@ function renderCall() {
   Object.entries(counters).forEach(([key,element])=>{element.textContent=totals[key];});
   const filtered=filteredRows(); page=Math.min(page,Math.max(0,Math.ceil(filtered.length/pageSize)-1));
   const visible=filtered.slice(page*pageSize,(page+1)*pageSize);
-  const save=row=>`<button class="primary-button call-save" type="button" data-save="${escapeHtml(row.id)}" ${busy||!ready?'disabled':''}>Salvar</button>`;
+  const save=row=>`<button class="primary-button call-save" type="button" data-save="${escapeHtml(row.id)}" aria-label="Salvar presença de ${escapeHtml(row.fullName)}" ${busy||!ready?'disabled':''}>Salvar</button>`;
+  const state=row=>`<span class="call-state" data-status="${escapeHtml((drafts.get(row.id)?.status ?? row.record?.status) || 'Pendente')}">${escapeHtml((drafts.get(row.id)?.status ?? row.record?.status) || 'Pendente')}${drafts.has(row.id)?' · não salvo':''}</span>`;
   const time=row=>row.record?.updatedAt ? new Date(row.record.updatedAt).toLocaleString('pt-BR',{timeZone}) : '—';
-  reportTable.innerHTML=visible.map(row=>`<tr><td class="call-name">${escapeHtml(row.fullName)}</td>${[row.cpf,row.region,row.role,row.pastor,row.city].map(value=>`<td>${escapeHtml(value || '—')}</td>`).join('')}<td>${statusControls(row)}</td><td class="call-time">${escapeHtml(time(row))}</td><td>${save(row)}</td></tr>`).join('');
-  reportCards.innerHTML=visible.map(row=>`<article class="attendance-card" role="listitem"><h3>${escapeHtml(row.fullName)}</h3><p>${escapeHtml(row.cpf)} · ${escapeHtml(row.city)}</p><p>Região: ${escapeHtml(row.region || '—')} · Cargo: ${escapeHtml(row.role || '—')} · Pastor: ${escapeHtml(row.pastor || '—')}</p>${statusControls(row)}<p class="call-time">${escapeHtml(time(row))}</p>${save(row)}</article>`).join('');
+  reportTable.innerHTML=visible.map(row=>`<tr><td class="call-name">${escapeHtml(row.fullName)}${state(row)}</td>${[row.cpf,row.region,row.role,row.pastor,row.city].map(value=>`<td>${escapeHtml(value || '—')}</td>`).join('')}<td>${statusControls(row)}</td><td class="call-time">${escapeHtml(time(row))}</td><td>${save(row)}</td></tr>`).join('');
+  reportCards.innerHTML=visible.map(row=>`<article class="attendance-card" role="listitem"><header><h3>${escapeHtml(row.fullName)}</h3>${state(row)}</header><p class="call-metadata">CPF: ${escapeHtml(row.cpf || '—')} · Cidade: ${escapeHtml(row.city || '—')}</p><p class="call-metadata">Região: ${escapeHtml(row.region || '—')} · Cargo: ${escapeHtml(row.role || '—')} · Pastor: ${escapeHtml(row.pastor || '—')}</p>${statusControls(row)}<p class="call-time">Último registro: ${escapeHtml(time(row))}</p>${save(row)}</article>`).join('');
   document.querySelector('#recordsPage').textContent=filtered.length ? `${page+1} / ${Math.ceil(filtered.length/pageSize)} · ${filtered.length} alunos` : 'Nenhum aluno';
+  document.querySelector('#callSearchEmpty').hidden=!ready||callRows.length===0||filtered.length>0;
   previousButton.disabled=busy||page===0; nextButton.disabled=busy||(page+1)*pageSize>=filtered.length;
   finalizeButton.disabled=busy||!ready||!totals.records||drafts.size>0;
   exportCsvButton.disabled=busy||!ready;
   document.querySelector('#callSummary').textContent=`${callRows.length} alunos · ${totals.records} pendentes${drafts.size?' · Salve as alterações antes de finalizar.':''}`;
+  document.querySelector('#callSummary').dataset.pending=String(totals.records);
   [classDate,courseFilter,moduleFilter,refreshButton].forEach(element=>{element.disabled=busy;});
 }
 async function loadCall() {
@@ -265,12 +266,17 @@ async function initializeAccess(access) {
 reportRecords.addEventListener('input',event=>{
   const container=event.target.closest('[data-student]'); if(!container) return;
   drafts.set(container.dataset.student,{status:container.querySelector('select').value,justification:container.querySelector('textarea').value});
-  if(event.target.tagName==='SELECT') renderCall();
+  if(event.target.tagName==='SELECT') {
+    const view=event.target.closest('.attendance-card') ? reportCards : reportTable;
+    renderCall();
+    Array.from(view.querySelectorAll('[data-student]')).find(item=>item.dataset.student===container.dataset.student)?.querySelector('select')?.focus();
+  }
   else finalizeButton.disabled=true;
 });
 reportRecords.addEventListener('click',async event=>{
   const button=event.target.closest('[data-save]'); if(!button||busy||!ready) return;
   const row=callRows.find(row=>row.id===button.dataset.save);
+  const view=button.closest('.attendance-card') ? reportCards : reportTable;
   const draft=drafts.get(row.id)||{status:row.record?.status,justification:row.record?.justification};
   if(!draft.status) return showToast('Selecione Presente, Justificado ou Falta.');
   busy=true; renderCall();
@@ -281,7 +287,10 @@ reportRecords.addEventListener('click',async event=>{
     if(!drafts.size) await loadCall();
     showToast('Presença salva.');
   } catch(error) {showToast(error.message);}
-  finally {busy=false;renderCall();}
+  finally {
+    busy=false;renderCall();
+    Array.from(view.querySelectorAll('[data-save]')).find(item=>item.dataset.save===row.id)?.focus();
+  }
 });
 finalizeButton.addEventListener('click',()=>{
   if(!ready||busy||drafts.size) return;

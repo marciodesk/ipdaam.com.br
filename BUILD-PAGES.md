@@ -9,7 +9,7 @@ node scripts/build-pages.cjs
 node tests/pages-package.cjs
 ```
 
-`scripts/pages-files.json` enumera individualmente os 33 arquivos públicos e os 14 arquivos de Functions necessários à release. Não há cópia recursiva genérica da raiz nem inclusão automática de arquivos novos. Alterações de lista exigem revisão. Referências públicas, preloads em `_headers` e imports relativos das Functions são verificados antes de gerar a saída.
+`scripts/pages-files.json` enumera individualmente os 41 arquivos públicos e os 14 arquivos de Functions necessários à release consolidada. Não há cópia recursiva genérica da raiz nem inclusão automática de arquivos novos. Alterações de lista exigem revisão. Referências públicas, preloads em `_headers` e imports relativos das Functions são verificados antes de gerar a saída.
 
 ## Saída
 
@@ -34,6 +34,12 @@ O `build/` inteiro é local e ignorado. Manifestos, relatórios, marcadores e ar
 
 ## Diferenças conhecidas e limites
 
-O conteúdo funcional deve corresponder à release publicada, sem incorporar alterações pendentes do workspace principal. O comparativo contra o manifesto arquivado da implantação `cf7b3454-71f3-40a1-aa8c-d3d243306d74` distingue diferenças binárias de diferenças apenas em CRLF/LF; hashes de texto podem mudar pela normalização de finais de linha. O relatório dessa comparação fica fora dos assets públicos.
+Esta etapa integra seletivamente as melhorias locais autorizadas de Secretaria, Dashboard, Presença, Boletim, Inscrição e Termo. Os oito assets adicionais estão enumerados na lista pública. Após confirmação institucional de média mínima 6, o limite de aprovação no fluxo de professor de `functions/api/gradebook/index.js` foi alinhado ao formulário da Secretaria. As demais Functions, a autenticação e as migrações permanecem iguais à release de referência. O comparativo contra o manifesto arquivado da implantação `cf7b3454-71f3-40a1-aa8c-d3d243306d74` distingue alterações funcionais de diferenças apenas em CRLF/LF; hashes de texto podem mudar pela normalização de finais de linha. O relatório dessa comparação fica fora dos assets públicos.
 
-Esta preparação não corrige os riscos funcionais já apontados na auditoria: aceite automático ao imprimir o termo, isolamento incompleto de ano/semestre no Boletim e fallback local da Presença para produção. Também não incorpora os novos layouts ou o cartão de WhatsApp do workspace principal. Essas alterações serão revisadas separadamente.
+Foram integradas as correções de aceite ao imprimir o Termo, seleção exata de ano/semestre do Boletim e uso exclusivo de mesma origem na Presença. Secretaria e Dashboard também deixaram de usar a API de produção quando abertos por `file:`; a Inscrição mantém seu roteamento específico do domínio publicado, sem fallback por `file:`. O acesso local deve ocorrer por HTTP.
+
+A média mínima de aprovação é 6 no formulário da Secretaria e no fluxo de professor do backend, conforme confirmação do responsável. Foram mantidos o cálculo aritmético, os limites de nota e os estados existentes abaixo de 6: a Secretaria conserva sua classificação de recuperação, enquanto o fluxo de professor mantém “Em andamento”. Nenhum registro salvo foi recalculado ou atualizado. Declarações de conclusão continuam dependendo da validação administrativa e documental já exigida pela API; aprovação semestral não comprova conclusão integral.
+
+Validação local: os oito testes solicitados, build repetido com SHA-256, compilação offline das Functions e Chrome com dados fictícios e APIs simuladas. Os 55 arquivos do pacote não incluem testes, SQL ou documentação. Os relatórios e PDFs de teste ficam fora da pasta pública. O commit local dos 26 arquivos foi autorizado separadamente; migração, sincronização remota e publicação não estão autorizadas.
+
+Pendência para publicação: WhatsApp `+55 92 99475-3703` está **PENDENTE DE CONFIRMAÇÃO**. O número foi preservado; a página não contém link de destino para esse contato e mostra um botão desabilitado. A ativação/publicação do link depende de nova validação explícita do número.

@@ -1,49 +1,127 @@
-.call-footer{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.call-footer>p{line-height:1.5}.call-footer button{min-height:44px}
-.call-status{min-width:150px}.call-status select,.call-save{min-height:44px}
-.call-status textarea{margin-top:8px;min-height:70px}
-.call-error{color:var(--danger);font-size:.85rem;max-width:32ch;white-space:normal}
-.call-name{font-weight:800;min-width:180px;overflow-wrap:anywhere}
-.attendance-table td:nth-child(2){min-width:125px;font-weight:400}
-.attendance-table td:nth-child(8){min-width:140px;white-space:normal}
-.attendance-table td:last-child{min-width:125px}
-.call-time{font-variant-numeric:tabular-nums;font-size:.85rem}
-.pill.Pendente{background:var(--soft);color:var(--muted)}
-button:disabled{cursor:not-allowed;opacity:.6}
-.call-save:focus-visible,#finalizeCall:focus-visible,dialog button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-#recordsNotice:not([hidden]){padding:12px;background:var(--soft);border-radius:6px;line-height:1.5}
-dialog{width:min(480px,calc(100% - 32px));padding:24px;border:1px solid var(--line);border-radius:8px;color:var(--text);background:var(--surface)}
-dialog::backdrop{background:rgba(29,39,51,.45)}dialog p{line-height:1.5}
-.attendance-card .call-status{margin:12px 0}.attendance-card .call-save{width:100%}
-@media(max-width:767px){.call-footer button{width:100%;min-height:48px}.call-status select{min-height:48px}dialog .report-actions{display:grid}dialog button{min-height:48px}}
-
-/* Keep the row action visible when the complete roster needs horizontal scrolling. */
-.shell{width:min(1440px,calc(100% - 32px));min-width:0}
-.hero{grid-template-columns:minmax(0,1fr) 440px}
-.summary-card span{overflow-wrap:normal;white-space:nowrap}
-.summary-grid{min-width:0}
-.records-panel,.attendance-table{min-width:0}
-.attendance-table table{width:100%;min-width:1120px;table-layout:fixed}
-.attendance-table th,.attendance-table td{padding:10px;vertical-align:top;overflow-wrap:break-word}
-.attendance-table th:nth-child(1){width:17%}
-.attendance-table th:nth-child(2){width:136px}
-.attendance-table th:nth-child(3){width:70px}
-.attendance-table th:nth-child(4){width:11%}
-.attendance-table th:nth-child(5){width:10%}
-.attendance-table th:nth-child(6){width:9%}
-.attendance-table th:nth-child(7){width:156px}
-.attendance-table th:nth-child(8){width:126px}
-.attendance-table th:nth-child(9){width:94px}
-.attendance-table .call-name{min-width:0;line-height:1.45}
-.attendance-table td:nth-child(2){min-width:0;white-space:nowrap;font-size:.875rem;font-variant-numeric:tabular-nums}
-.attendance-table td:nth-child(8){min-width:0;line-height:1.5}
-.attendance-table .call-status{min-width:0}
-.attendance-table .call-status select,.attendance-table .call-status textarea{width:100%;min-width:0}
-.attendance-table tbody td:last-child{position:sticky;right:0;z-index:2;min-width:0;background:var(--surface);border-left:1px solid var(--line)}
-.attendance-table thead th:last-child{position:sticky;right:0;z-index:4;border-left:1px solid var(--line)}
-.attendance-table .call-save{width:100%;padding:0 10px;font-size:.875rem}
-.attendance-table tbody tr:focus-within td{background:var(--soft)}
-.report-actions{align-items:center}
-@media(max-width:1100px){.hero{grid-template-columns:minmax(0,1fr)}.summary-grid{width:min(100%,520px)}}
-@media(max-width:560px){.shell{width:calc(100% - 20px)}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.summary-card{padding:10px}.summary-card span{font-size:.75rem}}
-@media print{.attendance-table table{min-width:0;table-layout:auto}.attendance-table tbody td:last-child,.attendance-table thead th:last-child{position:static}}
+﻿/* Attendance presentation. Loaded after inline, shared navigation and compact styles.
+   Scoped to this page; workflow and API contracts remain in roll-call.js. */
+.attendance-page .call-state {display:block;}
+.attendance-page .call-justification[hidden] {display:none;}
+@media screen {
+  body.attendance-page {--bg:#f3f4f6;--surface:#fff;--soft:#f0f6f3;--text:#1e293b;--muted:#526276;--line:#dfe5eb;--brand:#126b5b;--brand-dark:#0b4d42;background:var(--bg);}
+  .attendance-page .shell {width:calc(100% - 48px);max-width:1480px;min-width:0;padding:24px 0;}
+  .attendance-page #hero {position:static;display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,480px);gap:24px;align-items:center;margin-bottom:18px;padding:20px 24px;border:1px solid var(--line);border-radius:12px;background:#fff;}
+  .attendance-page #hero.is-locked {display:none;}
+  .attendance-page #hero h1 {font-size:1.75rem;line-height:1.25;letter-spacing:-.02em;}
+  .attendance-page #hero > div:first-child > p:not(.eyebrow) {display:block;max-width:65ch;margin:10px 0 0;font-size:.875rem;line-height:1.5;color:var(--muted);}
+  .attendance-page .summary-grid {width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-width:0;}
+  .attendance-page .summary-card {min-height:82px;padding:12px;border:1px solid var(--line);border-radius:8px;box-shadow:none;background:#f8fafb;}
+  .attendance-page .summary-card span {font-size:.75rem;font-weight:700;white-space:normal;line-height:1.4;}
+  .attendance-page .summary-card strong {margin-top:6px;font-size:1.75rem;line-height:1.2;font-variant-numeric:tabular-nums;}
+  .attendance-page .summary-card:nth-child(1) {background:#edf7f0;border-color:#c5dfce;color:#166534;}
+  .attendance-page .summary-card:nth-child(2) {background:#eef3ff;border-color:#ced9f3;color:#334a91;}
+  .attendance-page .summary-card:nth-child(3) {background:#fff1f2;border-color:#edcbd0;color:#9f2938;}
+  .attendance-page .summary-card:nth-child(4) {background:#fff7e7;border-color:#e8d4a4;color:#805414;}
+  .attendance-page #workspace .filters {grid-template-columns:minmax(145px,.8fr) minmax(130px,.7fr) minmax(175px,1fr) minmax(150px,1fr) auto;gap:14px;align-items:end;padding:18px;margin-bottom:18px;border-radius:10px;box-shadow:none;}
+  .attendance-page #workspace .filters:has(#modulePanel[hidden]) {grid-template-columns:minmax(145px,.85fr) minmax(140px,1fr) minmax(180px,1.5fr) auto;}
+  .attendance-page #workspace #modulePanel {min-width:0;padding:0;margin:0 !important;}
+  .attendance-page #modulePanel label {max-width:none;}
+  .attendance-page .filters label {min-width:0;gap:8px;font-size:.8125rem;font-weight:700;}
+  .attendance-page .filters :is(input,select),.attendance-page #moduleFilter {min-width:0;min-height:46px;padding:11px 12px;border-radius:6px;background:#fff;}
+  .attendance-page :is(input,select,textarea):focus {border-color:var(--brand);box-shadow:0 0 0 3px rgba(18,107,91,.12);}
+  .attendance-page :is(input,select,textarea,button,summary,a):focus-visible {outline:2px solid var(--brand);outline-offset:3px;}
+  .attendance-page #workspace :is(.primary-button,.ghost-button),.attendance-page dialog button {min-height:44px;padding:10px 16px;border-radius:6px;font-size:.875rem;line-height:1.3;font-weight:700;}
+  .attendance-page .ghost-button {border-color:var(--line);background:#fff;color:var(--text);}
+  .attendance-page .ghost-button:hover:not(:disabled) {border-color:#a8b9b1;background:var(--soft);}
+  .attendance-page button:disabled {opacity:.6;cursor:not-allowed;}
+  .attendance-page .records-panel {min-width:0;margin-top:0;padding:20px;border-radius:12px;box-shadow:none;}
+  .attendance-page .records-header {align-items:center;margin-bottom:12px;gap:12px;}
+  .attendance-page .records-header h2 {font-size:1.25rem;line-height:1.3;}
+  .attendance-page .report-actions {align-items:center;gap:12px;margin:12px 0;}
+  .attendance-page #recordsPage {font-size:.875rem;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .attendance-page #callContext {margin:14px 0;font-weight:700;}
+  .attendance-page #recordsNotice:not([hidden]) {padding:18px;border:1px dashed #bbc9c2;border-radius:8px;background:#f7faf8;line-height:1.5;}
+  .attendance-page .attendance-table {display:block;min-width:0;max-height:65vh;overflow:auto;border:1px solid var(--line);border-radius:8px;scroll-padding-top:60px;scrollbar-gutter:stable;}
+  .attendance-page .attendance-table table {width:100%;min-width:1040px;border-collapse:separate;border-spacing:0;table-layout:fixed;}
+  .attendance-page .attendance-table :is(th,td) {padding:14px 10px;vertical-align:top;overflow-wrap:anywhere;}
+  .attendance-page .attendance-table th {position:sticky;top:0;z-index:3;background:#f1f5f4;color:var(--muted);font-size:.75rem;font-weight:700;white-space:normal;line-height:1.4;box-shadow:0 1px 0 var(--line);}
+  .attendance-page .attendance-table th:nth-child(1) {width:18%;}
+  .attendance-page .attendance-table th:nth-child(2) {width:120px;}
+  .attendance-page .attendance-table th:nth-child(3) {width:80px;}
+  .attendance-page .attendance-table th:nth-child(4),.attendance-page .attendance-table th:nth-child(5) {width:10%;}
+  .attendance-page .attendance-table th:nth-child(6) {width:96px;}
+  .attendance-page .attendance-table th:nth-child(7) {width:152px;}
+  .attendance-page .attendance-table th:nth-child(8) {width:120px;}
+  .attendance-page .attendance-table th:nth-child(9) {width:88px;}
+  .attendance-page .attendance-table td {font-size:.875rem;line-height:1.5;}
+  .attendance-page .attendance-table tbody tr:last-child td {border-bottom:0;}
+  .attendance-page .attendance-table tbody tr:hover td,.attendance-page .attendance-table tbody tr:focus-within td {background:#f7faf8;}
+  .attendance-page .attendance-table .call-name {min-width:0;font-weight:700;}
+  .attendance-page .attendance-table td:nth-child(2) {min-width:0;white-space:nowrap;font-weight:400;font-size:.8125rem;font-variant-numeric:tabular-nums;}
+  .attendance-page .attendance-table td:nth-child(8) {min-width:0;white-space:normal;}
+  .attendance-page .attendance-table tbody td:last-child {position:sticky;right:0;z-index:2;min-width:0;border-left:1px solid var(--line);background:#fff;}
+  .attendance-page .attendance-table thead th:last-child {right:0;z-index:4;border-left:1px solid var(--line);}
+  .attendance-page #workspace .attendance-table .call-save {width:100%;padding:10px 8px;font-size:.8125rem;}
+  .attendance-page .call-status {min-width:0;}
+  .attendance-page .call-status select {width:100%;min-width:0;min-height:44px;padding:10px 8px;border-color:var(--state-line,#d8c79e);background:var(--state-bg,#fff7e7);color:var(--state-text,#805414);font-size:.875rem;font-weight:700;}
+  .attendance-page .call-status option {background:#fff;color:var(--text);}
+  .attendance-page .call-justification {margin-top:10px;font-size:.75rem;gap:6px;}
+  .attendance-page .call-status textarea {margin:0;min-width:0;min-height:86px;padding:10px;font-size:.875rem;font-weight:400;line-height:1.5;}
+  .attendance-page .call-justification[hidden],.attendance-page .call-status textarea[hidden] {display:none;}
+  .attendance-page .call-state {width:fit-content;max-width:100%;margin-top:8px;padding:3px 8px;border:1px solid var(--state-line,#e8d4a4);border-radius:6px;background:var(--state-bg,#fff7e7);color:var(--state-text,#805414);font-size:.75rem;font-weight:700;line-height:1.4;}
+  .attendance-page :is(.call-state,.call-status)[data-status="Presente"] {--state-bg:#edf7f0;--state-line:#c5dfce;--state-text:#166534;}
+  .attendance-page :is(.call-state,.call-status)[data-status="Justificado"] {--state-bg:#eef3ff;--state-line:#ced9f3;--state-text:#334a91;}
+  .attendance-page :is(.call-state,.call-status)[data-status="Falta"] {--state-bg:#fff1f2;--state-line:#edcbd0;--state-text:#9f2938;}
+  .attendance-page .call-time {font-size:.8125rem;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .attendance-page .attendance-cards {display:none;}
+  .attendance-page .call-footer {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px 24px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);}
+  .attendance-page #callSummary {grid-column:1;margin:0;padding:12px 14px;border:1px solid #e8d4a4;border-radius:6px;background:#fff7e7;color:#805414;font-size:1rem;font-weight:700;line-height:1.5;}
+  .attendance-page #callSummary[data-pending="0"] {border-color:var(--line);background:#f7f9fa;color:var(--text);}
+  .attendance-page .call-footer > .small-note {grid-column:1;margin:0;line-height:1.5;max-width:75ch;}
+  .attendance-page #finalizeCall {grid-column:2;grid-row:1 / 3;}
+  .attendance-page dialog {width:min(520px,calc(100% - 32px));padding:24px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--text);}
+  .attendance-page dialog::backdrop {background:rgba(29,39,51,.45);}
+  .attendance-page dialog h2 {font-size:1.25rem;}
+  .attendance-page #finalizeDescription {padding:14px;border-radius:6px;background:#fff7e7;color:#805414;line-height:1.6;}
+  .attendance-page dialog .report-actions {justify-content:flex-end;margin-bottom:0;}
+  .attendance-page #confirmFinalize {background:var(--brand);color:#fff;border:1px solid var(--brand);}
+  .attendance-page .toast {z-index:50;max-width:min(360px,calc(100% - 32px));font-size:.875rem;font-weight:600;line-height:1.5;}
+  @media (max-width:1320px) {
+    .attendance-page #hero {grid-template-columns:minmax(0,1fr);gap:18px;}
+    .attendance-page .summary-grid {max-width:none;}
+  }
+  @media (max-width:1200px) {
+    .attendance-page #workspace .filters,.attendance-page #workspace .filters:has(#modulePanel[hidden]) {grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (max-width:980px) {
+    .attendance-page .attendance-table {display:none;}
+    .attendance-page .attendance-cards {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+    .attendance-page .attendance-card {min-width:0;padding:18px;border:1px solid var(--line);border-radius:8px;background:#fff;overflow-wrap:anywhere;}
+    .attendance-page .attendance-card:first-child,.attendance-page .attendance-card:last-child {padding:18px;border-bottom:1px solid var(--line);}
+    .attendance-page .attendance-card header {display:flex;gap:8px;flex-wrap:wrap;align-items:start;}
+    .attendance-page .attendance-card h3 {flex:1 1 100%;margin:0;font-size:1.0625rem;line-height:1.4;}
+    .attendance-page .attendance-card .call-state {margin:0;}
+    .attendance-page .attendance-card .call-metadata {margin:10px 0;font-size:.8125rem;color:var(--muted);line-height:1.6;}
+    .attendance-page .attendance-card .call-status {margin:16px 0 10px;}
+    .attendance-page .attendance-card .call-save {width:100%;}
+  }
+  @media (max-width:760px) {
+    .attendance-page .shell {width:calc(100% - 24px);padding-top:16px;}
+    .attendance-page #hero {padding:18px;gap:16px;}
+    .attendance-page #hero h1 {font-size:1.5rem;}
+    .attendance-page .summary-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+    .attendance-page .summary-card {padding:12px;min-height:78px;}
+    .attendance-page .attendance-cards {grid-template-columns:minmax(0,1fr);}
+    .attendance-page .records-panel {padding:16px;}
+    .attendance-page .call-footer {grid-template-columns:minmax(0,1fr);gap:12px;}
+    .attendance-page #finalizeCall {grid-column:1;grid-row:auto;width:100%;}
+  }
+  @media (max-width:560px) {
+    .attendance-page #workspace .filters,.attendance-page #workspace .filters:has(#modulePanel[hidden]) {grid-template-columns:minmax(0,1fr);padding:16px;}
+    .attendance-page .records-header {align-items:stretch;}
+    .attendance-page .records-header > button {width:100%;}
+    .attendance-page .report-actions {display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .attendance-page #recordsPage {grid-column:1/-1;grid-row:1;text-align:center;}
+    .attendance-page #workspace .attendance-card .call-save,.attendance-page .call-status select {min-height:46px;}
+    .attendance-page .toast {left:12px;right:12px;top:74px;bottom:auto;max-width:none;}
+  }
+}
+@media print {
+  .attendance-page .attendance-table table {min-width:0;table-layout:auto;}
+  .attendance-page .attendance-table tbody td:last-child,.attendance-page .attendance-table thead th:last-child {position:static;}
+}

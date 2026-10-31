@@ -1,0 +1,26 @@
+/* Print-only enrollment term. The named page and selectors exclude the gradebook. */
+@page etda-termo {size:A4 portrait;margin:18mm 20mm;}
+@media print {
+  body:not(.printing-gradebook) {page:etda-termo;margin:0!important;padding:0!important;background:#fff;color:#111;}
+  body:not(.printing-gradebook)>:not(.app-shell),
+  body:not(.printing-gradebook) .app-shell>:not(.app-content),
+  body:not(.printing-gradebook) .app-content>:not(.page-content),
+  body:not(.printing-gradebook) .page-content>:not(#workspace),
+  body:not(.printing-gradebook) #workspace>:not(#enrollmentForm),
+  body:not(.printing-gradebook) #enrollmentForm>:not(.print-declaration):not(.signature-area) {display:none!important;}
+  body:not(.printing-gradebook) :is(.app-shell,.app-content,.page-content,#workspace,#enrollmentForm) {display:block!important;width:100%!important;min-height:0;margin:0!important;padding:0!important;border:0!important;border-radius:0;box-shadow:none;background:#fff;}
+  body:not(.printing-gradebook) .print-declaration {display:block;margin:0;font:11.5pt/1.55 Arial,Helvetica,sans-serif;text-align:justify;text-align-last:auto;color:#111;}
+  body:not(.printing-gradebook) .term-document-header {display:flex;align-items:center;gap:8mm;padding-bottom:5mm;border-bottom:1pt solid #444;text-align:left;break-inside:avoid;}
+  body:not(.printing-gradebook) .term-document-header img {display:block;width:40mm;height:18mm;object-fit:contain;}
+  body:not(.printing-gradebook) .term-document-header strong {display:block;font-size:13pt;line-height:1.35;}
+  body:not(.printing-gradebook) .term-document-header span {display:block;margin-top:1mm;font-size:11pt;}
+  body:not(.printing-gradebook) .print-declaration h2 {margin:7mm 0 6mm;font-size:14pt;line-height:1.35;text-align:center;break-after:avoid;}
+  body:not(.printing-gradebook) .term-identification {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4mm 8mm;margin:0 0 7mm;padding-bottom:5mm;border-bottom:.5pt solid #777;text-align:left;break-inside:avoid;}
+  body:not(.printing-gradebook) .term-identification>div:first-child {grid-column:1/-1;}
+  body:not(.printing-gradebook) .term-identification dt {font-size:10pt;color:#333;}
+  body:not(.printing-gradebook) .term-identification dd {margin:1mm 0 0;font-weight:700;overflow-wrap:anywhere;}
+  body:not(.printing-gradebook) .print-declaration p {margin:0;orphans:3;widows:3;}
+  body:not(.printing-gradebook) .print-declaration .term-emission-date {margin-top:8mm;text-align:right;break-inside:avoid;break-after:avoid;}
+  body:not(.printing-gradebook) .signature-area {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18mm;margin-top:6mm;padding-top:18mm;break-inside:avoid;}
+  body:not(.printing-gradebook) .signature-line {border-top:.75pt solid #333;padding-top:3mm;font:10.5pt/1.4 Arial,Helvetica,sans-serif;text-align:center;}
+}
