@@ -1,0 +1,74 @@
+body.declarations-page {margin:0;background:#f3f4f6;color:#1e293b;font:16px/1.5 Arial,Helvetica,sans-serif;}
+.declarations-page * {box-sizing:border-box;}
+.declarations-page [hidden] {display:none !important;}
+.declarations-page .declarations-main {padding:28px;max-width:1600px;margin:auto;}
+.declarations-page .brand-copy {display:grid;line-height:1.4;}
+.declarations-page .system-sidebar .brand-symbol {display:grid;place-items:center;height:40px;color:#334a9f;font-size:.75rem;font-weight:700;border-radius:8px;}
+.declarations-page h1 {margin:0;font-size:1.875rem;line-height:1.25;}
+.declarations-page h2 {margin:0;font-size:1.125rem;line-height:1.4;}
+.declarations-page p {margin:10px 0;color:#526276;}
+.declarations-page .declarations-title {margin-bottom:24px;}
+.declarations-page .declarations-grid {display:grid;grid-template-columns:minmax(290px,360px) minmax(0,1fr);gap:24px;align-items:start;}
+.declarations-page .declarations-panel {padding:24px;border:1px solid #dfe5eb;border-radius:12px;background:#fff;min-width:0;}
+.declarations-page #declarationsLogin {max-width:440px;margin:48px auto;}
+.declarations-page form {display:grid;gap:16px;}
+.declarations-page .declarations-panel > h2 {margin-bottom:18px;}
+.declarations-page label {display:grid;gap:7px;font-size:.875rem;font-weight:700;min-width:0;}
+.declarations-page :is(input,select,button) {font:inherit;min-height:44px;border:1px solid #cbd5df;border-radius:6px;padding:10px 12px;color:#1e293b;background:#fff;width:100%;}
+.declarations-page input[type=checkbox] {width:18px;height:18px;min-height:18px;margin:2px 0 0;accent-color:#126b5b;}
+.declarations-page .declarations-check {display:flex;align-items:start;gap:10px;font-weight:400;}
+.declarations-page .declarations-check input {flex-shrink:0;}
+.declarations-page button {cursor:pointer;font-size:.875rem;font-weight:700;width:auto;}
+.declarations-page button.primary {background:#126b5b;border-color:#126b5b;color:#fff;}
+.declarations-page button:hover:not(:disabled) {background:#f0f5f3;}
+.declarations-page button.primary:hover:not(:disabled) {background:#0b4d42;}
+.declarations-page button:disabled {opacity:.55;cursor:not-allowed;}
+.declarations-page :is(input,select,button,summary,a):focus-visible {outline:2px solid #126b5b;outline-offset:3px;}
+.declarations-page .declarations-period {display:grid;grid-template-columns:1fr 1.3fr;gap:12px;}
+.declarations-page .declarations-help {font-size:.8125rem;line-height:1.5;}
+.declarations-page .declarations-notice {margin:0;padding:12px;background:#f5f7fa;border:1px solid #dfe5eb;border-radius:6px;font-size:.875rem;}
+.declarations-page .declarations-notice[data-eligible=true] {background:#edf6f2;color:#185944;}
+.declarations-page .declarations-requirements {font-size:.875rem;color:#526276;}
+.declarations-page summary {font-weight:700;color:#1e293b;cursor:pointer;}
+.declarations-page .declarations-requirements ul {padding-left:20px;}
+.declarations-page .declarations-preview {min-width:0;}
+.declarations-page .declarations-preview-heading {display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.declarations-page #declarationsPreviewState {font-size:.875rem;font-weight:700;}
+.declarations-page .declaration-document {padding:32px;background:#fff;border:1px solid #dfe5eb;min-height:650px;overflow-wrap:anywhere;}
+.declaration-document .declaration-letterhead {display:flex;gap:24px;align-items:center;padding-bottom:20px;border-bottom:1.5px solid #333;}
+.declaration-document .declaration-letterhead img {width:145px;height:58px;object-fit:contain;}
+.declaration-document .declaration-letterhead strong {display:block;font-size:1rem;}
+.declaration-document .declaration-letterhead p {margin:4px 0 0;}
+.declaration-document h2 {margin:30px 0 22px;text-align:center;font-size:1.25rem;}
+.declaration-document .declaration-control {font-size:.75rem;word-break:break-word;}
+.declaration-document .declaration-statement {margin:28px 0;line-height:1.9;color:#111;white-space:pre-wrap;}
+.declaration-document .declaration-emission {margin-top:30px;color:#111;}
+.declaration-document .declaration-signature {margin:80px auto 0;padding-top:12px;border-top:1px solid #333;max-width:330px;text-align:center;}
+.declaration-document .declaration-disclaimer {margin-top:30px;font-size:.75rem;color:#333;}
+.declaration-document .declaration-draft {font-weight:700;color:#6d4e11;background:#fff6df;padding:10px;text-align:center;}
+.declarations-page .declarations-history {margin-top:28px;}
+.declarations-page #declarationsHistory {list-style:none;margin:18px 0 0;padding:0;}
+.declarations-page #declarationsHistory li {display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid #dfe5eb;align-items:center;}
+.declarations-page #declarationsHistory li div {min-width:0;overflow-wrap:anywhere;}
+.declarations-page #declarationsHistory span {display:block;font-size:.875rem;color:#526276;margin-top:4px;}
+.declarations-page #declarationsHistory button {flex-shrink:0;}
+.declarations-print-document {display:none;}
+@media (max-width:1150px) {.declarations-page .declarations-grid {grid-template-columns:minmax(0,1fr);} .declarations-page #declarationsForm {grid-template-columns:repeat(2,minmax(0,1fr));} .declarations-page #declarationsForm > :is(p,details,.declarations-check,button) {grid-column:1/-1;}}
+@media (max-width:600px) {.declarations-page .declarations-main {padding:18px 12px;} .declarations-page .declarations-panel {padding:18px 16px;} .declarations-page #declarationsForm {grid-template-columns:minmax(0,1fr);} .declarations-page .declaration-document {padding:20px 16px;} .declaration-document .declaration-letterhead {gap:12px;flex-wrap:wrap;} .declarations-page #declarationsHistory li {align-items:stretch;flex-direction:column;gap:12px;} .declarations-page .declarations-preview-heading button {width:100%;}}
+@page etda-declaration {size:A4 portrait;margin:20mm;}
+@media print {
+  body.declarations-page {page:etda-declaration;padding:0 !important;margin:0;background:#fff;color:#111;}
+  body.declarations-page > :not(.declarations-print-document) {display:none !important;}
+  body.declarations-page .declarations-print-document {display:block;}
+  .declarations-print-document .declaration-document {border:0;padding:0;min-height:0;font:12pt/1.6 Arial,Helvetica,sans-serif;color:#111;}
+  .declarations-print-document .declaration-letterhead {break-inside:avoid;gap:8mm;padding-bottom:6mm;}
+  .declarations-print-document .declaration-letterhead img {width:40mm;height:17mm;}
+  .declarations-print-document .declaration-letterhead strong {font-size:12pt;}
+  .declarations-print-document h2 {margin:10mm 0 8mm;font-size:16pt;line-height:1.3;}
+  .declarations-print-document p {color:#111;}
+  .declarations-print-document .declaration-control {font-size:9pt;}
+  .declarations-print-document .declaration-statement {margin:10mm 0;line-height:1.85;orphans:3;widows:3;}
+  .declarations-print-document .declaration-emission {margin-top:10mm;}
+  .declarations-print-document .declaration-signature {margin-top:24mm;padding-top:3mm;max-width:110mm;break-inside:avoid;}
+  .declarations-print-document .declaration-disclaimer {font-size:9pt;margin-top:10mm;}
+}

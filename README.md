@@ -36,3 +36,9 @@ node tests/attendance-query.cjs
 node tests/roll-call-query.cjs
 node tests/attendance-client.cjs
 ```
+
+## Declarações
+
+Módulo administrativo em `/declaracoes`, com emissão e histórico protegidos no servidor. Operação, critérios de conclusão pendentes e publicação: consulte [DECLARACOES.md](DECLARACOES.md). A migração 0006 já foi aplicada à produção; não reaplicá-la.
+
+Testes locais: `node tests/declarations-query.cjs` e `node tests/declarations-auth.cjs`.

@@ -1,6 +1,27 @@
 (() => {
   const sidebar = document.querySelector('.system-sidebar');
   if (!sidebar) return;
+  // Administrative declaration issuance uses the existing session and permissions.
+  let declarationsLoading = false;
+  function addDeclarationsLink() {
+    if (declarationsLoading || sidebar.querySelector('a[href="declaracoes.html"]')) return;
+    declarationsLoading = true;
+    fetch('/api/session', { credentials:'same-origin', headers:{accept:'application/json'} })
+      .then(response => response.ok ? response.json() : null)
+      .then(access => {
+        const role = String(access?.role || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        if (!['admin', 'administrador'].includes(role)) return;
+        const link = document.createElement('a');
+        link.href = 'declaracoes.html'; link.textContent = 'Declarações';
+        link.className = 'nav-link';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class','menu-icon'); svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('fill','none');
+        svg.setAttribute('stroke','currentColor'); svg.setAttribute('stroke-width','1.6'); svg.setAttribute('aria-hidden','true');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path'); path.setAttribute('d','M5 3h10l4 4v14H5zM8 11h8M8 15h8M8 18h5'); svg.append(path); link.prepend(svg);
+        sidebar.querySelector('.system-nav')?.append(link);
+      }).catch(() => {}).finally(() => { declarationsLoading = false; });
+  }
+  if (!sidebar.hidden) addDeclarationsLink();
   if (!sidebar.id) sidebar.id = 'systemSidebar';
   let footer = sidebar.querySelector('.sidebar-footer');
   if (!footer) {
@@ -48,8 +69,12 @@
       toggle.focus();
     }
   });
-  new MutationObserver(() => { if (sidebar.hidden) close(); }).observe(sidebar, { attributes:true, attributeFilter:['hidden'] });
+  new MutationObserver(() => {
+    if (sidebar.hidden) close(); else addDeclarationsLink();
+  }).observe(sidebar, { attributes:true, attributeFilter:['hidden'] });
   const paths = {
+    'declaracoes.html':'M5 3h10l4 4v14H5zM8 11h8M8 15h8M8 18h5',
+    'secretaria.html?modulo=boletim':'M5 3h12l2 2v16H5zM8 8h8M8 12h8M8 16h5',
     'inscricao.html':'M12 3H4v18h16V11M8 8h4M8 12h3M8 16h8M18 2v6M15 5h6',
     'cursos.html':'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',
     'secretaria.html':'M4 21V5h16v16M8 5V3h8v2M8 9h2m4 0h2M8 13h2m4 0h2M10 21v-4h4v4',

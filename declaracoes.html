@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Declarações — ETDA Manaus</title>
+  <link rel="stylesheet" href="/assets/system-navigation.css?v=20260922-2">
+  <link rel="stylesheet" href="/assets/declaracoes.css?v=1">
+  <script src="/assets/system-navigation.js?v=20261031-1" defer></script>
+  <script src="/assets/declaracoes.js?v=1" defer></script>
+</head>
+<body class="declarations-page">
+  <aside class="system-sidebar" hidden>
+    <div class="header-main"><a class="system-brand" href="cursos.html"><span class="brand-symbol">ETDA</span><span class="brand-copy">ETDA Manaus<small>Gestão acadêmica</small></span></a></div>
+    <nav class="system-nav" aria-label="Menu principal">
+      <a href="cursos.html">Dashboard</a><a href="secretaria.html">Secretaria</a>
+      <a href="secretaria.html?modulo=boletim">Boletim Acadêmico</a>
+      <a href="declaracoes.html" class="is-active" aria-current="page">Declarações</a>
+      <a href="inscricao.html">Cadastrar aluno</a><a href="presenca.html">Presença</a><a href="usuarios-presenca.html">Usuários</a>
+    </nav>
+  </aside>
+  <main class="declarations-main">
+    <p id="declarationsSession" role="status">Verificando acesso da Secretaria…</p>
+    <form id="declarationsLogin" class="declarations-panel" hidden>
+      <h1>Acesso da Secretaria</h1>
+      <label>Senha administrativa<input id="declarationsPassword" type="password" autocomplete="current-password" required></label>
+      <p id="declarationsLoginError" role="alert"></p><button type="submit" class="primary">Entrar</button>
+    </form>
+    <div id="declarationsWorkspace" hidden>
+      <header class="declarations-title"><h1>Declarações</h1><p>Emissão e consulta de documentos acadêmicos da ETDA Manaus.</p></header>
+      <div class="declarations-grid">
+        <section class="declarations-panel" aria-labelledby="declarationsFormTitle">
+          <h2 id="declarationsFormTitle">Preparar declaração</h2>
+          <form id="declarationsForm">
+            <label>Curso<select id="declarationsCourse"><option value="">Todos os cursos</option></select></label>
+            <label>Buscar aluno<input id="declarationsSearch" type="search" placeholder="Digite o nome do aluno" autocomplete="off"></label>
+            <label>Aluno e matrícula<select id="declarationsStudent" required><option value="">Selecione um aluno</option></select></label>
+            <label>Tipo de declaração<select id="declarationsType"><option value="studies">Declaração de Estudos</option><option value="completion">Declaração de Conclusão de Curso</option></select></label>
+            <div class="declarations-period"><label>Ano<input id="declarationsYear" type="number" min="1900" max="9999" step="1" required></label><label>Semestre<select id="declarationsSemester" required><option value="">Selecione</option><option value="1">1º semestre</option><option value="2">2º semestre</option></select></label></div>
+            <p id="declarationsEligibility" class="declarations-notice" role="status">Selecione uma matrícula para verificar a elegibilidade.</p>
+            <details class="declarations-requirements"><summary>Requisitos para conclusão integral</summary><p>A aprovação de um boletim semestral não comprova conclusão do curso. A emissão depende de:</p><ul><li>Matriz integral de módulos e carga horária homologadas.</li><li>Frequência mínima, notas e demais exigências institucionais definidas.</li><li>Comprovantes de integralização de todos os requisitos.</li><li>Homologação explícita da Secretaria, autoridade responsável e certificado pendente.</li></ul><p>Sem essa validação documental, a declaração de conclusão permanece bloqueada.</p></details>
+            <label>Responsável autorizado pela emissão e assinatura<input id="declarationsResponsible" type="text" minlength="6" maxlength="120" autocomplete="name" required></label>
+            <p class="declarations-help">Em conta administrativa compartilhada, o nome informado será registrado junto à conta. Ele não representa identificação pessoal verificada pelo login.</p>
+            <label class="declarations-check"><input id="declarationsAuthorized" type="checkbox" required>Confirmo que tenho autorização institucional para emitir e assinar esta declaração.</label>
+            <button id="declarationsIssue" type="submit" class="primary" disabled>Emitir e registrar declaração</button>
+            <p id="declarationsIssueMessage" role="status"></p>
+          </form>
+        </section>
+        <section class="declarations-preview" aria-labelledby="declarationsPreviewTitle">
+          <div class="declarations-preview-heading"><h2 id="declarationsPreviewTitle">Pré-visualização</h2><button id="declarationsPrint" type="button" disabled>Imprimir / Salvar PDF</button></div>
+          <p class="declarations-help">No Chrome, escolha A4 e desative “Cabeçalhos e rodapés”. Para PDF, selecione “Salvar como PDF”. Declarações não substituem certificados.</p>
+          <p id="declarationsPreviewState" role="status">A pré-visualização não é um documento emitido.</p>
+          <div id="declarationsPreview"></div>
+        </section>
+      </div>
+      <section class="declarations-panel declarations-history" aria-labelledby="declarationsHistoryTitle"><h2 id="declarationsHistoryTitle">Histórico de emissão</h2><p>Registros de documentos efetivamente emitidos, com identificação da conta e do responsável informado. Reimprimir mantém a data e o número de controle originais.</p><button id="declarationsRefresh" type="button">Atualizar histórico</button><p id="declarationsHistoryMessage" role="status"></p><ul id="declarationsHistory"></ul><button id="declarationsHistoryMore" type="button" hidden>Carregar emissões anteriores</button></section>
+    </div>
+  </main>
+  <section id="declarationsPrintDocument" class="declarations-print-document"></section>
+</body>
+</html>
