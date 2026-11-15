@@ -35,6 +35,11 @@ const registrationWindow = {
   start: "2026-09-28",
   end: null // Aberto ate novo aviso.,
 };
+const cfoRegistrationWindow = {
+  start: "2026-11-16",
+  end: "2026-12-07",
+};
+const documentKeys = ["rg", "cpf", "civilStatusCertificate", "criminalRecordCertificate", "recommendationLetter", "proofOfResidence"];
 const baptismRequirementForCfo = "03 anos de batismo";
 const noCfoBaptismRequirement = "Nao tenho 03 anos de batismo";
 
@@ -49,13 +54,14 @@ function getManausDate() {
   return `${date.year}-${date.month}-${date.day}`;
 }
 
-function assertRegistrationOpen() {
+function assertRegistrationOpen(course) {
   const today = getManausDate();
-  if (today < registrationWindow.start) {
-    throw new Error("As inscricoes iniciam em 28/09/2026.");
+  const window = course === "CFO" ? cfoRegistrationWindow : registrationWindow;
+  if (today < window.start) {
+    throw new Error(course === "CFO" ? "As pré-inscrições do CFO iniciam em 16/11/2026." : "As inscricoes iniciam em 28/09/2026.");
   }
-  if (registrationWindow.end && today > registrationWindow.end) {
-    throw new Error("Inscricoes encerradas.");
+  if (window.end && today > window.end) {
+    throw new Error(course === "CFO" ? "Pré-inscrições do CFO encerradas em 07/12/2026, às 23h59 (horário de Manaus)." : "Inscricoes encerradas em 04/09/2026.");
   }
 }
 
@@ -117,7 +123,25 @@ function normalizePayload(payload) {
     createdAt: now,
     updatedAt: now,
   };
+  // The existing persisted id is the protocol; ignore client-supplied aliases.
+  delete enrollment.protocol;
+  delete enrollment.protocolo;
   enrollment.enrollmentPeriod = getConfiguredEnrollmentPeriod(enrollment);
+  // The public CFO period is authoritative, regardless of dates supplied by the client.
+  if (enrollment.grade === "CFO") {
+    enrollment.enrollmentDate = getManausDate().split("-").reverse().join("/");
+    enrollment.enrollmentPeriod = getEnrollmentPeriodFromDate(getManausDate());
+    if (payload.documentsAcknowledged !== true) {
+      throw new Error("Confirme que apresentará a documentação exigida à secretaria da ETDA no período informado.");
+    }
+    enrollment.documentsChecklist = Object.fromEntries(documentKeys.map((key) => [key, payload.documentsChecklist?.[key] === true]));
+    enrollment.documentsAcknowledged = true;
+    enrollment.documentsAcknowledgedDate = getManausDate();
+  }
+
+  if (payload.submissionKey !== undefined && !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(payload.submissionKey)) {
+    throw new Error("Identificador de envio invalido. Recarregue a ficha e tente novamente.");
+  }
 
   if (!enrollment.fullName || !enrollment.cpf || !enrollment.grade || !enrollment.declarationAccepted || !enrollment.lgpdAccepted) {
     throw new Error("Preencha nome, CPF, curso e aceite a declaracao e o termo LGPD.");
@@ -139,7 +163,7 @@ function normalizePayload(payload) {
   return enrollment;
 }
 
-async function assertCpfAvailable(db, enrollment) {
+async function findExistingEnrollment(db, enrollment) {
   const normalizedCpf = cleanCpf(enrollment.cpf);
   if (!normalizedCpf) {
     throw new Error("CPF invalido.");
@@ -161,8 +185,22 @@ async function assertCpfAvailable(db, enrollment) {
   });
 
   if (existing) {
+    const saved = JSON.parse(existing.payload || "{}");
+    if (enrollment.submissionKey && saved.submissionKey === enrollment.submissionKey && saved.grade === enrollment.grade && saved.source === "public_form") {
+      return { ...saved, id: existing.id };
+    }
     throw new Error("Ja existe uma pre-inscricao cadastrada para este CPF neste periodo.");
   }
+  return null;
+}
+
+function confirmation(enrollment, status = 200) {
+  return json({
+    ok: true,
+    id: enrollment.id,
+    protocol: enrollment.id,
+    ...(enrollment.grade === "CFO" ? { documentsChecklist: enrollment.documentsChecklist } : {}),
+  }, { status });
 }
 
 export async function onRequestGet() {
@@ -178,17 +216,28 @@ export async function onRequestOptions() {
 
 export async function onRequestPost({ request, env }) {
   try {
-    assertRegistrationOpen();
-    const db = getDatabase(env);
     const body = await request.json();
+    assertRegistrationOpen(cleanText(body.grade, 40));
+    const db = getDatabase(env);
     const enrollment = normalizePayload(body);
-    await assertCpfAvailable(db, enrollment);
+    const existing = await findExistingEnrollment(db, enrollment);
+    // A slow database read must not let a request cross the closing deadline.
+    assertRegistrationOpen(enrollment.grade);
+    if (existing) return confirmation(existing);
     const payload = JSON.stringify(enrollment);
 
-    await db.prepare(
+    // This single statement also protects concurrent requests that both passed the
+    // legacy-aware CPF check above. New public/admin records persist the period.
+    const result = await db.prepare(
       `INSERT INTO enrollments (
         id, full_name, cpf, course, email, status, enrollment_date, payload, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`
+      ) SELECT ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now')
+      WHERE NOT EXISTS (
+        SELECT 1 FROM enrollments WHERE ${cpfSqlExpression()} = ?
+        AND CASE WHEN json_valid(payload)
+          THEN TRIM(json_extract(payload, '$.enrollmentPeriod')) = ?
+          ELSE 1 END
+      )`
     )
       .bind(
         enrollment.id,
@@ -198,11 +247,18 @@ export async function onRequestPost({ request, env }) {
         enrollment.email,
         enrollment.status,
         enrollment.enrollmentDate || "",
-        payload
+        payload,
+        cleanCpf(enrollment.cpf),
+        enrollment.enrollmentPeriod
       )
       .run();
 
-    return json({ ok: true, id: enrollment.id }, { status: 201 });
+    if (!result.meta?.changes) {
+      const saved = await findExistingEnrollment(db, enrollment);
+      if (saved) return confirmation(saved);
+      throw new Error("Nao foi possivel confirmar a pre-inscricao. Tente novamente.");
+    }
+    return confirmation(enrollment, 201);
   } catch (error) {
     return errorJson(error, 400);
   }
