@@ -89,3 +89,7 @@ O manifesto foi comparado com a base ativa: somente `inscricao.html`, `secretari
 O responsável autorizou a publicação nesta conversa. A autenticação do GitHub está disponível; a do Cloudflare Pages não está: `wrangler whoami` informa que o ambiente não está autenticado. Portanto, a implantação no projeto `matriculasetdaam` ainda não foi executada. O site ativo permanece intacto. Não foram executadas migrações remotas, nem criados registros fictícios em produção.
 
 Para concluir a implantação, é necessário configurar `CLOUDFLARE_API_TOKEN` nos segredos do ambiente, com permissão para publicar no projeto Cloudflare Pages existente. O valor do token deve ser informado somente nas configurações de segredos, nunca no chat. Não é necessária uma nova autorização de publicação.
+
+## Conferência manual pelo VS Code
+
+Com Node.js 24, executar `node tests/preview.mjs` na branch `release/cfo-pre-inscricao-2026` e abrir `http://127.0.0.1:4173/inscricao.html` no mesmo computador. A prévia usa o formulário e a API reais com banco em memória e três cenários de data. Ela não publica, não usa credenciais e não acessa os dados de produção. As instruções completas estão em `tests/README.md`. O arquivo de prévia fica fora da lista de publicação.
